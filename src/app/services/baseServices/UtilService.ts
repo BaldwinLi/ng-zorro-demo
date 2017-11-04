@@ -1,0 +1,141 @@
+import { Injectable } from '@angular/core';
+import { padStart, isObject, isArray, uniqueId } from 'lodash';
+import { saveAs } from 'file-saver';
+
+type AOA = Array<Array<any>>;
+
+function s2ab(s: string): ArrayBuffer {
+  const buf = new ArrayBuffer(s.length);
+  const view = new Uint8Array(buf);
+  for (let i = 0; i !== s.length; ++i) {
+    view[i] = s.charCodeAt(i);
+  }
+  return buf;
+}
+
+@Injectable()
+export class UtilService {
+
+  constructor() { }
+
+  data: AOA = [[], []];
+  wopts: any = { bookType: 'xlsx', type: 'binary' };
+  fileName: String = 'SheetJS.xlsx';
+
+  private preTimeTamps: Array<String> = [];
+
+  getPageData(data: Array<any>, page: number, pageSize: number): any {
+    const rowsCount = data.length;
+    const currentPageRows = data.slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize);
+    return {
+      rowsCount,
+      currentPageRows
+    };
+  }
+
+  formatISOToStr(str: string): string {
+    const arr = str.split('T');
+    if (arr.length < 2) {
+      console.error('formatISOToStr\'s params must be ISO format.');
+      return;
+    }
+    const time_arr = arr[1].split('.');
+    const arr_date = arr[0].split('-');
+    const arr_time = time_arr[0].split(':');
+    return arr_date[0] + arr_date[1] + arr_date[2] + arr_time[0] + arr_time[1] + arr_time[2];
+  }
+  getDateFormate(date: Date): string {
+    const year = date.getFullYear().toString();
+    const month_cache = date.getMonth() + 1;
+    const month = month_cache < 10 ? padStart(month_cache.toString(), 2, '0') : month_cache.toString();
+    const day_cache = date.getDate();
+    const day = day_cache < 10 ? padStart(day_cache.toString(), 2, '0') : day_cache.toString();
+    const hour_cache = date.getHours();
+    const hour = hour_cache < 10 ? padStart(hour_cache.toString(), 2, '0') : hour_cache.toString();
+    const minute_cache = date.getMinutes();
+    const minute = minute_cache < 10 ? padStart(minute_cache.toString(), 2, '0') : minute_cache.toString();
+    const second_cache = date.getSeconds();
+    const second = second_cache < 10 ? padStart(second_cache.toString(), 2, '0') : second_cache.toString();
+    return year + month + day + hour + minute + second;
+  }
+
+  formatUndefinedValueToString(object: any): any {
+    if (isArray(object)) {
+      object = object.map(v => {
+        for (const e in v) {
+          if (v[e] !== 0) {
+            v[e] = v[e] || '';
+          }
+        }
+        return v;
+      });
+    } else if (isObject(object)) {
+      for (const e in object) {
+        if (object[e] !== 0) {
+          object[e] = object[e] || '';
+        }
+      }
+    }
+    return object;
+  }
+
+  get uuid() {
+    return Date.now() + uniqueId();
+  }
+
+  get getCurrentLocalDate() {
+    const date = new Date();
+    date.setHours(date.getHours() + 8);
+    return date;
+  }
+
+  onFileChange(evt: any, callback: Function) {
+    /* wire up file reader */
+    const target: DataTransfer = (<DataTransfer>(evt.target));
+    if (target.files.length !== 1) {
+      throw new Error('Cannot upload multiple files on the entry');
+    }
+    const reader = new FileReader();
+    window['loading'].startLoading();
+    reader.onload = function (e: any) {
+      window['loading'].finishLoading();
+      /* read workbook */
+      const bstr = e.target.result;
+      const wb = window['XLSX'].read(bstr, { type: 'binary' });
+      // const wb = window['XLSX'].read(bstr, { type: 'buffer' });
+
+
+      /* grab first sheet */
+      const wsname = wb.SheetNames[0];
+      const ws = wb.Sheets[wsname];
+
+      /* save data to scope */
+      callback(<AOA>(window['XLSX'].utils.sheet_to_json(ws, { header: 1 })));
+    };
+    reader.readAsBinaryString(target.files[0]);
+    // reader.readAsText(target.files[0]);
+  }
+
+  export(): void {
+    /* generate worksheet */
+    const ws = window['XLSX'].utils.aoa_to_sheet(this.data);
+
+    /* generate workbook and add the worksheet */
+    const wb = window['XLSX'].utils.book_new();
+    window['XLSX'].utils.book_append_sheet(wb, ws, 'Sheet1');
+
+    /* save to file */
+    const wbout = window['XLSX'].write(wb, this.wopts);
+    console.log(this.fileName);
+    saveAs(new Blob([s2ab(wbout)]), this.fileName);
+  }
+
+  isInvalidForm(form: any): void {
+    for (const i in form.controls) {
+      if (form.controls[i].invalid) {
+        form.controls[i].markAsTouched();
+      }
+    }
+    return form.invalid;
+  }
+}

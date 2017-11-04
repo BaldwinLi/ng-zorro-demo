@@ -1,0 +1,31 @@
+.platform-screen {
+  width: 100%;
+  height: 100%
+}
+
+.platform-screen .left-menu {
+    width: 14%;
+  height: 100%;
+  float: left;
+}
+
+.platform-screen .left-menu ul {
+  height: 95%
+}
+
+.platform-screen .left-menu ul li span {
+  padding-right: 1rem;
+}
+
+.platform-screen .main-platform {
+  width: 86%;
+  float: left;
+}
+
+.platform-screen .left-menu ul .collapse-button {
+  margin-left: 1.5rem;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
