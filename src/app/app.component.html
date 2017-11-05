@@ -1,31 +1,32 @@
-<ul nz-menu nzMode="horizontal" nzTheme="dark">
-  <li nz-menu-item>
-    <i class="anticon anticon-api"></i>首页</li>
-  <li nz-menu-item>
-    <i class="anticon anticon-appstore"></i>表单组件</li>
-  <li nz-menu-item>
-    <i class="anticon anticon-setting"></i>数据组件</li>
-  <li nz-menu-item>
-    <i class="anticon anticon-question-circle"></i>信息交互组件</li>
-  <li nz-menu-item>
-    <i class="anticon anticon-swap"></i>信息交互组件</li>
-</ul>
-<nz-breadcrumb>
-  <nz-breadcrumb-item>
-    <i class="anticon anticon-home"></i>
-    <span>Home</span>
-  </nz-breadcrumb-item>
-  <nz-breadcrumb-item>
-    <a href="">
-      <i class="anticon anticon-user"></i>
-      <span>Application List</span>
-    </a>
-  </nz-breadcrumb-item>
-  <nz-breadcrumb-item>
-    <a href="">
-      <i class="anticon anticon-appstore"></i>
-      <span>Application</span>
-    </a>
-  </nz-breadcrumb-item>
-</nz-breadcrumb>
-<router-outlet></router-outlet>
+<nz-layout class="layout" style="height: 100%;">
+  <nz-header class="main-menu">
+    <ul nz-menu nzMode="horizontal" nzTheme="light">
+      <div class="logo">
+        <i class="anticon anticon-pay-circle"> </i> 喵喵掌柜后台管理
+      </div>
+      <li [class]="'right-menu-item'">
+        <!-- <style="float: right;"> -->
+        <span>
+          <nz-avatar nzIcon="user" [nzSrc]="texts.user.userAvatar" style="display: inline-block;height: 1.8rem;top: 0.5rem;"></nz-avatar>
+          <p style="display: inline-block;">{{texts.user.userName}}</p>
+        </span>
+      </li>
+    </ul>
+  </nz-header>
+  <!-- <div style="height:0.3rem"></div> -->
+  <nz-layout class="layout" style="height: 100%;">
+    <nz-breadcrumb>
+      <nz-breadcrumb-item *ngFor="let item of breadcrumbItems;index as i">
+        <a [routerLink]="item.link" routerLinkActive="active" *ngIf="i!=breadcrumbItems.length-1">
+          <i [class]="item.icon"></i>
+        </a>
+        <i [class]="item.icon" *ngIf="i==breadcrumbItems.length-1"></i>
+        <span>{{item.label}}</span>
+      </nz-breadcrumb-item>
+    </nz-breadcrumb>
+    <div class="platform-screen">
+        <router-outlet></router-outlet>
+    </div>
+  </nz-layout>
+
+</nz-layout>

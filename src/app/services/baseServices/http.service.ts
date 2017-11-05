@@ -18,7 +18,7 @@ import {
   HttpResponse,
 } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import { UtilService } from './UtilService';
+import { UtilService } from './util.service';
 
 @Injectable()
 export class HttpService {

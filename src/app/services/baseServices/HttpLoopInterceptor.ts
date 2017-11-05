@@ -7,7 +7,7 @@ import {
     HttpInterceptor
 } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import { HttpCache } from './HttpCache';
+import { HttpCache } from './httpCache';
 
 @Injectable()
 export class HttpLoopInterceptor implements HttpInterceptor {

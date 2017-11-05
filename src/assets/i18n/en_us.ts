@@ -528,5 +528,9 @@ export default {
     'order_by': 'Order',
     'effective_date': 'Effective Date',
     'expiration_date': 'Expiration Date',
-    'back_to_parent_dic_list': 'Back to upper list'
+    'back_to_parent_dic_list': 'Back to upper list',
+    'drop_image_here': 'drop image here',
+    'file_too_large': 'File too large, cannot upload.',
+    'upload_image': 'Upload Image.',
+    'preview_image_title': 'Proview Image'
 };

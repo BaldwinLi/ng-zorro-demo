@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { trim } from 'lodash';
 import { Observable } from 'rxjs/Observable';
-import { HttpService } from './HttpService';
+import { HttpService } from './http.service';
 
 export const isLocal = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
 
