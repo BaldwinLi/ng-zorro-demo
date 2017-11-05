@@ -7,13 +7,15 @@ import { RouterModule, Routes } from '@angular/router';
 import { NgZorroAntdModule, NZ_LOCALE } from 'ng-zorro-antd';
 import { NZ_LOCALE_VALUE } from '../assets/i18n/i18n';
 import { AppComponent } from './app.component';
+import { PageNotFoundComponent } from './PageNotFoundComponent';
 import { MenuComponent } from './pageComponents/menuComponent/menu.component';
 import { MenuPlatformComponent } from './pageComponents/menuPlatformComponent/menuPlatform.component';
 import { HttpService } from './services/baseServices/HttpService';
 import { AppRequestService } from './services/baseServices/AppRequestService';
 import { UtilService } from './services/baseServices/UtilService';
-import { HttpCache} from './services/baseServices/HttpCache';
+import { HttpCache } from './services/baseServices/HttpCache';
 import { HttpLoopInterceptor } from './services/baseServices/HttpLoopInterceptor';
+import { LookupPipe } from './pipes/lookupPipe';
 
 const appRoutes: Routes = [
   {
@@ -24,14 +26,16 @@ const appRoutes: Routes = [
     ]
   },
   { path: '', redirectTo: '/menu', pathMatch: 'full' },
-  // { path: '**', component: 'Not Found' }
+  { path: '**', component: PageNotFoundComponent }
 ];
 
 @NgModule({
   declarations: [
     AppComponent,
     MenuComponent,
-    MenuPlatformComponent
+    MenuPlatformComponent,
+    PageNotFoundComponent,
+    LookupPipe
   ],
   imports: [
     BrowserModule,

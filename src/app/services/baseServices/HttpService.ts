@@ -50,7 +50,7 @@ export class HttpService {
   }
 
   private extractData(res: HttpResponse<any> | any) {
-    const body = this.util.formatUndefinedValueToString(res.data);
+    const body = this.util.formatUnavailableValueToString(res.data);
     return body || {};
   }
 
@@ -79,6 +79,7 @@ export class HttpService {
 
   private getHeaders(headers: any): HttpHeaders {
     const _headers = new HttpHeaders();
+    _headers.set('Content-Type', 'application/json;charset=UTF-8');
     for (const e in headers) {
       if (e) {
         _headers.set(e, headers[e]);

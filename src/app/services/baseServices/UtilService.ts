@@ -8,7 +8,7 @@ function s2ab(s: string): ArrayBuffer {
   const buf = new ArrayBuffer(s.length);
   const view = new Uint8Array(buf);
   for (let i = 0; i !== s.length; ++i) {
-    view[i] = s.charCodeAt(i);
+    view[i] = s.charCodeAt(i) & 0xFF;
   }
   return buf;
 }
@@ -18,11 +18,9 @@ export class UtilService {
 
   constructor() { }
 
-  data: AOA = [[], []];
-  wopts: any = { bookType: 'xlsx', type: 'binary' };
-  fileName: String = 'SheetJS.xlsx';
-
-  private preTimeTamps: Array<String> = [];
+  private data: AOA = [[], []];
+  private wopts: any = { bookType: 'xlsx', type: 'binary' };
+  private fileName: String = 'SheetJS.xlsx';
 
   getPageData(data: Array<any>, page: number, pageSize: number): any {
     const rowsCount = data.length;
@@ -59,24 +57,19 @@ export class UtilService {
     return year + month + day + hour + minute + second;
   }
 
-  formatUndefinedValueToString(object: any): any {
+  formatUnavailableValueToString(object: any): any {
     if (isArray(object)) {
       object = object.map(v => {
-        for (const e in v) {
-          if (v[e] !== 0) {
-            v[e] = v[e] || '';
-          }
-        }
-        return v;
+        return this.formatUnavailableValueToString(v);
       });
     } else if (isObject(object)) {
       for (const e in object) {
         if (object[e] !== 0) {
-          object[e] = object[e] || '';
+          object[e] = this.formatUnavailableValueToString(object[e]);
         }
       }
     }
-    return object;
+    return object === 0 ? object : (object || '');
   }
 
   get uuid() {
@@ -133,7 +126,7 @@ export class UtilService {
   isInvalidForm(form: any): void {
     for (const i in form.controls) {
       if (form.controls[i].invalid) {
-        form.controls[i].markAsTouched();
+        form.controls[i].markAsDirty();
       }
     }
     return form.invalid;
