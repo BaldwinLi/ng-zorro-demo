@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ComponentCommunicateService } from '../../services/baseServices/componentCommunicate.service';
+import { NzModalService } from 'ng-zorro-antd';
+import { AddMerchantComponent } from './enterMerchantManagementDialog/addMerchant.component';
 
 @Component({
   selector: 'app-menu-platform-component',
@@ -43,14 +45,14 @@ export class EnterMerchantComponent implements OnInit {
           type: 'link',
           label: '查看',
           callback(event) {
-            alert(111);
+
           }
         }
       ]
     }
   ];
 
-  constructor(private componentCommunicator: ComponentCommunicateService) {
+  constructor(private componentCommunicator: ComponentCommunicateService, private model: NzModalService) {
   }
 
   refreshData(event) {
@@ -58,19 +60,22 @@ export class EnterMerchantComponent implements OnInit {
       (event.type === 'keypress' && event.type === 'keypress' && event.charCode !== 13)) {
       return;
     }
-    alert(111);
   }
 
   addMerchant() {
-    alert(222);
+    const subscription = this.model.open({
+      title: '添加商户',
+      content: AddMerchantComponent,
+      onOk() {
+        alert();
+      },
+      footer: false
+    });
+    subscription.subscribe(result => {
+    });
   }
 
   ngOnInit() {
-    this.componentCommunicator.$emit({
-      name: 'enter_merchant',
-      link: '/menu/enter_merchant',
-      icon: 'anticon anticon-bank',
-      label: '入驻商家管理'
-    });
+    this.componentCommunicator.$emit('/menu/enter_merchant');
   }
 }

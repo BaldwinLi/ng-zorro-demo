@@ -1,0 +1,45 @@
+<nz-layout class="layout">
+  <nz-tabset [nzTabPosition]="'top'" [nzType]="'card'">
+    <nz-tab>
+      <ng-template #nzTabHeading>
+        商户基本信息
+      </ng-template>
+      <nz-content>
+        <nz-collapseset>
+          <nz-collapse [nzTitle]="'联系信息'" [nzActive]="true">
+            <div *ngFor="let item of contact" nz-form-item nz-row>
+              <div nz-form-label nz-col [nzSpan]="6">
+                <label>{{item.label}}</label>
+              </div>
+              <div nz-form-control nz-col [nzSpan]="14">
+                <span nz-form-text>{{item.value}}</span>
+              </div>
+            </div>
+          </nz-collapse>
+          <nz-collapse [nzTitle]="'联系人身份证照片'" [nzActive]="true">
+            <app-upload-image [url]="" [readonly]="true" [uploadedFiles]="uploadedFiles"></app-upload-image>
+          </nz-collapse>
+          <nz-collapse [nzTitle]="'商户LOGO'" [nzActive]="true">
+            <app-upload-image [url]="" [readonly]="true" [uploadedFiles]="uploadedFiles"></app-upload-image>
+          </nz-collapse>
+        </nz-collapseset>
+      </nz-content>
+    </nz-tab>
+    <nz-tab>
+      <ng-template #nzTabHeading>
+        商户经营信息与资料
+      </ng-template>
+      <nz-content>
+        111
+      </nz-content>
+    </nz-tab>
+    <nz-tab>
+      <ng-template #nzTabHeading>
+        收款账户
+      </ng-template>
+      <nz-content>
+        111
+      </nz-content>
+    </nz-tab>
+  </nz-tabset>`
+</nz-layout>

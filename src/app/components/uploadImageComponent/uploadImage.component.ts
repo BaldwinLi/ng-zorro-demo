@@ -1,5 +1,4 @@
 import { Component, Input, Output, OnInit } from '@angular/core';
-import { UploadMetadata } from 'angular2-image-upload';
 import { NzModalService } from 'ng-zorro-antd';
 import { Lang } from '../../../assets/i18n/i18n';
 
@@ -12,7 +11,7 @@ export class FileHolder {
 }
 @Component({
     selector: 'app-upload-image',
-    templateUrl: './uploadImageTemplate',
+    templateUrl: './uploadImageTemplate.html',
     styleUrls: ['./uploadImage.css']
 })
 export class UploadImageComponent implements OnInit {
@@ -26,7 +25,7 @@ export class UploadImageComponent implements OnInit {
     @Input() private buttonCaption: String = Lang['upload_image'];
     @Input() private dropBoxMessage: String = Lang['drop_image_here'];
     @Input() private clearButtonCaption: String = Lang['form_empty'];
-    @Input() private customClass: String;
+    @Input() private customClass: String = '';
     @Input() private customStyle: Object;
     @Input() private preview: Boolean = false;
     @Input() private maxFileSize: Number;
@@ -42,7 +41,7 @@ export class UploadImageComponent implements OnInit {
         this.fileCounter = 0;
     }
 
-    @Input() private onBeforeUpload(metadata: UploadMetadata) {
+    @Input() private onBeforeUpload(metadata: any) {
         // metadata.abort = true
         // metadata.url = 'http://somewhereelse.com'
         this.fileCounter = this.fileCounter + 1;

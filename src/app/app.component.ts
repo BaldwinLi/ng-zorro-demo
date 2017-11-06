@@ -24,14 +24,29 @@ export class AppComponent implements OnDestroy {
     icon: 'anticon anticon-bank',
     label: '入驻商家管理'
   }];
+
+  private breadcrumbItemlist: Object = {
+    enter_merchant: ['/menu/enter_merchant', '入驻商家管理', 'anticon anticon-bank'],
+    enter_merchant_info: ['/menu/enter_merchant/enter_merchant_info', '入驻商家详情', 'anticon anticon-idcard']
+  };
+
   private subscription: Subscription;
   constructor(private componentCommunicator: ComponentCommunicateService) {
     const subscription = componentCommunicator.emitObsr.subscribe(
       item => {
-        const names = item.name.split('/');
+        const names = item.split('/');
         setTimeout(() => {
-          this.breadcrumbItems = this.breadcrumbItems.filter(e => (names.includes(e['name']) && e['name'] !== item.name));
-          this.breadcrumbItems.push(item);
+          this.breadcrumbItems.length = 0;
+          names.forEach(e => {
+            if (this.breadcrumbItemlist[e]) {
+              this.breadcrumbItems.push(
+                {
+                  link: this.breadcrumbItemlist[e][0],
+                  label: this.breadcrumbItemlist[e][1],
+                  icon: this.breadcrumbItemlist[e][2]
+                });
+            }
+          });
         });
       });
   }

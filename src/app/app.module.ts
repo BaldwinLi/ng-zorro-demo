@@ -13,6 +13,9 @@ import { PageNotFoundComponent } from './PageNotFoundComponent';
 import { MenuComponent } from './pageComponents/menuComponent/menu.component';
 // import { MenuPlatformComponent } from './pageComponents/menuPlatformComponent/menuPlatform.component';
 import { EnterMerchantComponent } from './pageComponents/enterMerchantManagement/enterMerchant.component';
+import { AddMerchantComponent } from './pageComponents/enterMerchantManagement/enterMerchantManagementDialog/addMerchant.component';
+import { EnterMerchantInfoComponent } from './pageComponents/enterMerchantManagement/enterMerchantInfo/enterMerchantInfo.component';
+import { UploadImageComponent } from './components/uploadImageComponent/uploadImage.component';
 import { HttpService } from './services/baseServices/http.service';
 import { AppRequestService } from './services/baseServices/AppRequest.service';
 import { UtilService } from './services/baseServices/util.service';
@@ -26,16 +29,19 @@ const appRoutes: Routes = [
     path: 'menu', component: MenuComponent,
     children: [
       { path: 'enter_merchant', component: EnterMerchantComponent },
+      { path: 'enter_merchant/enter_merchant_info/:id', component: EnterMerchantInfoComponent},
       // { path: 'menu_platform', component: MenuPlatformComponent },
-      { path: '', redirectTo: '/menu/enter_merchant', pathMatch: 'full' },
+      { path: '', redirectTo: '/menu/enter_merchant', pathMatch: 'full' }
     ]
   },
-  { path: '', redirectTo: '/menu', pathMatch: 'full' },
+  { path: '', redirectTo: '/menu/enter_merchant', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent }
 ];
 
 @NgModule({
-  entryComponents: [],
+  entryComponents: [
+    AddMerchantComponent
+  ],
   declarations: [
     AppComponent,
     DatatableComponent,
@@ -43,6 +49,9 @@ const appRoutes: Routes = [
     // MenuPlatformComponent,
     EnterMerchantComponent,
     PageNotFoundComponent,
+    AddMerchantComponent,
+    EnterMerchantInfoComponent,
+    UploadImageComponent,
     LookupPipe
   ],
   imports: [

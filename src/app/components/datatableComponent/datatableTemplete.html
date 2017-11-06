@@ -30,7 +30,8 @@
     <td nz-td>
       <span *ngIf="col.type==='action'">
         <div *ngFor="let item of col.group">
-          <a href="#" *ngIf="item.type==='link'" (click)="item.callback($event)">item.label</a>
+          <a *ngIf="item.type==='link'&&item.callback" (click)="item.callback($event)">item.label</a>
+          <a *ngIf="item.type==='link'&&item.router" [routerLink]="item.router+data.id">item.label</a>
           <span nz-table-divider *ngIf="item.type==='link'"></span>
           <nz-dropdown *ngIf="item.type==='dropdown'">
             <a class="ant-dropdown-link" nz-dropdown>
