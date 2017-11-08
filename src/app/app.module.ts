@@ -7,17 +7,19 @@ import { RouterModule, Routes } from '@angular/router';
 import { NgZorroAntdModule, NZ_LOCALE } from 'ng-zorro-antd';
 import { DatatableComponent } from './components/datatableComponent/datatable.component';
 import { ImageUploadModule } from 'angular2-image-upload';
+import { FileUploadModule } from 'ng2-file-upload/ng2-file-upload';
 import { NZ_LOCALE_VALUE } from '../assets/i18n/i18n';
 import { AppComponent } from './app.component';
 import { PageNotFoundComponent } from './PageNotFoundComponent';
 import { MenuComponent } from './pageComponents/menuComponent/menu.component';
-// import { MenuPlatformComponent } from './pageComponents/menuPlatformComponent/menuPlatform.component';
+import { MenuPlatformComponent } from './pageComponents/menuPlatformComponent/menuPlatform.component';
 import { EnterMerchantComponent } from './pageComponents/enterMerchantManagement/enterMerchant.component';
 import { AddMerchantComponent } from './pageComponents/enterMerchantManagement/enterMerchantManagementDialog/addMerchant.component';
 import { EnterMerchantInfoComponent } from './pageComponents/enterMerchantManagement/enterMerchantInfo/enterMerchantInfo.component';
 import { MerchantApprovementComponent } from './pageComponents/merchantApprovementComponent/merchantApprovement.component';
 import { ActivitiesApprovementListComponent } from './pageComponents/activitiesApprovementComponent/activitiesApproveListComponent/activitiesApprovementList.component';
 import { ActvityDetailComponent } from './pageComponents/activitiesApprovementComponent/activityDetailComponent/activityDetail.component';
+import { UploadFileComponent } from './components/uploadFileComponent/uploadFile.component';
 import { UploadImageComponent } from './components/uploadImageComponent/uploadImage.component';
 import { HttpService } from './services/baseServices/http.service';
 import { AppRequestService } from './services/baseServices/AppRequest.service';
@@ -53,7 +55,7 @@ const appRoutes: Routes = [
     AppComponent,
     DatatableComponent,
     MenuComponent,
-    // MenuPlatformComponent,
+    MenuPlatformComponent,
     EnterMerchantComponent,
     PageNotFoundComponent,
     AddMerchantComponent,
@@ -62,6 +64,7 @@ const appRoutes: Routes = [
     ActivitiesApprovementListComponent,
     ActvityDetailComponent,
     UploadImageComponent,
+    UploadFileComponent,
     LookupPipe
   ],
   imports: [
@@ -70,6 +73,7 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    FileUploadModule,
     RouterModule.forRoot(appRoutes, { useHash: true }),
     NgZorroAntdModule.forRoot({ extraFontName: 'anticon', extraFontUrl: '../assets/iconfont/iconfont' }),
     ImageUploadModule.forRoot()

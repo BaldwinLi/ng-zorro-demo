@@ -10,10 +10,10 @@ import { ComponentCommunicateService } from '../../../services/baseServices/comp
     styleUrls: ['../../../../assets/css/custom.css']
 })
 export class EnterMerchantInfoComponent implements OnInit {
-    private id: String;
-    private loading: Boolean = false;
-    private loadingTip: String = Lang['loading_tip'];
-    private contact: Array<Object> = [
+    id: String;
+    loading: Boolean = false;
+    loadingTip: String = Lang['loading_tip'];
+    contact: Array<Object> = [
         {
             id: '',
             label: '联系人',
@@ -31,7 +31,7 @@ export class EnterMerchantInfoComponent implements OnInit {
         }
     ];
 
-    private merchantInfo: Array<Object> = [{
+    merchantInfo: Array<Object> = [{
         id: '',
         label: '商户全称',
         value: 'Amelie韩式皮肤管理中心'
@@ -91,7 +91,7 @@ export class EnterMerchantInfoComponent implements OnInit {
         ]
     }];
 
-    private accountInfo: Array<Object> = [{
+    accountInfo: Array<Object> = [{
         id: '',
         label: '商户手机号',
         value: '13000000000'
@@ -138,9 +138,9 @@ export class EnterMerchantInfoComponent implements OnInit {
         value: '待审核'
     }];
 
-    private _isString = isString;
+    _isString = isString;
 
-    private IDImages: Array<Object> = [
+    IDImages: Array<Object> = [
         {
             url: '',
             fileName: 'text.png'
@@ -151,12 +151,12 @@ export class EnterMerchantInfoComponent implements OnInit {
         }
     ];
 
-    private LogoImages: Array<Object> = [{
+    LogoImages: Array<Object> = [{
         url: '',
         fileName: 'text.png'
     }];
 
-    private refreshData(): void {
+    refreshData(): void {
         // this.loading = true;
     }
     constructor(private route: ActivatedRoute, private componentCommunicator: ComponentCommunicateService) { }

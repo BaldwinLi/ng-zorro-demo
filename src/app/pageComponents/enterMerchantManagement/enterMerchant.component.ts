@@ -10,13 +10,13 @@ import { AddMerchantComponent } from './enterMerchantManagementDialog/addMerchan
   styleUrls: ['../../../assets/css/custom.css']
 })
 export class EnterMerchantComponent implements OnInit {
-  private current: Number = 1;
-  private pageSize: Number = 10;
-  private total = 0;
-  private data: Array<any> = [];
-  private loading = false;
-  private marchantKey: String = '';
-  private columns: Array<any> = [
+  current: Number = 1;
+  pageSize: Number = 10;
+  total = 0;
+  data: Array<any> = [];
+  loading = false;
+  marchantKey: String = '';
+  columns: Array<any> = [
     {
       id: 'merchantId',
       label: '商家编号'
@@ -60,14 +60,14 @@ export class EnterMerchantComponent implements OnInit {
   ) {
   }
 
-  refreshData(event) {
+  refreshData(event: any) {
     if ((event.type === 'click' && event.srcElement.nodeName !== 'I') ||
       (event.type === 'keypress' && event.charCode !== 13)) {
       return;
     }
   }
 
-  addMerchant() {
+  addMerchant(event: any) {
     const subscription = this.model.open({
       title: '添加商户',
       content: AddMerchantComponent,

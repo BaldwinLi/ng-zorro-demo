@@ -8,21 +8,22 @@ import { NzModalService, NzModalSubject } from 'ng-zorro-antd';
     styleUrls: ['../../../assets/css/custom.css']
 })
 export class MerchantApprovementComponent implements OnInit {
-    private current: Number = 1;
-    private hisCurrent: Number = 1;
-    private pageSize: Number = 10;
-    private hisPageSize: Number = 10;
-    private total = 0;
-    private hisTotal = 0;
-    private data: Array<any> = [];
-    private hisData: Array<any> = [];
-    private loading: Boolean = false;
-    private marchantKey: String = '';
-    private hisMarchantKey: String = '';
-    private resultReason: String = '';
-    private approveWin: NzModalSubject;
-    private checkedMerchants: Array<Object> = [];
-    private columns: Array<any> = [
+    current: Number = 1;
+    hisCurrent: Number = 1;
+    pageSize: Number = 10;
+    hisPageSize: Number = 10;
+    total = 0;
+    hisTotal = 0;
+    data: Array<any> = [];
+    hisData: Array<any> = [];
+    loading: Boolean = false;
+    hisLoading: Boolean = false;
+    marchantKey: String = '';
+    hisMarchantKey: String = '';
+    resultReason: String = '';
+    approveWin: NzModalSubject;
+    checkedMerchants: Array<Object> = [];
+    columns: Array<any> = [
         '$checkbox',
         {
             id: 'merchantId',
@@ -41,7 +42,7 @@ export class MerchantApprovementComponent implements OnInit {
             label: '商家所在地'
         }
     ];
-    private hisColumns: Array<any> = [
+    hisColumns: Array<any> = [
         {
             id: 'merchantId',
             label: '商家编号'
@@ -79,21 +80,21 @@ export class MerchantApprovementComponent implements OnInit {
     constructor(private componentCommunicator: ComponentCommunicateService, private model: NzModalService) {
     }
 
-    private refreshData(event): void {
+    refreshData(event): void {
         if ((event.type === 'click' && event.srcElement.nodeName !== 'I') ||
             (event.type === 'keypress' && event.charCode !== 13)) {
             return;
         }
     }
 
-    private refreshHistoryData(event): void {
+    refreshHistoryData(event): void {
         if ((event.type === 'click' && event.srcElement.nodeName !== 'I') ||
             (event.type === 'keypress' && event.charCode !== 13)) {
             return;
         }
     }
 
-    private merchantApprove(title, content, footer): void {
+    merchantApprove(title, content, footer): void {
         this.approveWin = this.model.open({
             title,
             content,
@@ -102,12 +103,12 @@ export class MerchantApprovementComponent implements OnInit {
         });
     }
 
-    private handleApprove(result): void {
+    handleApprove(result): void {
         alert(result);
         this.approveWin.destroy();
     }
 
-    private onCheckedMerchants(merchants: Array<Object>): void {
+    onCheckedMerchants(merchants: Array<Object>): void {
         this.checkedMerchants = merchants;
     }
 

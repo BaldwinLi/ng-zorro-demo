@@ -11,28 +11,28 @@ import { ComponentCommunicateService } from '../../../services/baseServices/comp
 })
 export class ActivitiesApprovementListComponent implements OnInit {
 
-    private loading: Boolean = false;
-    private loadingTip: String = Lang['loading_tip'];
-    private activtystatus: Array<Object> = this.dm.APPROVE_STATUS;
-    private activtyTypes: Array<Object> = this.dm.ACTIVITY_TYPES;
-    private condition: Object = {
+    loading: Boolean = false;
+    loadingTip: String = Lang['loading_tip'];
+    activtystatus: Array<Object> = this.dm.APPROVE_STATUS;
+    activtyTypes: Array<Object> = this.dm.ACTIVITY_TYPES;
+    condition: {type: string, status: string} = {
         type: '0',
         status: '0'
     };
-    private activityList: Array<{ id, name, status, type, image, content }>;
-    private activityListCach: Array<{ id, name, status, type, image, content }>;
-    private marchantKey: String = '';
+    activityList: Array<{ id, name, status, type, image, content }>;
+    activityListCach: Array<{ id, name, status, type, image, content }>;
+    marchantKey: String = '';
     constructor(
         private router: Router,
         private dm: DataModelService,
         private componentCommunicator: ComponentCommunicateService
     ) { }
 
-    private queryDetail(id: String) {
+    queryDetail(id: String) {
         this.router.navigate(['/menu/enter_merchant/enter_merchant_info', id]);
     }
 
-    private filterActivities(key: string, value: String, event): void {
+    filterActivities(key: string, value: String, event): void {
         if (((event.type === 'click' && event.srcElement.nodeName !== 'I') ||
             (event.type === 'keypress' && event.charCode !== 13)) && key === 'marchantKey'
         ) {
@@ -50,7 +50,7 @@ export class ActivitiesApprovementListComponent implements OnInit {
 
     }
 
-    private refreshData(): void {
+    refreshData(event?: any): void {
 
     }
 

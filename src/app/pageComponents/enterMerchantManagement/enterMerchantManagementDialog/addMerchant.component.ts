@@ -13,7 +13,7 @@ import { UtilService } from '../../../services/baseServices/util.service';
     templateUrl: './addMerchantTemplate.html',
 })
 export class AddMerchantComponent implements OnInit {
-    private merchantForm: FormGroup;
+    merchantForm: FormGroup;
 
     _submitForm() {
         if (this.util.isInvalidForm(this.merchantForm)) {

@@ -10,9 +10,9 @@ import { ComponentCommunicateService } from '../../../services/baseServices/comp
     styleUrls: ['../../../../assets/css/custom.css']
 })
 export class ActvityDetailComponent implements OnInit {
-    private id: String;
-    private loading: Boolean = false;
-    private loadingTip: String = Lang['loading_tip'];
+    id: String;
+    loading: Boolean = false;
+    loadingTip: String = Lang['loading_tip'];
     constructor(
         private router: Router,
         private route: ActivatedRoute,
@@ -20,10 +20,10 @@ export class ActvityDetailComponent implements OnInit {
         private componentCommunicator: ComponentCommunicateService
     ) { }
 
-    private goBack(): void {
+    goBack(): void {
         this.router.navigate(['/menu/activity_approvement']);
     }
-    private refreshData(id: String): void { }
+    refreshData(id: String): void { }
 
     ngOnInit() {
         this.refreshData(this.id = this.route.params['_value']['id']);

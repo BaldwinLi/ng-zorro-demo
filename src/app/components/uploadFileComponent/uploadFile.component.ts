@@ -8,7 +8,7 @@ const URL = 'https://evening-anchorage-3159.herokuapp.com/api/';
     selector: 'app-upload-file',
     templateUrl: './uploadFileTemplate.html'
 })
-export class SimpleDemoComponent {
+export class UploadFileComponent {
     public uploader: FileUploader = new FileUploader({ url: URL });
     public hasBaseDropZoneOver: Boolean = false;
     public hasAnotherDropZoneOver: Boolean = false;

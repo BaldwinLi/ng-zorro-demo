@@ -10,22 +10,21 @@ import { ComponentCommunicateService } from './services/baseServices/componentCo
   providers: [ComponentCommunicateService]
 })
 export class AppComponent implements OnDestroy {
-  private texts: Object = {
-    homePage: Lang['home_page'],
-    user: {
-      userName: '测试用户',
-      userAavatar: ''
-    },
+  homePage: String = Lang['home_page'];
+  user: { userName: string, userAvatar: string, icon: string } = {
+    userName: '测试用户',
+    userAvatar: '',
+    icon: ''
   };
 
-  private breadcrumbItems: Array<Object> = [{
+  breadcrumbItems: Array<Object> = [{
     name: 'enter_merchant',
     link: '/menu/enter_merchant',
     icon: 'anticon anticon-bank',
     label: '入驻商家管理'
   }];
 
-  private breadcrumbItemlist: Object = {
+  breadcrumbItemlist: Object = {
     enter_merchant: ['/menu/enter_merchant', '入驻商家管理', 'anticon anticon-bank'],
     enter_merchant_info: ['/menu/enter_merchant/enter_merchant_info', '入驻商家详情', 'anticon anticon-idcard'],
     merchant_approvement: ['/menu/merchant_approvement', '商家注册审核'],
@@ -33,8 +32,8 @@ export class AppComponent implements OnDestroy {
     activity_detail: ['/menu/activity_detail', '活动详情']
   };
 
-  private subscription: Subscription;
-  constructor(private componentCommunicator: ComponentCommunicateService) {
+  subscription: Subscription;
+  constructor(componentCommunicator: ComponentCommunicateService) {
     const subscription = componentCommunicator.emitObsr.subscribe(
       item => {
         const names = item.split('/');

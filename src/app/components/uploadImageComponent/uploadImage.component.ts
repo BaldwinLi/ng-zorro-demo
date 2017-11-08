@@ -15,45 +15,45 @@ export class FileHolder {
     styleUrls: ['./uploadImage.css']
 })
 export class UploadImageComponent implements OnInit {
-    private files: FileHolder[] = [];
-    private previewTitle: String = Lang['preview_image_title'];
-    private previewUrl: String = '';
-    @Input() private url: String = '';
-    @Input() private headers: Array<Object>;
-    @Input() private maxFileCount: Number = 10;
-    @Input() private extensions: Array<String>;
-    @Input() private buttonCaption: String = Lang['upload_image'];
-    @Input() private dropBoxMessage: String = Lang['drop_image_here'];
-    @Input() private clearButtonCaption: String = Lang['form_empty'];
-    @Input() private customClass: String = '';
-    @Input() private customStyle: Object;
-    @Input() private preview: Boolean = false;
-    @Input() private maxFileSize: Number;
-    @Input() private uploadedFiles: Array<Object> = [];
-    @Input() private fileTooLargeMessage: String = Lang['file_too_large'];
-    @Input() private readonly: Boolean = false;
-    @Input() private disabledPreview: Boolean = false;
+    files: FileHolder[] = [];
+    previewTitle: String = Lang['preview_image_title'];
+    previewUrl: String = '';
+    @Input() url: String = '';
+    @Input() headers: Array<Object>;
+    @Input() maxFileCount: Number = 10;
+    @Input() extensions: Array<String>;
+    @Input() buttonCaption: String = Lang['upload_image'];
+    @Input() dropBoxMessage: String = Lang['drop_image_here'];
+    @Input() clearButtonCaption: String = Lang['form_empty'];
+    @Input() customClass: String = '';
+    @Input() customStyle: Object;
+    @Input() preview: Boolean = false;
+    @Input() maxFileSize: Number;
+    @Input() uploadedFiles: Array<Object> = [];
+    @Input() fileTooLargeMessage: String = Lang['file_too_large'];
+    @Input() readonly: Boolean = false;
+    @Input() disabledPreview: Boolean = false;
 
-    private fileCounter: number;
+    fileCounter: number;
 
-    private startLoading: Boolean = false;
+    startLoading: Boolean = false;
 
     constructor(private modalService: NzModalService) {
         this.fileCounter = 0;
     }
 
-    @Input() private onBeforeUpload(metadata: any) {
+    @Input() onBeforeUpload(metadata: any) {
         // metadata.abort = true
         // metadata.url = 'http://somewhereelse.com'
         this.fileCounter = this.fileCounter + 1;
         return metadata;
     }
 
-    @Input() private onUploadFinished(event: any): void {
+    @Input() onUploadFinished(event: any): void {
         this.uploadedFiles.push({ src: event.file });
     }
 
-    @Input() private onRemoved(event: any): void {
+    @Input() onRemoved(event: any): void {
         const index = this.uploadedFiles.indexOf(event.file);
         if (index > -1) {
             this.uploadedFiles.splice(index, 1);
@@ -62,7 +62,7 @@ export class UploadImageComponent implements OnInit {
 
     @Input() onUploadStateChanged(state: boolean): void { }
 
-    private processUploadedFiles() {
+    processUploadedFiles() {
         for (let i = 0; i < this.uploadedFiles.length; i++) {
             const data: any = this.uploadedFiles[i];
 
@@ -84,7 +84,7 @@ export class UploadImageComponent implements OnInit {
         }
     }
 
-    private showPreviewModel(titleTpl, contentTpl, url: String = './assets/image/default.png'): void {
+    showPreviewModel(titleTpl, contentTpl, url: String = './assets/image/default.png'): void {
         if (this.disabledPreview) {
             return;
         }
