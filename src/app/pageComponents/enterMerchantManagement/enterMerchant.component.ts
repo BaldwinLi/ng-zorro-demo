@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ComponentCommunicateService } from '../../services/baseServices/componentCommunicate.service';
 import { NzModalService } from 'ng-zorro-antd';
 import { AddMerchantComponent } from './enterMerchantManagementDialog/addMerchant.component';
@@ -44,20 +45,24 @@ export class EnterMerchantComponent implements OnInit {
         {
           type: 'link',
           label: '查看',
-          callback(event) {
-
+          callback(row) {
+            this.router.navigate(['/menu/activity_approvement/activity_detail'], row.id);
           }
         }
       ]
     }
   ];
 
-  constructor(private componentCommunicator: ComponentCommunicateService, private model: NzModalService) {
+  constructor(
+    private componentCommunicator: ComponentCommunicateService,
+    private model: NzModalService,
+    private router: Router
+  ) {
   }
 
   refreshData(event) {
     if ((event.type === 'click' && event.srcElement.nodeName !== 'I') ||
-      (event.type === 'keypress' && event.type === 'keypress' && event.charCode !== 13)) {
+      (event.type === 'keypress' && event.charCode !== 13)) {
       return;
     }
   }

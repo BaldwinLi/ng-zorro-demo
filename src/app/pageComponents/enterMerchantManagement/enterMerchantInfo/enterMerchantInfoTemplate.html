@@ -5,24 +5,26 @@
         商户基本信息
       </ng-template>
       <nz-content>
-        <nz-collapseset>
-          <nz-collapse [nzTitle]="'联系信息'" [nzActive]="true">
-            <div *ngFor="let item of contact" class="nz-row-margin" nz-form-item nz-row>
-              <div nz-form-label nz-col [nzSpan]="4">
-                <label>{{item.label}}</label>
+        <nz-spin [nzSize]="'large'" [nzSpinning]="loading" [nzTip]="loadingTip">
+          <nz-collapseset>
+            <nz-collapse [nzTitle]="'联系信息'" [nzActive]="true">
+              <div *ngFor="let item of contact" class="nz-row-margin" nz-form-item nz-row>
+                <div nz-form-label nz-col [nzSpan]="4">
+                  <label>{{item.label}}</label>
+                </div>
+                <div nz-form-control nz-col [nzSpan]="14">
+                  <span nz-form-text>{{item.value}}</span>
+                </div>
               </div>
-              <div nz-form-control nz-col [nzSpan]="14">
-                <span nz-form-text>{{item.value}}</span>
-              </div>
-            </div>
-          </nz-collapse>
-          <nz-collapse [nzTitle]="'联系人身份证照片'" [nzActive]="true">
-            <app-upload-image [url]="" [readonly]="true" [uploadedFiles]="IDImages"></app-upload-image>
-          </nz-collapse>
-          <nz-collapse [nzTitle]="'商户LOGO'" [nzActive]="true">
-            <app-upload-image [url]="" [readonly]="true" [uploadedFiles]="LogoImages"></app-upload-image>
-          </nz-collapse>
-        </nz-collapseset>
+            </nz-collapse>
+            <nz-collapse [nzTitle]="'联系人身份证照片'" [nzActive]="true">
+              <app-upload-image [url]="" [readonly]="true" [uploadedFiles]="IDImages"></app-upload-image>
+            </nz-collapse>
+            <nz-collapse [nzTitle]="'商户LOGO'" [nzActive]="true">
+              <app-upload-image [url]="" [readonly]="true" [uploadedFiles]="LogoImages"></app-upload-image>
+            </nz-collapse>
+          </nz-collapseset>
+        </nz-spin>
       </nz-content>
     </nz-tab>
     <nz-tab>
@@ -33,17 +35,19 @@
         公司经营信息
       </nz-header>
       <nz-content class="tab-content">
-        <div *ngFor="let item of merchantInfo" class="nz-row-margin" nz-form-item nz-row>
-          <div nz-form-label nz-col [nzSpan]="4">
-            <label>{{item.label}}</label>
+        <nz-spin [nzSize]="'large'" [nzSpinning]="loading" [nzTip]="loadingTip">
+          <div *ngFor="let item of merchantInfo" class="nz-row-margin" nz-form-item nz-row>
+            <div nz-form-label nz-col [nzSpan]="4">
+              <label>{{item.label}}</label>
+            </div>
+            <div nz-form-control nz-col [nzSpan]="14">
+              <span nz-form-text *ngIf="_isString(item.value)">{{item.value}}</span>
+              <span nz-form-text *ngIf="!_isString(item.value)">
+                <app-upload-image [url]="" [readonly]="true" [uploadedFiles]="item.value"></app-upload-image>
+              </span>
+            </div>
           </div>
-          <div nz-form-control nz-col [nzSpan]="14">
-            <span nz-form-text *ngIf="_isString(item.value)">{{item.value}}</span>
-            <span nz-form-text *ngIf="!_isString(item.value)">
-              <app-upload-image [url]="" [readonly]="true" [uploadedFiles]="item.value"></app-upload-image>
-            </span>
-          </div>
-        </div>
+        </nz-spin>
       </nz-content>
     </nz-tab>
     <nz-tab>
@@ -54,17 +58,19 @@
         绑定收款信息
       </nz-header>
       <nz-content class="tab-content">
-        <div *ngFor="let item of accountInfo" class="nz-row-margin" nz-form-item nz-row>
-          <div nz-form-label nz-col [nzSpan]="4">
-            <label>{{item.label}}</label>
+        <nz-spin [nzSize]="'large'" [nzSpinning]="loading" [nzTip]="loadingTip">
+          <div *ngFor="let item of accountInfo" class="nz-row-margin" nz-form-item nz-row>
+            <div nz-form-label nz-col [nzSpan]="4">
+              <label>{{item.label}}</label>
+            </div>
+            <div nz-form-control nz-col [nzSpan]="14">
+              <span nz-form-text *ngIf="_isString(item.value)">{{item.value}}</span>
+              <span nz-form-text *ngIf="!_isString(item.value)">
+                <app-upload-image [url]="" [readonly]="true" [uploadedFiles]="item.value"></app-upload-image>
+              </span>
+            </div>
           </div>
-          <div nz-form-control nz-col [nzSpan]="14">
-            <span nz-form-text *ngIf="_isString(item.value)">{{item.value}}</span>
-            <span nz-form-text *ngIf="!_isString(item.value)">
-              <app-upload-image [url]="" [readonly]="true" [uploadedFiles]="item.value"></app-upload-image>
-            </span>
-          </div>
-        </div>
+        </nz-spin>
       </nz-content>
     </nz-tab>
   </nz-tabset>

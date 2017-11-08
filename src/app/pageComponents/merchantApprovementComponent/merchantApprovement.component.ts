@@ -16,13 +16,14 @@ export class MerchantApprovementComponent implements OnInit {
     private hisTotal = 0;
     private data: Array<any> = [];
     private hisData: Array<any> = [];
-    private loading = false;
-    private hisLoading = false;
+    private loading: Boolean = false;
     private marchantKey: String = '';
     private hisMarchantKey: String = '';
     private resultReason: String = '';
     private approveWin: NzModalSubject;
+    private checkedMerchants: Array<Object> = [];
     private columns: Array<any> = [
+        '$checkbox',
         {
             id: 'merchantId',
             label: '商家编号'
@@ -80,14 +81,14 @@ export class MerchantApprovementComponent implements OnInit {
 
     private refreshData(event): void {
         if ((event.type === 'click' && event.srcElement.nodeName !== 'I') ||
-            (event.type === 'keypress' && event.type === 'keypress' && event.charCode !== 13)) {
+            (event.type === 'keypress' && event.charCode !== 13)) {
             return;
         }
     }
 
     private refreshHistoryData(event): void {
         if ((event.type === 'click' && event.srcElement.nodeName !== 'I') ||
-            (event.type === 'keypress' && event.type === 'keypress' && event.charCode !== 13)) {
+            (event.type === 'keypress' && event.charCode !== 13)) {
             return;
         }
     }
@@ -104,6 +105,10 @@ export class MerchantApprovementComponent implements OnInit {
     private handleApprove(result): void {
         alert(result);
         this.approveWin.destroy();
+    }
+
+    private onCheckedMerchants(merchants: Array<Object>): void {
+        this.checkedMerchants = merchants;
     }
 
     ngOnInit() {

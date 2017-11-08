@@ -89,3 +89,11 @@ nz-tab-body {
 nz-tab-body .tab-content {
   margin: 2%;
 }
+
+nz-layout .tab-content {
+  margin: 2%;
+}
+
+nz-content .card-list-content {
+  background:#fff;
+}

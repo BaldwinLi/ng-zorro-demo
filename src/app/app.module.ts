@@ -16,10 +16,13 @@ import { EnterMerchantComponent } from './pageComponents/enterMerchantManagement
 import { AddMerchantComponent } from './pageComponents/enterMerchantManagement/enterMerchantManagementDialog/addMerchant.component';
 import { EnterMerchantInfoComponent } from './pageComponents/enterMerchantManagement/enterMerchantInfo/enterMerchantInfo.component';
 import { MerchantApprovementComponent } from './pageComponents/merchantApprovementComponent/merchantApprovement.component';
+import { ActivitiesApprovementListComponent } from './pageComponents/activitiesApprovementComponent/activitiesApproveListComponent/activitiesApprovementList.component';
+import { ActvityDetailComponent } from './pageComponents/activitiesApprovementComponent/activityDetailComponent/activityDetail.component';
 import { UploadImageComponent } from './components/uploadImageComponent/uploadImage.component';
 import { HttpService } from './services/baseServices/http.service';
 import { AppRequestService } from './services/baseServices/AppRequest.service';
 import { UtilService } from './services/baseServices/util.service';
+import { DataModelService } from './pipes/model';
 import { ComponentCommunicateService } from './services/baseServices/componentCommunicate.service';
 import { HttpCache } from './services/baseServices/httpCache';
 import { HttpLoopInterceptor } from './services/baseServices/HttpLoopInterceptor';
@@ -30,8 +33,10 @@ const appRoutes: Routes = [
     path: 'menu', component: MenuComponent,
     children: [
       { path: 'enter_merchant', component: EnterMerchantComponent },
-      { path: 'enter_merchant/enter_merchant_info/:id', component: EnterMerchantInfoComponent},
+      { path: 'enter_merchant/enter_merchant_info/:id', component: EnterMerchantInfoComponent },
       { path: 'merchant_approvement', component: MerchantApprovementComponent },
+      { path: 'activity_approvement', component: ActivitiesApprovementListComponent},
+      { path: 'activity_approvement/activity_detail/:id', component: ActvityDetailComponent },
       // { path: 'menu_platform', component: MenuPlatformComponent },
       { path: '', redirectTo: '/menu/enter_merchant', pathMatch: 'full' }
     ]
@@ -54,6 +59,8 @@ const appRoutes: Routes = [
     AddMerchantComponent,
     EnterMerchantInfoComponent,
     MerchantApprovementComponent,
+    ActivitiesApprovementListComponent,
+    ActvityDetailComponent,
     UploadImageComponent,
     LookupPipe
   ],
@@ -75,6 +82,7 @@ const appRoutes: Routes = [
     HttpService,
     AppRequestService,
     UtilService,
+    DataModelService,
     ComponentCommunicateService,
     HttpCache,
     {

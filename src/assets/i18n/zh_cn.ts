@@ -534,6 +534,7 @@ export default {
   'drop_image_here': '将图片拖拽到这里',
   'file_too_large': '图片太大了，无法上传。',
   'upload_image': '图片上传',
-  'preview_image_title': '图片预览'
+  'preview_image_title': '图片预览',
+  'loading_tip': '喵喵管家正在为您加载，请稍后...'
 };
 

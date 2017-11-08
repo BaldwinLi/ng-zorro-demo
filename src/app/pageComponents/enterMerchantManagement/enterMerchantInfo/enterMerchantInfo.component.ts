@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { isString } from 'lodash';
+import { Lang } from '../../../../assets/i18n/i18n';
 import { ComponentCommunicateService } from '../../../services/baseServices/componentCommunicate.service';
 
 @Component({
@@ -9,7 +10,9 @@ import { ComponentCommunicateService } from '../../../services/baseServices/comp
     styleUrls: ['../../../../assets/css/custom.css']
 })
 export class EnterMerchantInfoComponent implements OnInit {
-    id;
+    private id: String;
+    private loading: Boolean = false;
+    private loadingTip: String = Lang['loading_tip'];
     private contact: Array<Object> = [
         {
             id: '',
@@ -153,7 +156,9 @@ export class EnterMerchantInfoComponent implements OnInit {
         fileName: 'text.png'
     }];
 
-
+    private refreshData(): void {
+        // this.loading = true;
+    }
     constructor(private route: ActivatedRoute, private componentCommunicator: ComponentCommunicateService) { }
     ngOnInit() {
         this.componentCommunicator.$emit('/menu/enter_merchant/enter_merchant_info');

@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Lang } from '../../../assets/i18n/i18n';
 
 @Component({
     selector: 'app-datatable',
@@ -11,7 +12,8 @@ export class DatatableComponent implements OnInit {
     @Input() private total = 1;
     @Input() private columns: Array<any> = [];
     @Input() private dataSet: Array<any> = [];
-    @Input() private loading = false;
+    @Input() private loading: Boolean = false;
+    // @Input() private loadingTip: String = Lang['loading_tip'];
 
     // @Output() private sortEmit: EventEmitter<any> = new EventEmitter<any>();
     // @Output() private selectedItem: EventEmitter<any> = new EventEmitter<any>();

@@ -32,6 +32,7 @@ export class UploadImageComponent implements OnInit {
     @Input() private uploadedFiles: Array<Object> = [];
     @Input() private fileTooLargeMessage: String = Lang['file_too_large'];
     @Input() private readonly: Boolean = false;
+    @Input() private disabledPreview: Boolean = false;
 
     private fileCounter: number;
 
@@ -70,7 +71,7 @@ export class UploadImageComponent implements OnInit {
                 fileUrl: string;
 
             if (data instanceof Object) {
-                fileUrl = data.url;
+                fileUrl = data.url || './assets/image/default.png';
                 fileBlob = (data.blob) ? data.blob : new Blob([data]);
                 file = new File([fileBlob], data.fileName);
             } else {
@@ -83,11 +84,20 @@ export class UploadImageComponent implements OnInit {
         }
     }
 
-    private showPreviewModel(titleTpl, contentTpl): void {
+    private showPreviewModel(titleTpl, contentTpl, url: String = './assets/image/default.png'): void {
+        if (this.disabledPreview) {
+            return;
+        }
+        this.previewUrl = url;
         this.modalService.open({
             title: titleTpl,
             content: contentTpl,
-            maskClosable: false
+            maskClosable: false,
+            footer: false,
+            style: {
+                width: 'max-content',
+                height: 'max-content'
+            }
         });
     }
 
