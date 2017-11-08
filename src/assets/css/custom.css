@@ -17,13 +17,27 @@
 
 .platform-screen {
   width: 100%;
-  height: 100%
+  height: 100%;
+  min-height: 0;
+  flex-direction: row;
+  display: flex;
+  flex: 1;
+  line-height: 1.42857143;
+  box-sizing: border-box;
+}
+
+app-menu-component {
+  width: 100%;
 }
 
 .platform-screen .left-menu {
-  width: 14%;
+  width: auto;
   height: 100%;
-  float: left;
+  /* float: left; */
+  flex-direction: column;
+  box-sizing: border-box;
+  display: flex;
+  line-height: 1.42857143;
 }
 
 .platform-screen .left-menu ul {
@@ -35,9 +49,16 @@
 }
 
 .platform-screen .main-platform {
-  width: 86%;
-  height:100%;
-  float: left;
+  width: 100%;
+  height: 100%;
+  /* float: left; */
+  overflow-y: auto;
+  flex-direction: column;
+  display: flex;
+  flex: 1;
+  overflow: auto;
+  line-height: 1.42857143;
+  box-sizing: border-box;
 }
 
 .platform-screen .left-menu ul .collapse-button {
@@ -56,4 +77,15 @@ ul .right-menu-item {
 .right-element {
   float: right;
   margin: 1.1rem;
+}
+
+.nz-row-margin {
+  margin-bottom: 1rem;
+}
+
+nz-tab-body {
+  background: #fff;
+}
+nz-tab-body .tab-content {
+  margin: 2%;
 }

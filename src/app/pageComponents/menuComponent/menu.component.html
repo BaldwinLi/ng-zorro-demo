@@ -13,13 +13,13 @@
           <span>入驻商家管理</span>
         </span>
       </li>
-      <li nz-submenu>
+      <li nz-submenu [nzOpen]="true">
         <span title>
           <i class="anticon anticon-shop"></i>
           <span>商家待审核管理</span>
         </span>
         <ul>
-          <li nz-menu-item>商家注册审核</li>
+          <li nz-menu-item routerLink="/menu/merchant_approvement" routerLinkActive="ant-menu-item-selected">商家注册审核</li>
           <li nz-menu-item>收款账户审核</li>
           <li nz-menu-item>活动信息审核</li>
         </ul>

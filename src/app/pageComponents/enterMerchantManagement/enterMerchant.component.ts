@@ -4,7 +4,7 @@ import { NzModalService } from 'ng-zorro-antd';
 import { AddMerchantComponent } from './enterMerchantManagementDialog/addMerchant.component';
 
 @Component({
-  selector: 'app-menu-platform-component',
+  selector: 'app-menu-platform',
   templateUrl: './enterMerchantTemplate.html',
   styleUrls: ['../../../assets/css/custom.css']
 })

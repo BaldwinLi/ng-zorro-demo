@@ -7,8 +7,8 @@
       <nz-content>
         <nz-collapseset>
           <nz-collapse [nzTitle]="'联系信息'" [nzActive]="true">
-            <div *ngFor="let item of contact" nz-form-item nz-row>
-              <div nz-form-label nz-col [nzSpan]="6">
+            <div *ngFor="let item of contact" class="nz-row-margin" nz-form-item nz-row>
+              <div nz-form-label nz-col [nzSpan]="4">
                 <label>{{item.label}}</label>
               </div>
               <div nz-form-control nz-col [nzSpan]="14">
@@ -17,10 +17,10 @@
             </div>
           </nz-collapse>
           <nz-collapse [nzTitle]="'联系人身份证照片'" [nzActive]="true">
-            <app-upload-image [url]="" [readonly]="true" [uploadedFiles]="uploadedFiles"></app-upload-image>
+            <app-upload-image [url]="" [readonly]="true" [uploadedFiles]="IDImages"></app-upload-image>
           </nz-collapse>
           <nz-collapse [nzTitle]="'商户LOGO'" [nzActive]="true">
-            <app-upload-image [url]="" [readonly]="true" [uploadedFiles]="uploadedFiles"></app-upload-image>
+            <app-upload-image [url]="" [readonly]="true" [uploadedFiles]="LogoImages"></app-upload-image>
           </nz-collapse>
         </nz-collapseset>
       </nz-content>
@@ -29,17 +29,43 @@
       <ng-template #nzTabHeading>
         商户经营信息与资料
       </ng-template>
-      <nz-content>
-        111
+      <nz-header nzTheme="light" class="platform-header">
+        公司经营信息
+      </nz-header>
+      <nz-content class="tab-content">
+        <div *ngFor="let item of merchantInfo" class="nz-row-margin" nz-form-item nz-row>
+          <div nz-form-label nz-col [nzSpan]="4">
+            <label>{{item.label}}</label>
+          </div>
+          <div nz-form-control nz-col [nzSpan]="14">
+            <span nz-form-text *ngIf="_isString(item.value)">{{item.value}}</span>
+            <span nz-form-text *ngIf="!_isString(item.value)">
+              <app-upload-image [url]="" [readonly]="true" [uploadedFiles]="item.value"></app-upload-image>
+            </span>
+          </div>
+        </div>
       </nz-content>
     </nz-tab>
     <nz-tab>
       <ng-template #nzTabHeading>
         收款账户
       </ng-template>
-      <nz-content>
-        111
+      <nz-header nzTheme="light" class="platform-header">
+        绑定收款信息
+      </nz-header>
+      <nz-content class="tab-content">
+        <div *ngFor="let item of accountInfo" class="nz-row-margin" nz-form-item nz-row>
+          <div nz-form-label nz-col [nzSpan]="4">
+            <label>{{item.label}}</label>
+          </div>
+          <div nz-form-control nz-col [nzSpan]="14">
+            <span nz-form-text *ngIf="_isString(item.value)">{{item.value}}</span>
+            <span nz-form-text *ngIf="!_isString(item.value)">
+              <app-upload-image [url]="" [readonly]="true" [uploadedFiles]="item.value"></app-upload-image>
+            </span>
+          </div>
+        </div>
       </nz-content>
     </nz-tab>
-  </nz-tabset>`
+  </nz-tabset>
 </nz-layout>

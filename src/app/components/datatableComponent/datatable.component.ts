@@ -17,8 +17,13 @@ export class DatatableComponent implements OnInit {
     // @Output() private selectedItem: EventEmitter<any> = new EventEmitter<any>();
     // @Output() private selectedItems: EventEmitter<any> = new EventEmitter<any>();
     @Output() private outputPage: EventEmitter<Object> = new EventEmitter<Object>();
+    @Output() private checkedItems: EventEmitter<Array<any>> = new EventEmitter<Array<any>>();
 
     constructor() {
+    }
+
+    private onCheckItem() {
+        this.checkedItems.emit(this.dataSet.filter(e => e.checked));
     }
 
     private pageIndexChange(event: any) {

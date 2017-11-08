@@ -15,6 +15,7 @@ import { MenuComponent } from './pageComponents/menuComponent/menu.component';
 import { EnterMerchantComponent } from './pageComponents/enterMerchantManagement/enterMerchant.component';
 import { AddMerchantComponent } from './pageComponents/enterMerchantManagement/enterMerchantManagementDialog/addMerchant.component';
 import { EnterMerchantInfoComponent } from './pageComponents/enterMerchantManagement/enterMerchantInfo/enterMerchantInfo.component';
+import { MerchantApprovementComponent } from './pageComponents/merchantApprovementComponent/merchantApprovement.component';
 import { UploadImageComponent } from './components/uploadImageComponent/uploadImage.component';
 import { HttpService } from './services/baseServices/http.service';
 import { AppRequestService } from './services/baseServices/AppRequest.service';
@@ -30,6 +31,7 @@ const appRoutes: Routes = [
     children: [
       { path: 'enter_merchant', component: EnterMerchantComponent },
       { path: 'enter_merchant/enter_merchant_info/:id', component: EnterMerchantInfoComponent},
+      { path: 'merchant_approvement', component: MerchantApprovementComponent },
       // { path: 'menu_platform', component: MenuPlatformComponent },
       { path: '', redirectTo: '/menu/enter_merchant', pathMatch: 'full' }
     ]
@@ -51,6 +53,7 @@ const appRoutes: Routes = [
     PageNotFoundComponent,
     AddMerchantComponent,
     EnterMerchantInfoComponent,
+    MerchantApprovementComponent,
     UploadImageComponent,
     LookupPipe
   ],

@@ -18,10 +18,10 @@
     <nz-breadcrumb>
       <nz-breadcrumb-item *ngFor="let item of breadcrumbItems;index as i">
         <a [routerLink]="item.link" routerLinkActive="active" *ngIf="i!=breadcrumbItems.length-1">
-          <i [class]="item.icon"></i>
+          <i [class]="item.icon" *ngIf="item.icon"></i>
           <span>{{item.label}}</span>
         </a>
-        <i [class]="item.icon" *ngIf="i==breadcrumbItems.length-1"></i>
+        <i [class]="item.icon" *ngIf="item.icon&&i==breadcrumbItems.length-1"></i>
         <span *ngIf="i==breadcrumbItems.length-1">{{item.label}}</span>
       </nz-breadcrumb-item>
     </nz-breadcrumb>

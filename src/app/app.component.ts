@@ -27,7 +27,8 @@ export class AppComponent implements OnDestroy {
 
   private breadcrumbItemlist: Object = {
     enter_merchant: ['/menu/enter_merchant', '入驻商家管理', 'anticon anticon-bank'],
-    enter_merchant_info: ['/menu/enter_merchant/enter_merchant_info', '入驻商家详情', 'anticon anticon-idcard']
+    enter_merchant_info: ['/menu/enter_merchant/enter_merchant_info', '入驻商家详情', 'anticon anticon-idcard'],
+    merchant_approvement: ['/menu/merchant_approvement', '商家注册审核']
   };
 
   private subscription: Subscription;
