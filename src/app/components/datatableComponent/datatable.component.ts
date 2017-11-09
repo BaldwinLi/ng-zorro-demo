@@ -13,6 +13,8 @@ export class DatatableComponent implements OnInit {
     @Input()  columns: Array<any> = [];
     @Input()  dataSet: Array<any> = [];
     @Input()  loading: Boolean = false;
+    @Input() isAjaxData: Boolean = true;
+    @Input() isPagination: Boolean = true;
     // @Input()  loadingTip: String = Lang['loading_tip'];
 
     // @Output()  sortEmit: EventEmitter<any> = new EventEmitter<any>();

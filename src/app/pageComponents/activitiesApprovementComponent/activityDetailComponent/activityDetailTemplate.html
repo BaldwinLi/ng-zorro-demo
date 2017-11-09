@@ -1,0 +1,113 @@
+<nz-layout>
+  <!-- style="height:100%; overflow-y:scroll;"  -->
+  <nz-spin [nzSize]="'large'" [nzSpinning]="loading" [nzTip]="loadingTip">
+    <nz-header nzTheme="light" class="platform-header">
+      <div nz-row [nzType]="'flex'" [nzJustify]="'space-between'">
+        <div nz-col [nzSpan]="4">
+          <label>活动信息详情</label>
+        </div>
+        <div nz-col [nzSpan]="12"></div>
+        <div nz-col [nzSpan]="4">
+          <button nz-button [nzType]="'primary'" (click)="goBack($event)">
+            <span>返回活动审核列表</span>
+          </button>
+        </div>
+      </div>
+    </nz-header>
+    <nz-content class="tab-content">
+      <div class="nz-row-margin" *ngFor="let item of details" nz-form-item nz-row style="background: #fff;" [nzType]="'flex'" [nzJustify]="'space-around'"
+        [nzAlign]="'middle'">
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label>{{item.label}}</label>
+        </div>
+        <div nz-form-control nz-col [nzSpan]="15">
+          <label *ngIf="_isString(item.value)">{{item.value}}</label>
+          <app-upload-image *ngIf="!_isString(item.value)" [url]="" [readonly]="true" [uploadedFiles]="item.value"></app-upload-image>
+        </div>
+      </div>
+    </nz-content>
+    <nz-header nzTheme="light" class="platform-header">
+      <div nz-row [nzType]="'flex'" [nzJustify]="'space-between'">
+        <div nz-col [nzSpan]="4">
+          <label>奖项设置</label>
+        </div>
+      </div>
+    </nz-header>
+    <nz-content class="tab-content">
+      <app-datatable [columns]="columns" [dataSet]="data" [isPagination]="false" [isAjaxData]="false"></app-datatable>
+    </nz-content>
+    <nz-header nzTheme="light" class="platform-header">
+      <div nz-row [nzType]="'flex'" [nzJustify]="'space-between'">
+        <div nz-col [nzSpan]="4">
+          <label>其他信息</label>
+        </div>
+      </div>
+    </nz-header>
+    <nz-content class="tab-content">
+      <div class="nz-row-margin" *ngFor="let item of others" nz-form-item nz-row style="background: #fff;" [nzType]="'flex'" [nzJustify]="'space-around'"
+        [nzAlign]="'middle'">
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label>{{item.label}}</label>
+        </div>
+        <div nz-form-control nz-col [nzSpan]="15">
+          <label *ngIf="_isString(item.value)">{{item.value}}</label>
+          <label *ngIf="item.type==='tags'&&!_isString(item.value) ">
+            <span *ngFor="let tag of item.value">
+              <nz-tag [nzColor]="'green'">{{tag}}</nz-tag>
+            </span>
+          </label>
+          <app-upload-image *ngIf="!_isString(item.value) && item.type!=='tags'" [url]="" [readonly]="true" [uploadedFiles]="item.value"></app-upload-image>
+        </div>
+      </div>
+    </nz-content>
+    <nz-header nzTheme="light" class="platform-header">
+      <div nz-row [nzType]="'flex'" [nzJustify]="'space-between'">
+        <div nz-col [nzSpan]="4">
+          <label>图文详情</label>
+        </div>
+        <div nz-col [nzSpan]="16">
+          <label>黄金皮肤免费做，快点儿来吧</label>
+        </div>
+      </div>
+    </nz-header>
+    <nz-content class="tab-content">
+      <div class="nz-row-margin" *ngFor="let item of desDetail" nz-form-item nz-row style="background: #fff;" [nzType]="'flex'"
+        [nzJustify]="'space-around'" [nzAlign]="'middle'">
+        <div nz-form-label nz-col [nzSpan]="5">
+          <label>{{item.label}}</label>
+        </div>
+        <div nz-form-control nz-col [nzSpan]="15">
+          <label *ngIf="_isString(item.value)">{{item.value}}</label>
+          <label *ngIf="item.type==='tags'&&!_isString(item.value) ">
+            <span *ngFor="let tag of item.value">
+              <nz-tag [nzColor]="'green'">{{tag}}</nz-tag>
+            </span>
+          </label>
+          <app-upload-image *ngIf="!_isString(item.value) && item.type!=='tags'" [url]="" [readonly]="true" [uploadedFiles]="item.value"></app-upload-image>
+        </div>
+      </div>
+    </nz-content>
+    <nz-header nzTheme="light" class="platform-header">
+      <div nz-row [nzType]="'flex'" [nzJustify]="'space-between'">
+        <div nz-col [nzSpan]="4">
+        </div>
+        <div nz-col [nzSpan]="14"></div>
+        <div nz-col [nzSpan]="2">
+          <button nz-button [nzType]="'primary'" (click)="approve($event)">
+            <span>通过</span>
+          </button>
+        </div>
+        <div nz-col [nzSpan]="2">
+          <button nz-button (click)="reject($event)">
+            <span>驳回</span>
+          </button>
+        </div>
+      </div>
+    </nz-header>
+  </nz-spin>
+  <!-- <nz-affix [nzTarget]="target" id="affix-container-target">
+        <button nz-button [nzType]="'primary'">
+          <span>Fixed at the top of container</span>
+        </button>
+      </nz-affix> -->
+</nz-layout>

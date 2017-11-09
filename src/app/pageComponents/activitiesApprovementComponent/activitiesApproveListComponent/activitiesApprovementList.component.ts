@@ -29,7 +29,7 @@ export class ActivitiesApprovementListComponent implements OnInit {
     ) { }
 
     queryDetail(id: String) {
-        this.router.navigate(['/menu/enter_merchant/enter_merchant_info', id]);
+        this.router.navigate(['/menu/activity_approvement/activity_detail', id]);
     }
 
     filterActivities(key: string, value: String, event): void {
