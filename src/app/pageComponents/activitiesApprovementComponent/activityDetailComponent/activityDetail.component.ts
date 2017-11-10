@@ -4,6 +4,7 @@ import { Lang } from '../../../../assets/i18n/i18n';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataModelService } from '../../../pipes/model';
 import { ComponentCommunicateService } from '../../../services/baseServices/componentCommunicate.service';
+import { ActivityApprovementService } from '../../../services/activityApprovement.service';
 
 @Component({
     selector: 'app-activity-detail',
@@ -24,7 +25,8 @@ export class ActvityDetailComponent implements OnInit {
         private router: Router,
         private route: ActivatedRoute,
         private dm: DataModelService,
-        private componentCommunicator: ComponentCommunicateService
+        private componentCommunicator: ComponentCommunicateService,
+        private entity: ActivityApprovementService
     ) { }
 
     goBack($event: any): void {
@@ -32,14 +34,40 @@ export class ActvityDetailComponent implements OnInit {
     }
 
     approve(event: any): void {
-
+        this.loading = true;
+        this.entity.approveActivity({}).subscribe(
+            success => {
+                this.loading = false;
+            },
+            error => {
+                this.loading = true;
+            }
+        );
     }
 
     reject(event: any): void {
-
+        this.loading = true;
+        this.entity.approveActivity({}).subscribe(
+            success => {
+                this.loading = false;
+            },
+            error => {
+                this.loading = true;
+            }
+        );
     }
 
-    refreshData(id: String): void { }
+    refreshData(id: String): void {
+        this.loading = true;
+        this.entity.getActivities({}).subscribe(
+            success => {
+                this.loading = false;
+            },
+            error => {
+                this.loading = true;
+            }
+        );
+    }
 
     ngOnInit() {
         this.refreshData(this.id = this.route.params['_value']['id']);

@@ -22,12 +22,15 @@ import { ActvityDetailComponent } from './pageComponents/activitiesApprovementCo
 import { UploadFileComponent } from './components/uploadFileComponent/uploadFile.component';
 import { UploadImageComponent } from './components/uploadImageComponent/uploadImage.component';
 import { HttpService } from './services/baseServices/http.service';
-import { AppRequestService } from './services/baseServices/AppRequest.service';
+import { AppRequestService } from './services/baseServices/appRequest.service';
 import { UtilService } from './services/baseServices/util.service';
 import { DataModelService } from './pipes/model';
 import { ComponentCommunicateService } from './services/baseServices/componentCommunicate.service';
 import { HttpCache } from './services/baseServices/httpCache';
 import { HttpLoopInterceptor } from './services/baseServices/HttpLoopInterceptor';
+import { EnterMerchantService } from './services/enterMerchant.service';
+import { MerchantApprovementService } from './services/merchantApprovement.service';
+import { ActivityApprovementService } from './services/activityApprovement.service';
 import { LookupPipe } from './pipes/lookup.pipe';
 
 const appRoutes: Routes = [
@@ -89,6 +92,9 @@ const appRoutes: Routes = [
     DataModelService,
     ComponentCommunicateService,
     HttpCache,
+    EnterMerchantService,
+    MerchantApprovementService,
+    ActivityApprovementService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpLoopInterceptor,

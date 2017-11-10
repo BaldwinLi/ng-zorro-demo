@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ComponentCommunicateService } from '../../services/baseServices/componentCommunicate.service';
 import { NzModalService, NzModalSubject } from 'ng-zorro-antd';
+import { MerchantApprovementService } from '../../services/merchantApprovement.service';
 
 @Component({
     selector: 'app-merchant-approvement',
@@ -77,21 +78,43 @@ export class MerchantApprovementComponent implements OnInit {
         }
     ];
 
-    constructor(private componentCommunicator: ComponentCommunicateService, private model: NzModalService) {
+    constructor(
+        private componentCommunicator: ComponentCommunicateService,
+        private model: NzModalService,
+        private entity: MerchantApprovementService
+    ) {
     }
 
-    refreshData(event): void {
-        if ((event.type === 'click' && event.srcElement.nodeName !== 'I') ||
-            (event.type === 'keypress' && event.charCode !== 13)) {
+    refreshData(event?: any): void {
+        if (event && ((event.type === 'click' && event.srcElement.nodeName !== 'I') ||
+            (event.type === 'keypress' && event.charCode !== 13))) {
             return;
         }
+        this.loading = true;
+        this.entity.getPendingMerchants({}).subscribe(
+            success => {
+                this.loading = false;
+            },
+            error => {
+                this.loading = false;
+            }
+        );
     }
 
     refreshHistoryData(event): void {
-        if ((event.type === 'click' && event.srcElement.nodeName !== 'I') ||
-            (event.type === 'keypress' && event.charCode !== 13)) {
+        if (event && ((event.type === 'click' && event.srcElement.nodeName !== 'I') ||
+            (event.type === 'keypress' && event.charCode !== 13))) {
             return;
         }
+        this.hisLoading = true;
+        this.entity.getHistoryMerchants({}).subscribe(
+            success => {
+                this.hisLoading = false;
+            },
+            error => {
+                this.hisLoading = true;
+            }
+        );
     }
 
     merchantApprove(title, content, footer): void {
@@ -104,7 +127,15 @@ export class MerchantApprovementComponent implements OnInit {
     }
 
     handleApprove(result): void {
-        alert(result);
+        this.loading = true;
+        this.entity.approvePendingMerchants({}).subscribe(
+            success => {
+                this.loading = false;
+            },
+            error => {
+                this.loading = true;
+            }
+        );
         this.approveWin.destroy();
     }
 
@@ -114,5 +145,6 @@ export class MerchantApprovementComponent implements OnInit {
 
     ngOnInit() {
         this.componentCommunicator.$emit('/menu/merchant_approvement');
+        this.refreshData();
     }
 }

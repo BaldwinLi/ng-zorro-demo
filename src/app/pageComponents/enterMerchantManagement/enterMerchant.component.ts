@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ComponentCommunicateService } from '../../services/baseServices/componentCommunicate.service';
 import { NzModalService } from 'ng-zorro-antd';
 import { AddMerchantComponent } from './enterMerchantManagementDialog/addMerchant.component';
+import { EnterMerchantService } from '../../services/enterMerchant.service';
 
 @Component({
   selector: 'app-menu-platform',
@@ -56,31 +57,48 @@ export class EnterMerchantComponent implements OnInit {
   constructor(
     private componentCommunicator: ComponentCommunicateService,
     private model: NzModalService,
-    private router: Router
+    private router: Router,
+    private entity: EnterMerchantService
   ) {
   }
 
-  refreshData(event: any) {
-    if ((event.type === 'click' && event.srcElement.nodeName !== 'I') ||
-      (event.type === 'keypress' && event.charCode !== 13)) {
+  refreshData(event?: any) {
+    if (event && ((event.type === 'click' && event.srcElement.nodeName !== 'I') ||
+      (event.type === 'keypress' && event.charCode !== 13))) {
       return;
     }
+    this.loading = true;
+    this.entity.getMerchants({}).subscribe(
+      success => {
+        this.loading = false;
+      },
+      error => {
+        this.loading = false;
+      }
+    );
   }
 
   addMerchant(event: any) {
     const subscription = this.model.open({
       title: '添加商户',
       content: AddMerchantComponent,
-      onOk() {
-        alert();
-      },
       footer: false
     });
     subscription.subscribe(result => {
+      this.loading = true;
+      this.entity.addMerchant(result).subscribe(
+        success => {
+          this.loading = false;
+        },
+        error => {
+          this.loading = false;
+        }
+      );
     });
   }
 
   ngOnInit() {
     this.componentCommunicator.$emit('/menu/enter_merchant');
+    this.refreshData();
   }
 }

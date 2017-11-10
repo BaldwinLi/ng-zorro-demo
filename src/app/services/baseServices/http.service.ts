@@ -50,8 +50,7 @@ export class HttpService {
   }
 
   private extractData(res: HttpResponse<any> | any) {
-    const body = this.util.formatUnavailableValueToString(res.data);
-    return body || {};
+    return res || {};
   }
 
   private handleError(error: HttpResponse<any> | any) {
@@ -61,19 +60,8 @@ export class HttpService {
         obsr.next();
       });
     }
-    let body = '';
-    try {
-      const arr = JSON.parse(error.data);
-      for (const e in arr) {
-        if (e) {
-          body += (arr[e] + '-');
-        }
-      }
-    } catch (e) {
-      body = error.data;
-    }
     return Observable.create((obsr) => {
-      obsr.error(body);
+      obsr.error(error);
     });
   }
 

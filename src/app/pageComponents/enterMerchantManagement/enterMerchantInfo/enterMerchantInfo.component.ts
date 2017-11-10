@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { isString } from 'lodash';
 import { Lang } from '../../../../assets/i18n/i18n';
 import { ComponentCommunicateService } from '../../../services/baseServices/componentCommunicate.service';
+import { EnterMerchantService } from '../../../services/enterMerchant.service';
 
 @Component({
     selector: 'app-enter-merchant-info',
@@ -156,12 +157,27 @@ export class EnterMerchantInfoComponent implements OnInit {
         fileName: 'text.png'
     }];
 
-    refreshData(): void {
-        // this.loading = true;
+    constructor(
+        private route: ActivatedRoute,
+        private componentCommunicator: ComponentCommunicateService,
+        private entity: EnterMerchantService
+    ) { }
+
+    refreshData(event?: any): void {
+        this.loading = true;
+        this.entity.getMerchantDetail({}).subscribe(
+            success => {
+                this.loading = false;
+            },
+            error => {
+                this.loading = false;
+            }
+        );
     }
-    constructor(private route: ActivatedRoute, private componentCommunicator: ComponentCommunicateService) { }
+
     ngOnInit() {
         this.componentCommunicator.$emit('/menu/enter_merchant/enter_merchant_info');
         this.id = this.route.params['_value']['id'];
+        this.refreshData();
     }
 }

@@ -3,6 +3,7 @@ import { Lang } from '../../../../assets/i18n/i18n';
 import { Router } from '@angular/router';
 import { DataModelService } from '../../../pipes/model';
 import { ComponentCommunicateService } from '../../../services/baseServices/componentCommunicate.service';
+import { ActivityApprovementService } from '../../../services/activityApprovement.service';
 
 @Component({
     selector: 'app-activities-approvement',
@@ -25,7 +26,8 @@ export class ActivitiesApprovementListComponent implements OnInit {
     constructor(
         private router: Router,
         private dm: DataModelService,
-        private componentCommunicator: ComponentCommunicateService
+        private componentCommunicator: ComponentCommunicateService,
+        private entity: ActivityApprovementService
     ) { }
 
     queryDetail(id: String) {
@@ -33,8 +35,8 @@ export class ActivitiesApprovementListComponent implements OnInit {
     }
 
     filterActivities(key: string, value: String, event): void {
-        if (((event.type === 'click' && event.srcElement.nodeName !== 'I') ||
-            (event.type === 'keypress' && event.charCode !== 13)) && key === 'marchantKey'
+        if ((event && ((event.type === 'click' && event.srcElement.nodeName !== 'I') ||
+            (event.type === 'keypress' && event.charCode !== 13))) && key === 'marchantKey'
         ) {
             return;
         }
@@ -51,7 +53,15 @@ export class ActivitiesApprovementListComponent implements OnInit {
     }
 
     refreshData(event?: any): void {
-
+        this.loading = true;
+        this.entity.getActivities({}).subscribe(
+            success => {
+                this.loading = false;
+            },
+            error => {
+                this.loading = true;
+            }
+        );
     }
 
     ngOnInit() {
