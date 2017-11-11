@@ -5,9 +5,9 @@
         <i class="anticon iconfont anticon-home"></i>
       </label>
     </div>
-    <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="isValid('merchantName')">
+    <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="merchantForm.controls.merchantName">
       <nz-input [nzSize]="'large'" formControlName="merchantName" [nzId]="'merchantName'" [nzPlaceHolder]="'商家名称'"></nz-input>
-      <div nz-form-explain *ngIf="isValid('merchantName')">请输入商家名称</div>
+      <div nz-form-explain *ngIf="util.isValid(merchantForm, 'merchantName', 'required')">请输入商家名称</div>
     </div>
   </div>
   <div nz-form-item nz-row>
@@ -16,9 +16,9 @@
         <i class="iconfont alibaba-account"></i>
       </label>
     </div>
-    <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="isValid('contactName')">
+    <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="merchantForm.controls.contactName">
       <nz-input [nzSize]="'large'" formControlName="contactName" [nzId]="'contactName'" [nzPlaceHolder]="'联系人姓名'"></nz-input>
-      <div nz-form-explain *ngIf="isValid('contactName')">请输入联系人姓名</div>
+      <div nz-form-explain *ngIf="util.isValid(merchantForm, 'contactName', 'required')">请输入联系人姓名</div>
     </div>
   </div>
   <div nz-form-item nz-row>
@@ -27,7 +27,7 @@
         <i class="anticon anticon-tablet"></i>
       </label>
     </div>
-    <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="isValid('phoneNum')">
+    <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="merchantForm.controls.phoneNum">
       <nz-input-group [nzSize]="'large'" [nzCompact]="true">
         <nz-select formControlName="phoneNumPrefix" style="width: 30%;">
           <nz-option [nzLabel]="'+86'" [nzValue]="'+86'"></nz-option>
@@ -35,7 +35,7 @@
         </nz-select>
         <nz-input formControlName="phoneNum" [nzId]="'phoneNum'" style="width: 70%;" [nzPlaceHolder]="'手机号码'"></nz-input>
       </nz-input-group>
-      <div nz-form-explain *ngIf="isValid('phoneNum')">请输入手机号码</div>
+      <div nz-form-explain *ngIf="util.isValid(merchantForm, 'phoneNum', 'required')">请输入手机号码</div>
     </div>
   </div>
   <div nz-form-item nz-row>
@@ -44,9 +44,9 @@
         <i class="anticon anticon-environment"></i>
       </label>
     </div>
-    <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="isValid('merchantLocation')">
+    <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="merchantForm.controls.merchantLocation">
       <nz-input [nzSize]="'large'" formControlName="merchantLocation" [nzId]="'merchantLocation'" [nzPlaceHolder]="'商户所在地'"></nz-input>
-      <div nz-form-explain *ngIf="isValid('merchantLocation')">请输入商户所在地</div>
+      <div nz-form-explain *ngIf="util.isValid(merchantForm, 'merchantLocation', 'required')">请输入商户所在地</div>
     </div>
   </div>
   <div nz-form-item nz-row style="margin-bottom:8px;">

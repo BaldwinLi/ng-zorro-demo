@@ -112,7 +112,7 @@ export class MerchantApprovementComponent implements OnInit {
                 this.hisLoading = false;
             },
             error => {
-                this.hisLoading = true;
+                this.hisLoading = false;
             }
         );
     }
@@ -133,7 +133,7 @@ export class MerchantApprovementComponent implements OnInit {
                 this.loading = false;
             },
             error => {
-                this.loading = true;
+                this.loading = false;
             }
         );
         this.approveWin.destroy();

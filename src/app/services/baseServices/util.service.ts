@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { padStart, isObject, isArray, uniqueId } from 'lodash';
 import { saveAs } from 'file-saver';
+import { FormGroup } from '@angular/forms';
 
 type AOA = Array<Array<any>>;
 
@@ -123,7 +124,11 @@ export class UtilService {
     saveAs(new Blob([s2ab(wbout)]), this.fileName);
   }
 
-  isInvalidForm(form: any): void {
+  isValid(form: FormGroup, name: string, validator: string): Boolean {
+    return form.controls[name].dirty && form.controls[name].hasError(validator);
+  }
+
+  isInvalidForm(form: FormGroup): Boolean {
     for (const i in form.controls) {
       if (form.controls[i].invalid) {
         form.controls[i].markAsDirty();

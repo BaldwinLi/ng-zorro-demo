@@ -59,7 +59,7 @@ export class ActivitiesApprovementListComponent implements OnInit {
                 this.loading = false;
             },
             error => {
-                this.loading = true;
+                this.loading = false;
             }
         );
     }

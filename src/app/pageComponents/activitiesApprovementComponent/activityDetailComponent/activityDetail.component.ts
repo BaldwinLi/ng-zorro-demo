@@ -40,7 +40,7 @@ export class ActvityDetailComponent implements OnInit {
                 this.loading = false;
             },
             error => {
-                this.loading = true;
+                this.loading = false;
             }
         );
     }
@@ -52,7 +52,7 @@ export class ActvityDetailComponent implements OnInit {
                 this.loading = false;
             },
             error => {
-                this.loading = true;
+                this.loading = false;
             }
         );
     }
@@ -64,14 +64,14 @@ export class ActvityDetailComponent implements OnInit {
                 this.loading = false;
             },
             error => {
-                this.loading = true;
+                this.loading = false;
             }
         );
     }
 
     ngOnInit() {
         this.refreshData(this.id = this.route.params['_value']['id']);
-        this.componentCommunicator.$emit('/menu/activity_detail');
+        this.componentCommunicator.$emit('/menu/activity_approvement/activity_detail');
         this.details = [
             {
                 type: '',

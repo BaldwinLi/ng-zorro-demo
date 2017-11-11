@@ -10,6 +10,8 @@ import { ImageUploadModule } from 'angular2-image-upload';
 import { FileUploadModule } from 'ng2-file-upload/ng2-file-upload';
 import { NZ_LOCALE_VALUE } from '../assets/i18n/i18n';
 import { AppComponent } from './app.component';
+import { HomeComponent } from './pageComponents/homeComponent/home.component';
+import { LoginComponent } from './pageComponents/loginComponent/login.component';
 import { PageNotFoundComponent } from './PageNotFoundComponent';
 import { MenuComponent } from './pageComponents/menuComponent/menu.component';
 import { MenuPlatformComponent } from './pageComponents/menuPlatformComponent/menuPlatform.component';
@@ -28,6 +30,7 @@ import { DataModelService } from './pipes/model';
 import { ComponentCommunicateService } from './services/baseServices/componentCommunicate.service';
 import { HttpCache } from './services/baseServices/httpCache';
 import { HttpLoopInterceptor } from './services/baseServices/HttpLoopInterceptor';
+import { LoginUserService } from './services/loginUser.service';
 import { EnterMerchantService } from './services/enterMerchant.service';
 import { MerchantApprovementService } from './services/merchantApprovement.service';
 import { ActivityApprovementService } from './services/activityApprovement.service';
@@ -35,17 +38,24 @@ import { LookupPipe } from './pipes/lookup.pipe';
 
 const appRoutes: Routes = [
   {
-    path: 'menu', component: MenuComponent,
+    path: '', component: HomeComponent,
     children: [
-      { path: 'enter_merchant', component: EnterMerchantComponent },
-      { path: 'enter_merchant/enter_merchant_info/:id', component: EnterMerchantInfoComponent },
-      { path: 'merchant_approvement', component: MerchantApprovementComponent },
-      { path: 'activity_approvement', component: ActivitiesApprovementListComponent},
-      { path: 'activity_approvement/activity_detail/:id', component: ActvityDetailComponent },
-      // { path: 'menu_platform', component: MenuPlatformComponent },
+      {
+        path: 'menu', component: MenuComponent,
+        children: [
+          { path: 'enter_merchant', component: EnterMerchantComponent },
+          { path: 'enter_merchant/enter_merchant_info/:id', component: EnterMerchantInfoComponent },
+          { path: 'merchant_approvement', component: MerchantApprovementComponent },
+          { path: 'activity_approvement', component: ActivitiesApprovementListComponent },
+          { path: 'activity_approvement/activity_detail/:id', component: ActvityDetailComponent },
+          // { path: 'menu_platform', component: MenuPlatformComponent },
+          { path: '', redirectTo: '/menu/enter_merchant', pathMatch: 'full' }
+        ],
+      },
       { path: '', redirectTo: '/menu/enter_merchant', pathMatch: 'full' }
     ]
   },
+  { path: 'login', component: LoginComponent },
   { path: '', redirectTo: '/menu/enter_merchant', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent }
 ];
@@ -56,6 +66,8 @@ const appRoutes: Routes = [
   ],
   declarations: [
     AppComponent,
+    LoginComponent,
+    HomeComponent,
     DatatableComponent,
     MenuComponent,
     MenuPlatformComponent,
@@ -92,6 +104,7 @@ const appRoutes: Routes = [
     DataModelService,
     ComponentCommunicateService,
     HttpCache,
+    LoginUserService,
     EnterMerchantService,
     MerchantApprovementService,
     ActivityApprovementService,

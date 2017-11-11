@@ -1,0 +1,46 @@
+<nz-layout class="platform-screen">
+  <nz-layout>
+    <nz-content>
+      欢迎来到喵喵管家后台管理平台
+    </nz-content>
+  </nz-layout>
+  <nz-sider class="left-menu" [nzWidth]="400">
+    <form nz-form [formGroup]="loginForm" class="login-form" (ngSubmit)="doLogin($event)">
+      <div nz-form-item>
+        <div nz-form-control [nzValidateStatus]="loginForm.controls.username">
+          <nz-input formControlName="username" [nzPlaceHolder]="labels.login_account" [nzSize]="'large'" (keydown)="doLogin($event)">
+            <ng-template #prefix>
+              <i class="anticon anticon-user"></i>
+            </ng-template>
+          </nz-input>
+          <div nz-form-explain *ngIf="util.isValid(loginForm, 'username', 'required')">{{labels.pls_login_account}}!</div>
+        </div>
+      </div>
+      <div nz-form-item>
+        <div nz-form-control [nzValidateStatus]="loginForm.controls.password">
+          <nz-input formControlName="password" [nzType]="'password'" [nzPlaceHolder]="labels.login_password" [nzSize]="'large'" (keydown)="doLogin($event)">
+            <ng-template #prefix>
+              <i class="anticon anticon-lock"></i>
+            </ng-template>
+          </nz-input>
+          <div nz-form-explain *ngIf="util.isValid(loginForm, 'password', 'required')">{{labels.pls_login_password}}!</div>
+        </div>
+      </div>
+      <div style="color: #f04134">{{loginResultText}}</div>
+      <div nz-form-item>
+        <div nz-form-control>
+          <label nz-checkbox formControlName="remember">
+            <span style="color: #fff;">{{labels.remenber_me}}</span>
+          </label>
+          <nz-spin [nzSize]="'large'" [nzSpinning]="loading" [nzTip]="loadingTip">
+            <span style="line-height: 1rem;">
+                <a class="login-edit-pwd">{{labels.edit_pwd}}</a>
+                <a class="login-form-forgot">{{labels.forgot_pwd}}</a>
+            </span>
+            <button nz-button class="login-form-button" [nzType]="'primary'" [nzSize]="'large'">{{labels.login_submit}}</button>
+          </nz-spin>
+        </div>
+      </div>
+    </form>
+  </nz-sider>
+</nz-layout>

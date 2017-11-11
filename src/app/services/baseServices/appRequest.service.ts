@@ -9,7 +9,7 @@ import { UtilService } from './util.service';
 export const isLocal = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
 
 export const appContextPath = isLocal ? (window.location.origin + '/dev_api/') :
-    (window.location.origin + window.location.pathname + 'api/');
+    (window.location.origin + window.location.pathname);
 
 @Injectable()
 export class AppRequestService {
@@ -25,9 +25,31 @@ export class AppRequestService {
         });
     }
 
-    querySession(svc_no?: string, params?: any): Observable<any> {
-        return this.httpService.getRequestObservable(`${appContextPath}`,
-            'get', params || {});
+    querySession(params: any): Observable<any> {
+        return this.httpService.getRequestObservable(`${appContextPath}oauth/token`,
+            'post', params || {}, {
+                'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
+            });
+    }
+
+    doLogout(): Observable<any> {
+        return this.httpService.getRequestObservable(`${appContextPath}common-api/users/logout`,
+            'get');
+    }
+
+    editPwd(params: Object): Observable<any> {
+        return this.httpService.getRequestObservable(`${appContextPath}common-api/sys-user/chgpassword`,
+            'post', params || {});
+    }
+
+    queryUser(): Observable<any> {
+        return this.httpService.getRequestObservable(`${appContextPath}principal-user`,
+            'get');
+    }
+
+    querySysUser(): Observable<any> {
+        return this.httpService.getRequestObservable(`${appContextPath}sys-user/chgpassword`,
+            'get');
     }
 
     queryMerchants(params?: Object): Observable<any> {

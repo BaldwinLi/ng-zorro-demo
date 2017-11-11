@@ -74,6 +74,13 @@ ul .right-menu-item {
   margin-right: 1rem;
 }
 
+ul .right-logout-item {
+  width: 4rem;
+  text-align: right;
+  float: right;
+  border-left: 1px #000 solid;
+}
+
 .right-element {
   float: right;
   margin: 1.1rem;
@@ -96,4 +103,21 @@ nz-layout .tab-content {
 
 nz-content .card-list-content {
   background:#fff;
+}
+
+.login-form {
+  max-width: 300px;
+  margin: 40px;
+}
+
+.login-edit-pwd {
+  float: left;
+}
+
+.login-form-forgot {
+  float: right;
+}
+
+.login-form-button {
+  width: 100%;
 }

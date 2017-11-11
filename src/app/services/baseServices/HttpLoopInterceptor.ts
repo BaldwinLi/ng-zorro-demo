@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {
+    HttpHeaders,
     HttpRequest,
     HttpResponse,
     HttpHandler,
@@ -12,7 +13,7 @@ import { HttpCache } from './httpCache';
 @Injectable()
 export class HttpLoopInterceptor implements HttpInterceptor {
     private cacheOpened: Boolean = false;
-    constructor(private cache: HttpCache) {}
+    constructor(private cache: HttpCache) { }
     set setOpenCache(val: Boolean) {
         this.cacheOpened = val;
     }
@@ -34,7 +35,7 @@ export class HttpLoopInterceptor implements HttpInterceptor {
                 return Observable.of(cachedResponse);
             }
         }
-
+        // req.headers.set('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
 
         return next.handle(req).do(event => {
             if (event instanceof HttpResponse) {

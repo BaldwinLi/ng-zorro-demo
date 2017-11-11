@@ -16,7 +16,7 @@ export class AddMerchantComponent implements OnInit {
     merchantForm: FormGroup;
 
     _submitForm() {
-        if (this.util.isInvalidForm(this.merchantForm)) {
+        if (!this.util.isInvalidForm(this.merchantForm)) {
             this.subject.next(this.merchantForm.value);
             this.subject.destroy('onCancel');
         }
@@ -40,9 +40,5 @@ export class AddMerchantComponent implements OnInit {
             phoneNumPrefix: ['+86'],
             merchantLocation: [null, [Validators.required]]
         });
-    }
-
-    isValid(name): Boolean {
-        return this.merchantForm.controls[name].dirty && this.merchantForm.controls[name].hasError('required');
     }
 }

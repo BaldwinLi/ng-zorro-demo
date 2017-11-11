@@ -1,6 +1,6 @@
 {
   "/dev_api": {
-    "target": "http://10.5.5.145:8080/Form_002_Define",
+    "target": "http://47.92.142.43",
     "changeOrigin": true,
     "pathRewrite": {
       "^/dev_api": ""
