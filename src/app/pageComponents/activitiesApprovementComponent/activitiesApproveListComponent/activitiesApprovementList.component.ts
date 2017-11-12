@@ -16,7 +16,7 @@ export class ActivitiesApprovementListComponent implements OnInit {
     loadingTip: String = Lang['loading_tip'];
     activtystatus: Array<Object> = this.dm.APPROVE_STATUS;
     activtyTypes: Array<Object> = this.dm.ACTIVITY_TYPES;
-    condition: {type: string, status: string} = {
+    condition: { type: string, status: string } = {
         type: '0',
         status: '0'
     };
@@ -45,8 +45,12 @@ export class ActivitiesApprovementListComponent implements OnInit {
                 return e.id.indexOf(this.marchantKey) > -1 || e.name.indexOf(this.marchantKey) > -1;
             });
         } else {
+            this.condition[key] = value;
             this.activityList = this.activityListCach.filter(e => {
-                return (value === '0') || e[key] === value;
+                return (this.condition[key === 'type' ? 'status' : key] === '0' ||
+                 e[key === 'type' ? 'status' : key] === this.condition[key === 'type' ? 'status' : key]);
+            }).filter(e => {
+                return (this.condition[key] === '0' || e[key] === this.condition[key]);
             });
         }
 
