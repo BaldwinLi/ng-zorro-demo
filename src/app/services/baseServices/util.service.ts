@@ -136,4 +136,39 @@ export class UtilService {
     }
     return form.invalid;
   }
+
+  setCookie(name, value, hours, path): void {
+    const _name = window['escape'](name);
+    const _value = window['escape'](value);
+    const expires = new Date();
+    expires.setTime(expires.getTime() + hours * 3600000);
+    path = path === '' ? '' : ';path=' + path;
+    const _expires = typeof hours === 'string' ? '' : ';expires=' + expires.toUTCString();
+    document.cookie = _name + '=' + _value + _expires + path;
+  }
+
+  getCookieValue(name): string {
+    let _name = window['escape'](name);
+    const allcookies = document.cookie;
+    _name += '=';
+    const pos = allcookies.indexOf(_name);
+    if (pos !== -1) {
+      const start = pos + _name.length;
+      let end = allcookies.indexOf(';', start);
+      if (end === -1) {
+        end = allcookies.length;
+      }
+      const value = allcookies.substring(start, end);
+      return value;
+    } else {
+      return '';
+    }
+  }
+
+  deleteCookie(name, path) {
+    const _name = window['escape'](name);
+    const expires = new Date(0);
+    path = path === '' ? '' : ';path=' + path;
+    document.cookie = _name + '=' + ';expires=' + expires.toUTCString() + path;
+  }
 }

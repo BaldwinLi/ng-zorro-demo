@@ -407,7 +407,7 @@ export default {
   'summit_adv': '提交建议',
   'send': '发送',
   'login_need_help': '需要人工服务，请拨打IT热线1000',
-  'remenber_me': '记住密码',
+  'remember_me': '记住密码',
   'forgot_pwd': '忘记密码',
   'edit_pwd': '修改密码',
   'feedback': '反馈意见',

@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
     login_password: '密码',
     pls_login_account: '请输入用户名',
     pls_login_password: '请输入密码',
-    remenber_me: Lang['remenber_me'],
+    remember_me: Lang['remember_me'],
   };
   loading: Boolean = false;
   loadingTip: String = '登陆中，请稍后...';
@@ -51,6 +51,11 @@ export class LoginComponent implements OnInit {
                     __success => {
                       if (isString(__success)) {
                         this.router.navigate(['']);
+                        if (this.loginForm.value['remember']) {
+                          this.setCredential();
+                        } else {
+                          this.removeCredential();
+                        }
                       } else {
                         this.loginResultText = '用户名或密码错误。';
                       }
@@ -87,10 +92,19 @@ export class LoginComponent implements OnInit {
     }
   }
 
+  private setCredential(): void {
+    this.util.setCookie('username', this.loginForm.value['username'], 24, '/');
+    this.util.setCookie('password', this.loginForm.value['password'], 24, '/');
+  }
+
+  private removeCredential(): void {
+    this.util.deleteCookie('username', '/');
+    this.util.deleteCookie('password', '/');
+  }
   ngOnInit() {
     this.loginForm = this.fb.group({
-      username: ['platform_admin', [Validators.required]],
-      password: ['123456', [Validators.required]],
+      username: [this.util.getCookieValue('username'), [Validators.required]],
+      password: [this.util.getCookieValue('password'), [Validators.required]],
       remember: true
     });
   }
