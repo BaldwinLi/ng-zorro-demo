@@ -18,7 +18,7 @@
                 <i class="anticon anticon-user"></i>
               </ng-template>
             </nz-input>
-            <div nz-form-explain *ngIf="util.isValid(loginForm, 'username', 'required')">{{labels.pls_login_account}}!</div>
+            <div nz-form-explain *ngIf="isValidField(loginForm, 'username', 'required')">{{labels.pls_login_account}}!</div>
           </div>
         </div>
         <div nz-form-item>
@@ -28,7 +28,7 @@
                 <i class="anticon anticon-lock"></i>
               </ng-template>
             </nz-input>
-            <div nz-form-explain *ngIf="util.isValid(loginForm, 'password', 'required')">{{labels.pls_login_password}}!</div>
+            <div nz-form-explain *ngIf="isValidField(loginForm, 'password', 'required')">{{labels.pls_login_password}}!</div>
           </div>
         </div>
         <div style="color: #f04134">{{loginResultText}}</div>

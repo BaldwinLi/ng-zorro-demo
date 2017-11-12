@@ -18,7 +18,9 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private util: UtilService,
     private luSvc: LoginUserService
-  ) { }
+  ) {
+    this.isValidField = util.isValid;
+  }
   labels: any = {
     login_submit: Lang['login_submit'],
     forgot_pwd: Lang['forgot_pwd'],
@@ -33,7 +35,7 @@ export class LoginComponent implements OnInit {
   loadingTip: String = '登陆中，请稍后...';
   loginResultText: String = '';
   loginForm: FormGroup;
-
+  isValidField: Function;
   doLogin(event): void {
     if (event && (event.type !== 'submit' ||
       (event.type === 'keypress' && event.charCode !== 13))) {

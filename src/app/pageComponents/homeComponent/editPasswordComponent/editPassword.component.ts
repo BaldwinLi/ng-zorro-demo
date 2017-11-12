@@ -17,6 +17,7 @@ export class EditPasswordComponent implements OnInit {
     passwordForm: FormGroup;
     loading: Boolean = false;
     loadingTip: String = '密码修改中，请稍后...';
+    isValidField: Function;
     _submitForm() {
         if (!this.util.isInvalidForm(this.passwordForm)) {
             this.loading = true;
@@ -40,6 +41,7 @@ export class EditPasswordComponent implements OnInit {
         private luSvc: LoginUserService,
         private nms: NzMessageService
     ) {
+        this.isValidField = util.isValid;
     }
 
     updateConfirmValidator() {

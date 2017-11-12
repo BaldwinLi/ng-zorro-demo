@@ -14,7 +14,7 @@ import { UtilService } from '../../../services/baseServices/util.service';
 })
 export class AddMerchantComponent implements OnInit {
     merchantForm: FormGroup;
-
+    isValidField: Function;
     _submitForm() {
         if (!this.util.isInvalidForm(this.merchantForm)) {
             this.subject.next(this.merchantForm.value);
@@ -23,6 +23,7 @@ export class AddMerchantComponent implements OnInit {
     }
 
     constructor(private fb: FormBuilder, private util: UtilService, private subject: NzModalSubject) {
+        this.isValidField = util.isValid;
     }
 
     updateConfirmValidator() {
