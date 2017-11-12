@@ -1,10 +1,12 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { isObject } from 'lodash';
 import { Router } from '@angular/router';
 import { Lang } from '../../../assets/i18n/i18n';
 import { Subscription } from 'rxjs/Subscription';
 import { NzModalService } from 'ng-zorro-antd';
 import { ComponentCommunicateService } from '../../services/baseServices/componentCommunicate.service';
 import { LoginUserService } from '../../services/loginUser.service';
+import { EditPasswordComponent } from './editPasswordComponent/editPassword.component';
 
 @Component({
   selector: 'app-home-page',
@@ -12,10 +14,10 @@ import { LoginUserService } from '../../services/loginUser.service';
   styleUrls: ['../../../assets/css/custom.css'],
   providers: [ComponentCommunicateService]
 })
-export class HomeComponent implements OnDestroy {
+export class HomeComponent implements OnInit, OnDestroy {
   homePage: String = Lang['home_page'];
   user: { userName: string, userAvatar: string, icon: string } = {
-    userName: '测试用户',
+    userName: '',
     userAvatar: '',
     icon: ''
   };
@@ -72,7 +74,7 @@ export class HomeComponent implements OnDestroy {
       okText: '确定',
       cancelText: '取消',
       onOk() {
-        scope.loading = true
+        scope.loading = true;
         scope.luSvc.logout().subscribe(
           success => {
             if (success === 'success') {
@@ -84,6 +86,21 @@ export class HomeComponent implements OnDestroy {
         );
       }
     });
+  }
+
+  changePassword(event): void {
+    this.nmSvc.open({
+      title: '修改密码',
+      content: EditPasswordComponent,
+      width: 300,
+      footer: false
+    });
+  }
+
+  ngOnInit() {
+    LoginUserService.user = JSON.parse(sessionStorage.getItem('user'));
+    LoginUserService.sysUser = JSON.parse(sessionStorage.getItem('sysUser'));
+    this.user.userName = LoginUserService.user.username;
   }
 
   ngOnDestroy() {

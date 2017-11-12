@@ -43,12 +43,12 @@ export class AppRequestService {
     }
 
     queryUser(): Observable<any> {
-        return this.httpService.getRequestObservable(`${appContextPath}principal-user`,
+        return this.httpService.getRequestObservable(`${appContextPath}platform-api/principal-user`,
             'get');
     }
 
     querySysUser(): Observable<any> {
-        return this.httpService.getRequestObservable(`${appContextPath}sys-user/chgpassword`,
+        return this.httpService.getRequestObservable(`${appContextPath}common-api/sys-principal`,
             'get');
     }
 

@@ -12,6 +12,7 @@ import { NZ_LOCALE_VALUE } from '../assets/i18n/i18n';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './pageComponents/homeComponent/home.component';
 import { LoginComponent } from './pageComponents/loginComponent/login.component';
+import { EditPasswordComponent } from './pageComponents/homeComponent/editPasswordComponent/editPassword.component';
 import { PageNotFoundComponent } from './PageNotFoundComponent';
 import { MenuComponent } from './pageComponents/menuComponent/menu.component';
 import { MenuPlatformComponent } from './pageComponents/menuPlatformComponent/menuPlatform.component';
@@ -62,7 +63,8 @@ const appRoutes: Routes = [
 
 @NgModule({
   entryComponents: [
-    AddMerchantComponent
+    AddMerchantComponent,
+    EditPasswordComponent
   ],
   declarations: [
     AppComponent,
@@ -74,6 +76,7 @@ const appRoutes: Routes = [
     EnterMerchantComponent,
     PageNotFoundComponent,
     AddMerchantComponent,
+    EditPasswordComponent,
     EnterMerchantInfoComponent,
     MerchantApprovementComponent,
     ActivitiesApprovementListComponent,

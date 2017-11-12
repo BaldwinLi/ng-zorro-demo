@@ -1,5 +1,5 @@
-<nz-layout class="layout" style="height: 100%;">
-  <nz-spin [nzSize]="'large'" [nzSpinning]="loading" [nzTip]="loadingTip">
+<nz-spin [nzSize]="'large'" [nzSpinning]="loading" style="height:100%" [nzTip]="loadingTip">
+  <nz-layout class="layout" style="height: 100%;">
     <nz-header class="main-menu">
       <ul nz-menu nzMode="horizontal" nzTheme="light">
         <div class="logo">
@@ -16,7 +16,18 @@
           <span>
             <nz-avatar nzSize="small" nzIcon="user" [nzSrc]="user.userAvatar" nzSize="small" style="display: inline-block;top:  0.5rem;"></nz-avatar>
             <!-- <nz-avatar [nzIcon]="user.icon" [nzSrc]="user.userAvatar" style="display: inline-block;height: 1.8rem;top:  0.5rem;"></nz-avatar> -->
-            <p style="display: inline-block;">{{user.userName}}</p>
+            <!-- <p style="display: inline-block;"></p> -->
+            <nz-dropdown>
+              <a class="ant-dropdown-link" nz-dropdown>
+                {{user.userName}} 欢迎您！
+                <i class="anticon anticon-down"></i>
+              </a>
+              <ul nz-menu>
+                <li nz-menu-item>
+                  <a target="_blank" rel="noopener noreferrer" (click)="changePassword($event)">修改密码</a>
+                </li>
+              </ul>
+            </nz-dropdown>
           </span>
         </li>
       </ul>
@@ -37,5 +48,5 @@
         <router-outlet></router-outlet>
       </div>
     </nz-layout>
-  </nz-spin>
-</nz-layout>
+  </nz-layout>
+</nz-spin>

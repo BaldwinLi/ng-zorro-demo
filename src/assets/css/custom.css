@@ -7,7 +7,7 @@
 .main-menu .logo {
   font-size: x-large;
   font-weight: 800;
-  width: 20%;
+  width: 80%;
   position: absolute;
 }
 
@@ -40,12 +40,44 @@ app-menu-component {
   line-height: 1.42857143;
 }
 
+.platform-screen .left-menu.login-sider {
+  margin: 5rem;
+  height: 80%;
+}
+
+app-login-page nz-layout nz-layout nz-content .login-background-image {
+  background-image: url(../../assets/image/login-background.jpg);
+  background-repeat: no-repeat;
+  position: absolute;
+  background-size: 100% 100%;
+  height: 100%;
+  width: 100%;
+  opacity: 1;
+  visibility: visible;
+}
+
+app-login-page nz-layout nz-layout .login-logo {
+  height: 6%;
+  position: absolute;
+  flex: 0 0 400px;
+  width: 400px;
+  margin: 2rem 5rem;
+  font-size: 2rem;
+  color: #fff;
+}
+
 .platform-screen .left-menu ul {
   height: 95%
 }
 
 .platform-screen .left-menu ul li span {
   padding-right: 1rem;
+}
+
+app-home-page .ant-spin-container {
+  transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  position: relative;
+  height: 100%;
 }
 
 .platform-screen .main-platform {
@@ -93,6 +125,7 @@ ul .right-logout-item {
 nz-tab-body {
   background: #fff;
 }
+
 nz-tab-body .tab-content {
   margin: 2%;
 }
@@ -102,7 +135,7 @@ nz-layout .tab-content {
 }
 
 nz-content .card-list-content {
-  background:#fff;
+  background: #fff;
 }
 
 .login-form {

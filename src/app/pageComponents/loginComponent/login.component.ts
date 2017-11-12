@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { isString } from 'lodash';
 import { Router } from '@angular/router';
 import { FormGroup, Validators, FormControl, FormBuilder } from '@angular/forms';
 import { Lang } from '../../../assets/i18n/i18n';
 import { UtilService } from '../../services/baseServices/util.service';
+import { NzModalService } from 'ng-zorro-antd';
 import { LoginUserService } from '../../services/loginUser.service';
 
 @Component({
@@ -32,7 +34,7 @@ export class LoginComponent implements OnInit {
   loginResultText: String = '';
   loginForm: FormGroup;
 
-  doLogin(event) {
+  doLogin(event): void {
     if (event && (event.type !== 'submit' ||
       (event.type === 'keypress' && event.charCode !== 13))) {
       return;
@@ -41,20 +43,43 @@ export class LoginComponent implements OnInit {
       this.loading = true;
       this.luSvc.getToken(this.loginForm.value).subscribe(
         success => {
-          this.loading = false;
-          if (success === 'success') {
-            this.router.navigate(['']);
+          if (success) {
+            success.subscribe(
+              _success => {
+                if (_success) {
+                  _success.subscribe(
+                    __success => {
+                      if (isString(__success)) {
+                        this.router.navigate(['']);
+                      } else {
+                        this.loginResultText = '用户名或密码错误。';
+                      }
+                      this.loading = false;
+                    },
+                    __error => {
+                      this.loginResultText = '喵喵暂时暂时找不到您的系统用户信息';
+                      this.loading = false;
+                    }
+                  );
+                }
+                this.loading = false;
+              },
+              error => {
+                this.loginResultText = '喵喵暂时暂时找不到您的用户信息';
+                this.loading = false;
+              }
+            );
           } else {
             this.loginResultText = '用户名或密码错误。';
           }
         },
         error => {
-          this.loading = false;
           if ('Unauthorized' === error.statusText) {
             this.loginResultText = '用户名或密码错误。';
           } else {
             // if (this.router.navigate([''])) {
-            this.loginResultText = '服务器喵喵服务器暂时不可用';
+            this.loginResultText = '喵喵服务器暂时不可用';
+            this.loading = false;
             // }
           }
         }

@@ -9,12 +9,17 @@ import 'rxjs/add/operator/retry';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/observable/of';
 import { Injectable } from '@angular/core';
-import { trim, isObject, endsWith, assign } from 'lodash';
-import {
-  Http,
-  Headers,
-  RequestOptions
-} from '@angular/http';
+import { Router } from '@angular/router';
+// import {
+// trim,
+// isObject,
+// endsWith,
+// assign } from 'lodash';
+// import {
+//   Http,
+//   Headers,
+//   RequestOptions
+// } from '@angular/http';
 import {
   HttpClient,
   HttpParams,
@@ -27,7 +32,12 @@ import { UtilService } from './util.service';
 
 @Injectable()
 export class HttpService {
-  constructor(private httpClient: HttpClient, private http: Http, private util: UtilService) { }
+  constructor(
+    private httpClient: HttpClient,
+    // private http: Http,
+    private util: UtilService,
+    private router: Router
+  ) { }
 
   getRequestObservable(
     url: string,
@@ -35,10 +45,10 @@ export class HttpService {
     body?: any,
     headers?: Object,
     urlParams?: Object,
-    options?: RequestOptions,
+    // options?: RequestOptions,
     retry?: number): Observable<any> {
-    if (url.indexOf('/oauth/token') === -1 && !sessionStorage.getItem('token')) {
-      location.reload();
+    if (!this.isClient(url) && !sessionStorage.getItem('token')) {
+      this.router.navigate(['login']);
     }
     const hasBody = ['post', 'put', 'patch'].includes(method);
     let request;
@@ -127,10 +137,10 @@ export class HttpService {
   //   return paramStr;
   // }
 
-  // private isClient(url: string) {
-  //   return ['/oauth/token'].every(e => {
-  //     return url.indexOf(e) === -1;
-  //   });
-  // }
+  private isClient(url: string) {
+    return ['/oauth/token', '/common-api/sys-user/chgpassword'].every(e => {
+      return url.indexOf(e) === -1;
+    });
+  }
 }
 
