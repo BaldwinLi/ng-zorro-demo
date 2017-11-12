@@ -102,7 +102,7 @@ export class LoginUserService {
             }
         ).catch(
             error => {
-                this.nms.error('密码修改失败。');
+                this.nms.error('密码修改失败，请确认旧密码是否正确。');
                 return Observable.create((obsr) => {
                     obsr.error(error);
                 });
