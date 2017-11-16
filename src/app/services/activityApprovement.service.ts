@@ -11,7 +11,7 @@ export class ActivityApprovementService {
     // }
 
     getActivities(params?: any): Observable<any> {
-        return this.appRequest.queryActivities(params).map(
+        return this.appRequest.queryMerchantsApproval('?approvalType=wechat_activity&status=').map(
             success => success
         ).catch(
             error => Observable.create((obsr) => {
@@ -21,7 +21,7 @@ export class ActivityApprovementService {
     }
 
     getActivityDetail(params?: any): Observable<any> {
-        return this.appRequest.queryActivityDetail(params).map(
+        return this.appRequest.queryMerchantsApproval('?approvalType=wechat_activity&status=').map(
             success => success
         ).catch(
             error => Observable.create((obsr) => {
@@ -31,7 +31,7 @@ export class ActivityApprovementService {
     }
 
     approveActivity(param?: any): Observable<any> {
-        return this.appRequest.approveActivity(param).map(
+        return this.appRequest.approveMerchants(param).map(
             success => success
         ).catch(
             error => Observable.create((obsr) => {

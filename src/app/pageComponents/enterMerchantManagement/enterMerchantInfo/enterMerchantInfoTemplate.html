@@ -42,7 +42,10 @@
             </div>
             <div nz-form-control nz-col [nzSpan]="14">
               <span nz-form-text *ngIf="_isString(item.value)">{{item.value}}</span>
-              <span nz-form-text *ngIf="!_isString(item.value)">
+              <span *ngIf="item.type==='tag' && !_isString(item.value)">
+                <nz-tag *ngFor="let tag of item.value" [nzColor]="'#2db7f5'">{{tag.dataName}}</nz-tag>
+              </span>
+              <span nz-form-text *ngIf="item.type==='img' && !_isString(item.value)">
                 <app-upload-image [url]="" [readonly]="true" [uploadedFiles]="item.value"></app-upload-image>
               </span>
             </div>
@@ -54,24 +57,14 @@
       <ng-template #nzTabHeading>
         收款账户
       </ng-template>
-      <nz-header nzTheme="light" class="platform-header">
-        绑定收款信息
-      </nz-header>
       <nz-content class="tab-content">
-        <nz-spin [nzSize]="'large'" [nzSpinning]="loading" [nzTip]="loadingTip">
-          <div *ngFor="let item of accountInfo" class="nz-row-margin" nz-form-item nz-row>
-            <div nz-form-label nz-col [nzSpan]="4">
-              <label>{{item.label}}</label>
-            </div>
-            <div nz-form-control nz-col [nzSpan]="14">
-              <span nz-form-text *ngIf="_isString(item.value)">{{item.value}}</span>
-              <span nz-form-text *ngIf="!_isString(item.value)">
-                <app-upload-image [url]="" [readonly]="true" [uploadedFiles]="item.value"></app-upload-image>
-              </span>
-            </div>
-          </div>
-        </nz-spin>
+        <app-datatable [isAjaxData]="false" [columns]="columns" [current]="current" [pageSize]="pageSize" [total]="total" [dataSet]="data" [loading]="loading"
+        (outputPage)="refreshData($event)"></app-datatable>
+      </nz-content>
+      <nz-content *ngIf="showAccountDetail" class="tab-content">
+        <router-outlet></router-outlet>
       </nz-content>
     </nz-tab>
   </nz-tabset>
 </nz-layout>
+

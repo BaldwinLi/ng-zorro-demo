@@ -14,8 +14,8 @@ export class ActivitiesApprovementListComponent implements OnInit {
 
     loading: Boolean = false;
     loadingTip: String = Lang['loading_tip'];
-    activtystatus: Array<Object> = this.dm.APPROVE_STATUS;
-    activtyTypes: Array<Object> = this.dm.ACTIVITY_TYPES;
+    activtystatus: Array<Object> = DataModelService.APPROVE_STATUS;
+    activtyTypes: Array<Object> = DataModelService.ACTIVITY_TYPES;
     condition: { type: string, status: string } = {
         type: '0',
         status: '0'
@@ -25,7 +25,6 @@ export class ActivitiesApprovementListComponent implements OnInit {
     marchantKey: String = '';
     constructor(
         private router: Router,
-        private dm: DataModelService,
         private componentCommunicator: ComponentCommunicateService,
         private entity: ActivityApprovementService
     ) { }

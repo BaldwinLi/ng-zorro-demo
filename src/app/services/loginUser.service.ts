@@ -6,6 +6,7 @@ import { AppRequestService } from './baseServices/appRequest.service';
 import { serialize } from 'lodash';
 import { param } from 'jquery';
 import { NzMessageService } from 'ng-zorro-antd';
+import { DataModelService } from '../pipes/model';
 // import { HttpService } from './HttpService';
 
 @Injectable()
@@ -34,6 +35,7 @@ export class LoginUserService {
     // "platform_admin"
     public static user: any;
     public static sysUser: any;
+    public static dictionary: any;
 
     getToken(params?: any): Observable<any> {
         params = param({
@@ -47,6 +49,15 @@ export class LoginUserService {
             success => {
                 if (success) {
                     sessionStorage.setItem('token', success.value);
+                    this.getDictionary().subscribe(
+                        _success => {
+                            // DataModelService.
+                            console.log('');
+                        },
+                        _error => {
+                            this.nms.error('数据字典获取失败。');
+                        }
+                    );
                     // return 'success';
                     return this.getUser().map(
                         _success => {
@@ -74,6 +85,19 @@ export class LoginUserService {
                 }
                 return;
             }).catch(
+            error => Observable.create((obsr) => {
+                obsr.error(error);
+            })
+            );
+    }
+
+    getDictionary(): Observable<any> {
+        return this.appRequest.queryDictionary().map(
+            success => {
+                LoginUserService.dictionary = success;
+                return 'success';
+            }
+        ).catch(
             error => Observable.create((obsr) => {
                 obsr.error(error);
             })

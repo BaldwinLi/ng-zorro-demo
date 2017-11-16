@@ -34,8 +34,9 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   breadcrumbItemlist: Object = {
     enter_merchant: ['/menu/enter_merchant', '入驻商家管理', 'anticon anticon-bank'],
-    enter_merchant_info: ['/menu/enter_merchant/enter_merchant_info', '入驻商家详情', 'anticon anticon-idcard'],
+    enter_merchant_info: ['/menu/enter_merchant/enter_merchant_info', '入驻商家详情', 'anticon anticon-idcard', true],
     merchant_approvement: ['/menu/merchant_approvement', '商家注册审核'],
+    account_approvement: ['/menu/merchant_approvement', '收款账户审核'],
     activity_approvement: ['/menu/activity_approvement', '活动信息审核'],
     activity_detail: ['/menu/activity_approvement/activity_detail', '活动详情']
   };
@@ -56,7 +57,7 @@ export class HomeComponent implements OnInit, OnDestroy {
             if (this.breadcrumbItemlist[e]) {
               this.breadcrumbItems.push(
                 {
-                  link: this.breadcrumbItemlist[e][0],
+                  link: this.breadcrumbItemlist[e][0] + (this.breadcrumbItemlist[e][3] ? ('/' + names.pop()) : ''),
                   label: this.breadcrumbItemlist[e][1],
                   icon: this.breadcrumbItemlist[e][2]
                 });

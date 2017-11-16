@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { isObject } from 'lodash';
 import { Router } from '@angular/router';
 import { ComponentCommunicateService } from '../../services/baseServices/componentCommunicate.service';
 import { NzModalService } from 'ng-zorro-antd';
@@ -17,42 +18,7 @@ export class EnterMerchantComponent implements OnInit {
   data: Array<any> = [];
   loading = false;
   marchantKey: String = '';
-  columns: Array<any> = [
-    {
-      id: 'merchantId',
-      label: '商家编号'
-    },
-    {
-      id: 'marchantName',
-      label: '商家名称'
-    },
-    {
-      id: 'contactName',
-      label: '联系人姓名'
-    },
-    {
-      id: 'address',
-      label: '商家所在地'
-    },
-    {
-      id: 'status',
-      label: '审核状态'
-    },
-    {
-      id: 'status',
-      label: '详情',
-      type: 'action',
-      group: [
-        {
-          type: 'link',
-          label: '查看',
-          callback(row) {
-            this.router.navigate(['/menu/activity_approvement/activity_detail'], row.id);
-          }
-        }
-      ]
-    }
-  ];
+  columns: Array<any>;
 
   constructor(
     private componentCommunicator: ComponentCommunicateService,
@@ -68,14 +34,20 @@ export class EnterMerchantComponent implements OnInit {
       return;
     }
     this.loading = true;
-    this.entity.getMerchants({}).subscribe(
+    this.entity.getMerchants({
+      searchKey: this.marchantKey,
+      pageNum: this.current
+    }).subscribe(
       success => {
+        this.data = success.list;
+        this.total = success.total;
+        this.current = success.current;
         this.loading = false;
       },
       error => {
         this.loading = false;
       }
-    );
+      );
   }
 
   addMerchant(event: any) {
@@ -85,19 +57,64 @@ export class EnterMerchantComponent implements OnInit {
       footer: false
     });
     subscription.subscribe(result => {
-      this.loading = true;
-      this.entity.addMerchant(result).subscribe(
-        success => {
-          this.loading = false;
-        },
-        error => {
-          this.loading = false;
-        }
-      );
+      if (isObject(result)) {
+        this.loading = true;
+        this.entity.addMerchant(result).subscribe(
+          success => {
+            this.refreshData();
+            this.loading = false;
+          },
+          error => {
+            this.loading = false;
+          }
+        );
+      }
     });
   }
 
   ngOnInit() {
+    const scope = this;
+    this.columns = [
+      {
+        id: 'merchantId',
+        label: '商家编号',
+        type: 'text'
+      },
+      {
+        id: 'fullName',
+        label: '商家名称',
+        type: 'text'
+      },
+      {
+        id: 'contact',
+        label: '联系人姓名',
+        type: 'text'
+      },
+      {
+        id: 'registeredAddress',
+        label: '商家所在地',
+        type: 'text'
+      },
+      {
+        id: 'status',
+        label: '商家状态',
+        type: 'lookup',
+        options: 'ACTIVATE_STATUS'
+      },
+      {
+        label: '详情',
+        type: 'action',
+        group: [
+          {
+            type: 'link',
+            label: '查看',
+            callback(row) {
+              scope.router.navigate([`menu/enter_merchant/enter_merchant_info/${row.merchantId}`]);
+            }
+          }
+        ]
+      }
+    ];
     this.componentCommunicator.$emit('/menu/enter_merchant');
     this.refreshData();
   }

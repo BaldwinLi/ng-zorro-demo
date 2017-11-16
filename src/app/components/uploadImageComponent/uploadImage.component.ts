@@ -1,4 +1,4 @@
-import { Component, Input, Output, OnInit } from '@angular/core';
+import { Component, Input, Output, OnInit, OnChanges } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd';
 import { Lang } from '../../../assets/i18n/i18n';
 
@@ -14,7 +14,7 @@ export class FileHolder {
     templateUrl: './uploadImageTemplate.html',
     styleUrls: ['./uploadImage.css']
 })
-export class UploadImageComponent implements OnInit {
+export class UploadImageComponent implements OnInit, OnChanges {
     files: FileHolder[] = [];
     previewTitle: String = Lang['preview_image_title'];
     previewUrl: String = '';
@@ -101,9 +101,13 @@ export class UploadImageComponent implements OnInit {
         });
     }
 
-    ngOnInit() {
-        if (this.uploadedFiles.length > 0) {
+    ngOnChanges(changes: any) {
+        if (this.uploadedFiles && this.uploadedFiles.length > 0) {
+            this.files = [];
             this.processUploadedFiles();
         }
+    }
+
+    ngOnInit() {
     }
 }

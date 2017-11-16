@@ -57,7 +57,7 @@ export class HttpService {
         params: this.getUrlParams(urlParams),
         headers: this.getHeaders(headers)
       }) : this.httpClient[method](url, {
-        params: this.getUrlParams(urlParams),
+        params: this.getUrlParams(body),
         headers: this.getHeaders(headers)
       });
       if (!!retry) {
@@ -79,6 +79,11 @@ export class HttpService {
       return Observable.create((obsr) => {
         obsr.next();
       });
+    }
+    if (error.status === 401) {
+      sessionStorage.clear();
+      location.reload();
+      return;
     }
     return Observable.create((obsr) => {
       obsr.error(error);
@@ -113,10 +118,10 @@ export class HttpService {
   }
 
   private getUrlParams(params: any): HttpParams {
-    const urlParams = new HttpParams();
+    let urlParams = new HttpParams();
     for (const e in params) {
       if (e) {
-        urlParams.set(e, params[e]);
+        urlParams = urlParams.set(e, params[e]);
       }
     }
     return urlParams;

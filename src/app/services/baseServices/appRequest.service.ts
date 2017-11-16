@@ -16,12 +16,12 @@ export class AppRequestService {
     constructor(private httpService: HttpService, private util: UtilService) { }
 
     private extractData(success: any) {
-        return this.util.formatUnavailableValueToString(success.body);
+        return this.util.formatUnavailableValueToString(success);
     }
 
     private handleError(error: any) {
         return Observable.create((obsr) => {
-            obsr.error(error.body);
+            obsr.error(error);
         });
     }
 
@@ -30,6 +30,11 @@ export class AppRequestService {
             'post', params || {}, {
                 'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
             });
+    }
+
+    queryDictionary(): Observable<any> {
+        return this.httpService.getRequestObservable(`${appContextPath}common-api/merchant-dict/business_scope`,
+            'get');
     }
 
     doLogout(): Observable<any> {
@@ -54,64 +59,33 @@ export class AppRequestService {
 
     queryMerchants(params?: Object): Observable<any> {
         return this.httpService.getRequestObservable(
-            `${appContextPath}`,
-            'post',
-            params || {}).map(this.extractData.bind(this)).catch(this.handleError.bind(this));
+            `${appContextPath}platform-api/merchants`,
+            'get', params || {}).map(this.extractData.bind(this)).catch(this.handleError.bind(this));
     }
 
     insertMerchant(params?: Object): Observable<any> {
         return this.httpService.getRequestObservable(
-            `${appContextPath}`,
+            `${appContextPath}platform-api/merchant`,
             'post',
             params || {}).map(this.extractData.bind(this)).catch(this.handleError.bind(this));
     }
 
-    queryMerchantDetail(params?: Object): Observable<any> {
+    queryMerchantDetail(condition: string): Observable<any> {
         return this.httpService.getRequestObservable(
-            `${appContextPath}`,
-            'post',
-            params || {}).map(this.extractData.bind(this)).catch(this.handleError.bind(this));
+            `${appContextPath}platform-api/merchant${condition}`,
+            'get').map(this.extractData.bind(this)).catch(this.handleError.bind(this));
     }
 
-    queryPendingMerchants(params?: Object): Observable<any> {
+    queryMerchantsApproval(condition: string): Observable<any> {
         return this.httpService.getRequestObservable(
-            `${appContextPath}`,
-            'post',
-            params || {}).map(this.extractData.bind(this)).catch(this.handleError.bind(this));
+            `${appContextPath}platform-api/merchantapprovals${condition}`,
+            'get').map(this.extractData.bind(this)).catch(this.handleError.bind(this));
     }
 
-    queryHistoryMerchants(params?: Object): Observable<any> {
+    approveMerchants(params?: Object): Observable<any> {
         return this.httpService.getRequestObservable(
-            `${appContextPath}`,
-            'post',
-            params || {}).map(this.extractData.bind(this)).catch(this.handleError.bind(this));
-    }
-
-    approvePendingMerchants(params?: Object): Observable<any> {
-        return this.httpService.getRequestObservable(
-            `${appContextPath}`,
-            'post',
-            params || {}).map(this.extractData.bind(this)).catch(this.handleError.bind(this));
-    }
-
-    queryActivities(params?: Object): Observable<any> {
-        return this.httpService.getRequestObservable(
-            `${appContextPath}`,
-            'post',
-            params || {}).map(this.extractData.bind(this)).catch(this.handleError.bind(this));
-    }
-
-    queryActivityDetail(params?: Object): Observable<any> {
-        return this.httpService.getRequestObservable(
-            `${appContextPath}`,
-            'post',
-            params || {}).map(this.extractData.bind(this)).catch(this.handleError.bind(this));
-    }
-
-    approveActivity(params?: Object): Observable<any> {
-        return this.httpService.getRequestObservable(
-            `${appContextPath}`,
-            'post',
+            `${appContextPath}platform-api/merchantapproval`,
+            'put',
             params || {}).map(this.extractData.bind(this)).catch(this.handleError.bind(this));
     }
 }

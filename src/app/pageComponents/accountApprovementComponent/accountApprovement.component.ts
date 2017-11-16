@@ -2,15 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { isObject } from 'lodash';
 import { ComponentCommunicateService } from '../../services/baseServices/componentCommunicate.service';
 import { NzModalService, NzModalSubject } from 'ng-zorro-antd';
-import { MerchantApprovementService } from '../../services/merchantApprovement.service';
+import { AccountApprovementService } from '../../services/accountApprovement.service';
+import { CredentialDialogComponent } from './credentialDialog.component';
 import { ApproveDialogComponent } from '../dialogCmopponent/approveDialog.component';
 
 @Component({
-    selector: 'app-merchant-approvement',
-    templateUrl: './merchantApprovementTemplate.html',
+    selector: 'app-account-approvement',
+    templateUrl: './accountApprovementTemplate.html',
     styleUrls: ['../../../assets/css/custom.css']
 })
-export class MerchantApprovementComponent implements OnInit {
+export class AccountApprovementComponent implements OnInit {
     current: Number = 1;
     hisCurrent: Number = 1;
     pageSize: Number = 10;
@@ -27,54 +28,12 @@ export class MerchantApprovementComponent implements OnInit {
     approveWin: NzModalSubject;
     checkedMerchants: Array<Object> = [];
     columns: Array<any>;
-    hisColumns: Array<any> = [
-        {
-            id: 'merchantId',
-            label: '商家编号',
-            type: 'text'
-        },
-        {
-            id: 'fullName',
-            label: '商家名称',
-            type: 'text'
-        },
-        {
-            id: 'contact',
-            label: '联系人姓名',
-            type: 'text'
-        },
-        {
-            id: 'registeredAddress',
-            label: '商家所在地',
-            type: 'text'
-        },
-        {
-            id: 'status',
-            label: '审核状态',
-            type: 'lookup',
-            options: 'APPROVE_STATUS'
-        },
-        {
-            id: 'applySource',
-            label: '状态理由',
-            type: 'text'
-        },
-        {
-            id: 'updateBy',
-            label: '最后审核人',
-            type: 'text'
-        },
-        {
-            id: 'updateTime',
-            label: '最后审核时间',
-            type: 'text'
-        }
-    ];
+    hisColumns: Array<any>;
 
     constructor(
         private componentCommunicator: ComponentCommunicateService,
         private model: NzModalService,
-        private entity: MerchantApprovementService
+        private entity: AccountApprovementService
     ) {
     }
 
@@ -84,7 +43,7 @@ export class MerchantApprovementComponent implements OnInit {
             return;
         }
         this.loading = true;
-        this.entity.getPendingMerchants().subscribe(
+        this.entity.getPendingAccounts().subscribe(
             success => {
                 this.data = success.list;
                 this.current = success.current;
@@ -103,7 +62,7 @@ export class MerchantApprovementComponent implements OnInit {
             return;
         }
         this.hisLoading = true;
-        this.entity.getHistoryMerchants().subscribe(
+        this.entity.getHistoryAccounts().subscribe(
             success => {
                 this.hisData = success.list;
                 this.hisCurrent = success.current;
@@ -116,7 +75,7 @@ export class MerchantApprovementComponent implements OnInit {
         );
     }
 
-    merchantApprove(row: any): void {
+    accountApprove(row: any): void {
         this.approveWin = this.model.open({
             title: '商家审核',
             content: ApproveDialogComponent,
@@ -128,27 +87,27 @@ export class MerchantApprovementComponent implements OnInit {
         });
         this.approveWin.subscribe(result => {
             if (isObject(result)) {
-              this.loading = true;
-              this.entity.approvePendingMerchants({
-                  id: row.id,
-                  comment: result.result,
-                  status: result.resultReason
-              }).subscribe(
-                success => {
-                  this.refreshData();
-                  this.loading = false;
-                },
-                error => {
-                  this.loading = false;
-                }
-              );
+                this.loading = true;
+                this.entity.approvePendingAccounts({
+                    id: row.id,
+                    comment: result.result,
+                    status: result.resultReason
+                }).subscribe(
+                    success => {
+                        this.refreshData();
+                        this.loading = false;
+                    },
+                    error => {
+                        this.loading = false;
+                    }
+                    );
             }
-          });
+        });
     }
 
     // handleApprove(result): void {
     //     this.loading = true;
-    //     this.entity.approvePendingMerchants({}).subscribe(
+    //     this.entity.approvePendingAccounts({}).subscribe(
     //         success => {
     //             this.loading = false;
     //         },
@@ -163,46 +122,102 @@ export class MerchantApprovementComponent implements OnInit {
     //     this.checkedMerchants = merchants;
     // }
 
+    previewCredential(imageUrl: String = './assets/image/default.png'): void {
+        this.model.open({
+            title: '开户凭证/银行',
+            content: CredentialDialogComponent,
+            componentParams: {
+                imageUrl
+            },
+            maskClosable: false,
+            footer: false,
+            style: {
+                width: 'max-content',
+                height: 'max-content'
+            }
+        });
+    }
+
     ngOnInit() {
         const scope = this;
-        this.componentCommunicator.$emit('/menu/merchant_approvement');
+        this.componentCommunicator.$emit('/menu/account_approvement');
         this.refreshData();
         this.refreshHistoryData();
         this.columns = [
-            // '$checkbox',
             {
                 id: 'merchantId',
                 label: '商家编号',
                 type: 'text'
-            },
-            {
+            }, {
                 id: 'fullName',
                 label: '商家名称',
                 type: 'text'
-            },
-            {
-                id: 'contact',
-                label: '联系人姓名',
+            }, {
+                id: 'shopName',
+                label: '门店/机构',
                 type: 'text'
-            },
-            {
-                id: 'registeredAddress',
-                label: '商家所在地',
+            }, {
+                id: 'accountNo',
+                label: '收款账号',
                 type: 'text'
-            },
-            {
-                label: '操作',
+            }, {
+                id: 'approvalType',
+                label: '账户类型',
+                type: 'lookup',
+                options: 'ACCOUNT_TYPE'
+            }, {
+                id: 'accountHolder',
+                label: '持卡人',
+                type: 'text'
+            }, {
+                id: 'status',
+                label: '审核状态',
+                type: 'lookup',
+                options: 'APPROVE_STATUS'
+            }, {
+                label: '查看凭证',
                 type: 'action',
                 group: [
                     {
                         type: 'link',
+                        label: '查看',
+                        callback(row) {
+                            scope.previewCredential(row.url);
+                        }
+                    },
+                    {
+                        type: 'link',
                         label: '审核',
                         callback(row) {
-                            scope.merchantApprove(row);
+                            scope.accountApprove(row);
                         }
                     }
                 ]
             }
         ];
+        this.hisColumns = this.columns.slice(0, this.columns.length - 1).concat([
+            {
+                label: '查看凭证',
+                type: 'action',
+                group: [
+                    {
+                        type: 'link',
+                        label: '查看',
+                        callback(row) {
+                            scope.previewCredential(row.url);
+                        }
+                    }
+                ]
+            },
+            {
+                id: 'updateBy',
+                label: '最后审核人',
+                type: 'text'
+            }, {
+                id: 'updateTime',
+                label: '最后审核时间',
+                type: 'text'
+            }
+        ]);
     }
 }

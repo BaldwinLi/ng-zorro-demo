@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { isString } from 'lodash';
 import { Lang } from '../../../../assets/i18n/i18n';
@@ -11,163 +12,53 @@ import { EnterMerchantService } from '../../../services/enterMerchant.service';
     styleUrls: ['../../../../assets/css/custom.css']
 })
 export class EnterMerchantInfoComponent implements OnInit {
-    id: String;
+    id: string;
     loading: Boolean = false;
     loadingTip: String = Lang['loading_tip'];
-    contact: Array<Object> = [
-        {
-            id: '',
-            label: '联系人',
-            value: '海波'
-        },
-        {
-            id: '',
-            label: '手机号',
-            value: '13XXXXXXXXX'
-        },
-        {
-            id: '',
-            label: '常用邮箱',
-            value: 'xxx@xxx.com'
-        }
-    ];
+    showAccountDetail: Boolean = false;
 
-    merchantInfo: Array<Object> = [{
-        id: '',
-        label: '商户全称',
-        value: 'Amelie韩式皮肤管理中心'
-    }, {
-        id: '',
-        label: '商户简称',
-        value: 'Amelie'
-    }, {
-        id: '',
-        label: '经营类别',
-        value: '美容'
-    }, {
-        id: '',
-        label: '商户注册地',
-        value: 'xxxxxx'
-    }, {
-        id: '',
-        label: '公司法人',
-        value: 'xxxx'
-    }, {
-        id: '',
-        label: '法人身份证',
-        value: 'xxxxxxxxxxxxxxxxxx'
-    }, {
-        id: '',
-        label: '身份证正反面',
-        value: [
-            {
-                url: '',
-                fileName: 'frontside.png'
-            }, {
-                url: '',
-                fileName: 'reverseside.png'
-            }
-        ]
-    }, {
-        id: '',
-        label: '营业执照编号',
-        value: 'xxxxxxxxx'
-    }, {
-        id: '',
-        label: '营业执照扫描件',
-        value: [
-            {
-                url: '',
-                fileName: 'xxxx.png'
-            }
-        ]
-    }, {
-        id: '',
-        label: '组织机构代码证扫描件',
-        value: [
-            {
-                url: '',
-                fileName: 'xxxx.png'
-            }
-        ]
-    }];
+    contact: Array<Object> = [];
 
-    accountInfo: Array<Object> = [{
-        id: '',
-        label: '商户手机号',
-        value: '13000000000'
-    }, {
-        id: '',
-        label: '银行卡类型',
-        value: '储蓄卡'
-    }, {
-        id: '',
-        label: '开户银行',
-        value: '中国建设银行'
-    }, {
-        id: '',
-        label: '开户银行分行',
-        value: '大连分行'
-    }, {
-        id: '',
-        label: '开户银行支行',
-        value: '高新园区支行'
-    }, {
-        id: '',
-        label: '银行卡号',
-        value: 'xxxxxxxxxxxxxxxxxx'
-    }, {
-        id: '',
-        label: '持卡人姓名',
-        value: 'xxxxxxxxx'
-    }, {
-        id: '',
-        label: '持卡人银行注册手机号',
-        value: '13000000000'
-    }, {
-        id: '',
-        label: '开户凭证',
-        value: [
-            {
-                url: '',
-                fileName: 'credentials.png'
-            }
-        ]
-    }, {
-        id: '',
-        label: '账户审核状态',
-        value: '待审核'
-    }];
+    merchantInfo: Array<Object> = [];
+
+    accountInfo: Array<Object> = [];
 
     _isString = isString;
 
-    IDImages: Array<Object> = [
-        {
-            url: '',
-            fileName: 'text.png'
-        },
-        {
-            url: '',
-            fileName: 'text.png'
-        }
-    ];
+    IDImages: Array<Object>;
 
-    LogoImages: Array<Object> = [{
-        url: '',
-        fileName: 'text.png'
-    }];
+    LogoImages: Array<Object>;
+
+    current: Number = 1;
+    pageSize: Number = 10;
+    total = 0;
+    columns: Array<any> = [];
+    data: Array<any> = [];
 
     constructor(
         private route: ActivatedRoute,
         private componentCommunicator: ComponentCommunicateService,
-        private entity: EnterMerchantService
+        private entity: EnterMerchantService,
+        private router: Router
     ) { }
 
     refreshData(event?: any): void {
         this.loading = true;
-        this.entity.getMerchantDetail({}).subscribe(
+        this.entity.getMerchantDetail(this.id).subscribe(
             success => {
-                this.loading = false;
+                this.contact = success.contact;
+                this.merchantInfo = success.merchantInfo;
+                this.LogoImages = success.LogoImages;
+                this.IDImages = success.IDImages;
+                this.entity.getMerchantAccounts(this.id).subscribe(
+                    _success => {
+                        this.data = _success;
+                        this.loading = false;
+                    },
+                    error => {
+                        this.loading = false;
+                    }
+                );
             },
             error => {
                 this.loading = false;
@@ -176,8 +67,57 @@ export class EnterMerchantInfoComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.componentCommunicator.$emit('/menu/enter_merchant/enter_merchant_info');
+        const scope = this;
         this.id = this.route.params['_value']['id'];
+        this.componentCommunicator.$emit('/menu/enter_merchant/enter_merchant_info/' + this.id);
         this.refreshData();
+        this.columns = [
+            {
+                id: 'merchantId',
+                label: '商家编号',
+                type: 'text'
+            }, {
+                id: '',
+                label: '商家名称',
+                type: 'text'
+            }, {
+                id: 'shopName',
+                label: '门店/机构',
+                type: 'text'
+            }, {
+                id: 'accountNo',
+                label: '收款账号',
+                type: 'text'
+            }, {
+                id: 'approvalType',
+                label: '账户类型',
+                type: 'text'
+            }, {
+                id: 'accountHolder',
+                label: '持卡人',
+                type: 'text'
+            }, {
+                id: 'status',
+                label: '审核状态',
+                type: 'lookup',
+                options: 'APPROVE_STATUS'
+            }, {
+                label: '账户详情',
+                type: 'action',
+                group: [
+                    {
+                        type: 'link',
+                        label: '查看',
+                        callback(row) {
+                            scope.showAccountDetail = true;
+                            scope.router.navigate([`menu/enter_merchant/enter_merchant_info/${scope.id}/enter_merchant_account`, {
+                                merchantId: row.merchantId,
+                                id: row.id
+                            }]);
+                        }
+                    }
+                ]
+            }
+        ];
     }
 }

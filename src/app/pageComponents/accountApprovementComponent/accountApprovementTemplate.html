@@ -7,7 +7,7 @@
       <nz-header nzTheme="light" class="platform-header">
         <nz-input [nzType]="'search'" [nzPlaceHolder]="'商家名字／编号'" [(ngModel)]="marchantKey" style="width: 200px;" (click)="refreshData($event)"
           (keypress)="refreshData($event)"></nz-input>
-        <!-- <button nz-button [nzType]="'primary'" class="right-element" (click)="merchantApprove(title, content, footer)">
+        <!-- <button nz-button [nzType]="'primary'" class="right-element" (click)="accountApprove(title, content, footer)">
           <i class="anticon anticon-check-square-o"></i>
           <span>审核</span>
         </button> -->
@@ -15,7 +15,6 @@
       <nz-content style="padding:0 50px;">
         <app-datatable [columns]="columns" [current]="current" [pageSize]="pageSize" [total]="total" [dataSet]="data" [loading]="loading"
           (outputPage)="refreshData($event)"></app-datatable>
-          <!-- (checkedItems)="onCheckedMerchants($event)" -->
       </nz-content>
     </nz-tab>
     <nz-tab>
@@ -34,7 +33,7 @@
   </nz-tabset>
 </nz-layout>
 
-<!-- <ng-template #title>
+<ng-template #title>
   <span>审核</span>
 </ng-template>
 <ng-template #content>
@@ -51,4 +50,4 @@
       驳回
     </button>
   </div>
-</ng-template> -->
+</ng-template>

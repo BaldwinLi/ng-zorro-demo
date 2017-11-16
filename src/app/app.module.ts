@@ -19,9 +19,13 @@ import { MenuPlatformComponent } from './pageComponents/menuPlatformComponent/me
 import { EnterMerchantComponent } from './pageComponents/enterMerchantManagement/enterMerchant.component';
 import { AddMerchantComponent } from './pageComponents/enterMerchantManagement/enterMerchantManagementDialog/addMerchant.component';
 import { EnterMerchantInfoComponent } from './pageComponents/enterMerchantManagement/enterMerchantInfo/enterMerchantInfo.component';
+import { EnterMerchantAccountInfoComponent } from './pageComponents/enterMerchantManagement/enterMerchantInfo/enterMerchantAccountInfo/enterMerchantAccount.component';
 import { MerchantApprovementComponent } from './pageComponents/merchantApprovementComponent/merchantApprovement.component';
 import { ActivitiesApprovementListComponent } from './pageComponents/activitiesApprovementComponent/activitiesApproveListComponent/activitiesApprovementList.component';
 import { ActvityDetailComponent } from './pageComponents/activitiesApprovementComponent/activityDetailComponent/activityDetail.component';
+import { AccountApprovementComponent } from './pageComponents/accountApprovementComponent/accountApprovement.component';
+import { ApproveDialogComponent } from './pageComponents/dialogCmopponent/approveDialog.component';
+import { CredentialDialogComponent } from './pageComponents/accountApprovementComponent/credentialDialog.component';
 import { UploadFileComponent } from './components/uploadFileComponent/uploadFile.component';
 import { UploadImageComponent } from './components/uploadImageComponent/uploadImage.component';
 import { HttpService } from './services/baseServices/http.service';
@@ -35,6 +39,7 @@ import { LoginUserService } from './services/loginUser.service';
 import { EnterMerchantService } from './services/enterMerchant.service';
 import { MerchantApprovementService } from './services/merchantApprovement.service';
 import { ActivityApprovementService } from './services/activityApprovement.service';
+import { AccountApprovementService } from './services/accountApprovement.service';
 import { LookupPipe } from './pipes/lookup.pipe';
 
 const appRoutes: Routes = [
@@ -45,8 +50,11 @@ const appRoutes: Routes = [
         path: 'menu', component: MenuComponent,
         children: [
           { path: 'enter_merchant', component: EnterMerchantComponent },
-          { path: 'enter_merchant/enter_merchant_info/:id', component: EnterMerchantInfoComponent },
+          { path: 'enter_merchant/enter_merchant_info/:id', component: EnterMerchantInfoComponent, children: [
+            { path: 'enter_merchant_account', component: EnterMerchantAccountInfoComponent }
+          ]},
           { path: 'merchant_approvement', component: MerchantApprovementComponent },
+          { path: 'account_approvement', component: AccountApprovementComponent },
           { path: 'activity_approvement', component: ActivitiesApprovementListComponent },
           { path: 'activity_approvement/activity_detail/:id', component: ActvityDetailComponent },
           // { path: 'menu_platform', component: MenuPlatformComponent },
@@ -64,7 +72,9 @@ const appRoutes: Routes = [
 @NgModule({
   entryComponents: [
     AddMerchantComponent,
-    EditPasswordComponent
+    EditPasswordComponent,
+    CredentialDialogComponent,
+    ApproveDialogComponent
   ],
   declarations: [
     AppComponent,
@@ -78,9 +88,13 @@ const appRoutes: Routes = [
     AddMerchantComponent,
     EditPasswordComponent,
     EnterMerchantInfoComponent,
+    EnterMerchantAccountInfoComponent,
     MerchantApprovementComponent,
     ActivitiesApprovementListComponent,
     ActvityDetailComponent,
+    ApproveDialogComponent,
+    AccountApprovementComponent,
+    CredentialDialogComponent,
     UploadImageComponent,
     UploadFileComponent,
     LookupPipe
@@ -111,6 +125,7 @@ const appRoutes: Routes = [
     EnterMerchantService,
     MerchantApprovementService,
     ActivityApprovementService,
+    AccountApprovementService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpLoopInterceptor,

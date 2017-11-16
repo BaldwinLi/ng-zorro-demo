@@ -35,11 +35,12 @@ export class AddMerchantComponent implements OnInit {
 
     ngOnInit() {
         this.merchantForm = this.fb.group({
-            merchantName: [null, [Validators.required]],
-            contactName: [null, [Validators.required]],
-            phoneNum: [null, [Validators.required]],
+            fullName: [null, [Validators.required]],
+            contact: [null, [Validators.required]],
+            contactPhone: [null, [Validators.required]],
             phoneNumPrefix: ['+86'],
-            merchantLocation: [null, [Validators.required]]
+            registeredAddress: [null, [Validators.required]],
+            registeredUsername: ''
         });
     }
 }
