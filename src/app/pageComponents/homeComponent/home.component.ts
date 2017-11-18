@@ -58,7 +58,11 @@ export class HomeComponent implements OnInit, OnDestroy {
             if (this.breadcrumbItemlist[e]) {
               this.breadcrumbItems.push(
                 {
-                  link: this.breadcrumbItemlist[e][0] + (this.breadcrumbItemlist[e][3] ? ('/' + names.pop()) : ''),
+                  link: this.breadcrumbItemlist[e][0] + (this.breadcrumbItemlist[e].length === 4 ? item.substr(
+                    item.indexOf(e) +
+                    e.length,
+                    item.substr(item.indexOf(e) +
+                    e.length).indexOf('/', 1)) : ''),
                   label: this.breadcrumbItemlist[e][1],
                   icon: this.breadcrumbItemlist[e][2]
                 });

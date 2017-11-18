@@ -63,7 +63,7 @@ export class EnterMerchantAccountInfoComponent implements OnInit {
         const scope = this;
         this.id = this.route.params['_value']['id'];
         this.merchantId = this.route.params['_value']['merchantId'];
-        this.componentCommunicator.$emit('/menu/enter_merchant/enter_merchant_info/enter_merchant_account');
+        this.componentCommunicator.$emit(`/menu/enter_merchant/enter_merchant_info/${this.merchantId}/enter_merchant_account`);
         this.refreshData();
     }
 }

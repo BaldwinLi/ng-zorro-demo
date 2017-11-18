@@ -14,39 +14,53 @@ export class AccountApprovementService {
     getPendingAccounts(): Observable<any> {
         return this.appRequest.queryMerchantsApproval('?approvalType=bank_account&status=under_approval').map(
             success => {
-                // success.list = success.list.map(v => {
-                //     const approvalForm = JSON.parse(v.approvalForm);
-                //     delete v.approvalForm;
-                //     return {
-                //         ...approvalForm,
-                //         ...v
-                //     };
-                // });
-                // const list = [];
-                // success.list.forEach(e => {
-                //     e.accountShops.forEach(el => {
-                //         const accountOpeningCertificateFile = e.accountOpeningCertificateFile;
-                //         const approvalDetails = e.approvalDetails;
-                //         delete e.accountOpeningCertificateFile;
-                //         delete e.approvalDetails;
-                //         delete e.accountShops;
-                //         list.push({
-                //             ...accountOpeningCertificateFile,
-                //             ...approvalDetails,
-                //             ...e,
-                //             ...el
-                //         });
-                //     });
-                // });
+                success.list = success.list.map(v => {
+                    const approvalForm = v.approvalForm && JSON.parse(v.approvalForm);
+                    delete v.approvalForm;
+                    return {
+                        ...approvalForm,
+                        ...v
+                    };
+                });
+                const list = [];
+                success.list.forEach(e => {
+                    if (e.accountShops) {
+                        e.accountShops.forEach(el => {
+                            const accountOpeningCertificateFile = e.accountOpeningCertificateFile;
+                            const approvalDetails = e.approvalDetails;
+                            delete e.accountOpeningCertificateFile;
+                            delete e.approvalDetails;
+                            delete e.accountShops;
+                            list.push({
+                                ...accountOpeningCertificateFile,
+                                ...approvalDetails,
+                                ...e,
+                                ...el
+                            });
+                        });
+                    } else {
+                        const accountOpeningCertificateFile = e.accountOpeningCertificateFile;
+                        const approvalDetails = e.approvalDetails;
+                        delete e.accountOpeningCertificateFile;
+                        delete e.approvalDetails;
+                        delete e.accountShops;
+                        list.push({
+                            ...accountOpeningCertificateFile,
+                            ...approvalDetails,
+                            ...e
+                        });
+                    }
+                });
                 return {
-                    list: success.list.map(v => {
-                        const approvalForm = JSON.parse(v.approvalForm);
-                        delete v.approvalForm;
-                        return {
-                            ...approvalForm,
-                            ...v
-                        };
-                    }),
+                    list,
+                    // : success.list.map(v => {
+                    //     const approvalForm = JSON.parse(v.approvalForm);
+                    //     delete v.approvalForm;
+                    //     return {
+                    //         ...approvalForm,
+                    //         ...v
+                    //     };
+                    // }),
                     current: success.pageNum,
                     total: success.total
                 };
@@ -65,7 +79,7 @@ export class AccountApprovementService {
         return this.appRequest.queryMerchantsApproval('?approvalType=bank_account&status=').map(
             success => {
                 success.list = success.list.map(v => {
-                    const approvalForm = JSON.parse(v.approvalForm);
+                    const approvalForm = v.approvalForm && JSON.parse(v.approvalForm);
                     delete v.approvalForm;
                     return {
                         ...approvalForm,
@@ -74,7 +88,21 @@ export class AccountApprovementService {
                 });
                 const list = [];
                 success.list.forEach(e => {
-                    e.accountShops.forEach(el => {
+                    if (e.accountShops) {
+                        e.accountShops.forEach(el => {
+                            const accountOpeningCertificateFile = e.accountOpeningCertificateFile;
+                            const approvalDetails = e.approvalDetails;
+                            delete e.accountOpeningCertificateFile;
+                            delete e.approvalDetails;
+                            delete e.accountShops;
+                            list.push({
+                                ...accountOpeningCertificateFile,
+                                ...approvalDetails,
+                                ...e,
+                                ...el
+                            });
+                        });
+                    } else {
                         const accountOpeningCertificateFile = e.accountOpeningCertificateFile;
                         const approvalDetails = e.approvalDetails;
                         delete e.accountOpeningCertificateFile;
@@ -83,10 +111,9 @@ export class AccountApprovementService {
                         list.push({
                             ...accountOpeningCertificateFile,
                             ...approvalDetails,
-                            ...e,
-                            ...el
+                            ...e
                         });
-                    });
+                    }
                 });
                 return {
                     list,
