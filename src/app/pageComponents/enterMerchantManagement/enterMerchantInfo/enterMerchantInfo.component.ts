@@ -91,7 +91,8 @@ export class EnterMerchantInfoComponent implements OnInit {
             }, {
                 id: 'approvalType',
                 label: '账户类型',
-                type: 'text'
+                type: 'lookup',
+                options: 'ACCOUNT_TYPE'
             }, {
                 id: 'accountHolder',
                 label: '持卡人',

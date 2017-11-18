@@ -35,6 +35,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   breadcrumbItemlist: Object = {
     enter_merchant: ['/menu/enter_merchant', '入驻商家管理', 'anticon anticon-bank'],
     enter_merchant_info: ['/menu/enter_merchant/enter_merchant_info', '入驻商家详情', 'anticon anticon-idcard', true],
+    enter_merchant_account: ['/menu/enter_merchant/enter_merchant_info/enter_merchant_account', '收款账户详情'],
     merchant_approvement: ['/menu/merchant_approvement', '商家注册审核'],
     account_approvement: ['/menu/merchant_approvement', '收款账户审核'],
     activity_approvement: ['/menu/activity_approvement', '活动信息审核'],

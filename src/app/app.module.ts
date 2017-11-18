@@ -50,9 +50,11 @@ const appRoutes: Routes = [
         path: 'menu', component: MenuComponent,
         children: [
           { path: 'enter_merchant', component: EnterMerchantComponent },
-          { path: 'enter_merchant/enter_merchant_info/:id', component: EnterMerchantInfoComponent, children: [
-            { path: 'enter_merchant_account', component: EnterMerchantAccountInfoComponent }
-          ]},
+          { path: 'enter_merchant/enter_merchant_info/:id', component: EnterMerchantInfoComponent },
+          { path: 'enter_merchant/enter_merchant_info/:id/enter_merchant_account', component: EnterMerchantAccountInfoComponent },
+          // children: [
+          //   { path: 'enter_merchant_account', component: EnterMerchantAccountInfoComponent }
+          // ]},
           { path: 'merchant_approvement', component: MerchantApprovementComponent },
           { path: 'account_approvement', component: AccountApprovementComponent },
           { path: 'activity_approvement', component: ActivitiesApprovementListComponent },
