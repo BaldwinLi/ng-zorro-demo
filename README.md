@@ -1,5 +1,5 @@
-# MM-PLATFORM-WEB
-## 喵喵管家后台管理前端工程
+# NG-ZORRO-DEMO
+## zorro前端工程
 
 ## 基于Angular4.2.4 Typescript为主要开发语言的现代化前端项目工程
 脚手架和自动化打包工具为angular官方推荐的angular-cli。
