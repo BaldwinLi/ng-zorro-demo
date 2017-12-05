@@ -46,13 +46,14 @@
         <div nz-form-control nz-col [nzSpan]="17">
           <div class="nz-row-margin" *ngFor="let content of activity.content" nz-form-item nz-row>
             <div *ngIf="!content.value" nz-form-label nz-col [nzSpan]="14">
-              <label>{{content.label}}</label>
+              <span>{{content.label}}</span>
             </div>
-            <div *ngIf="!!content.value" nz-form-label nz-col [nzSpan]="3">
-              <label>{{content.label}}</label>
+            <div *ngIf="!!content.value" nz-form-label nz-col [nzSpan]="2">
+              <label>{{content.label}}:</label>
             </div>
             <div *ngIf="!!content.value" nz-form-control nz-col [nzSpan]="14">
-              <span nz-form-text>{{content.value}}</span>
+              <span nz-form-text *ngIf="!content.options">{{content.value}}</span>
+              <span nz-form-text *ngIf="content.options">{{content.value | lookup: content.options}}</span>
             </div>
           </div>
         </div>

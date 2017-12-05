@@ -9,7 +9,13 @@ import { UtilService } from './util.service';
 export const isLocal = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
 
 export const appContextPath = isLocal ? (window.location.origin + '/dev_api/') :
-    (window.location.origin + window.location.pathname);
+    (window.location.origin + '/');
+
+export const oauthContextPath = isLocal ? (window.location.origin + '/oauth_api/') :
+(window.location.origin + '/');
+
+export const platformContextPath = isLocal ? (window.location.origin + '/platform_api/') :
+(window.location.origin + '/');
 
 @Injectable()
 export class AppRequestService {
@@ -26,7 +32,7 @@ export class AppRequestService {
     }
 
     querySession(params: any): Observable<any> {
-        return this.httpService.getRequestObservable(`${appContextPath}oauth/token`,
+        return this.httpService.getRequestObservable(`${oauthContextPath}oauth/token`,
             'post', params || {}, {
                 'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
             });
@@ -48,7 +54,7 @@ export class AppRequestService {
     }
 
     queryUser(): Observable<any> {
-        return this.httpService.getRequestObservable(`${appContextPath}platform-api/principal-user`,
+        return this.httpService.getRequestObservable(`${platformContextPath}platform-api/principal-user`,
             'get');
     }
 
@@ -59,32 +65,32 @@ export class AppRequestService {
 
     queryMerchants(params?: Object): Observable<any> {
         return this.httpService.getRequestObservable(
-            `${appContextPath}platform-api/merchants`,
+            `${platformContextPath}platform-api/merchants`,
             'get', params || {}).map(this.extractData.bind(this)).catch(this.handleError.bind(this));
     }
 
     insertMerchant(params?: Object): Observable<any> {
         return this.httpService.getRequestObservable(
-            `${appContextPath}platform-api/merchant`,
+            `${platformContextPath}platform-api/merchant`,
             'post',
             params || {}).map(this.extractData.bind(this)).catch(this.handleError.bind(this));
     }
 
     queryMerchantDetail(condition: string): Observable<any> {
         return this.httpService.getRequestObservable(
-            `${appContextPath}platform-api/merchant${condition}`,
+            `${platformContextPath}platform-api/merchant${condition}`,
             'get').map(this.extractData.bind(this)).catch(this.handleError.bind(this));
     }
 
     queryMerchantsApproval(condition: string): Observable<any> {
         return this.httpService.getRequestObservable(
-            `${appContextPath}platform-api/merchantapprovals${condition}`,
+            `${platformContextPath}platform-api/merchantapprovals${condition}`,
             'get').map(this.extractData.bind(this)).catch(this.handleError.bind(this));
     }
 
     approveMerchants(params?: Object): Observable<any> {
         return this.httpService.getRequestObservable(
-            `${appContextPath}platform-api/merchantapproval`,
+            `${platformContextPath}platform-api/merchantapproval`,
             'put',
             params || {}).map(this.extractData.bind(this)).catch(this.handleError.bind(this));
     }

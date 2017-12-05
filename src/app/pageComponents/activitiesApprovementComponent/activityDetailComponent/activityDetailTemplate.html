@@ -21,7 +21,8 @@
           <label>{{item.label}}</label>
         </div>
         <div nz-form-control nz-col [nzSpan]="15">
-          <label *ngIf="_isString(item.value)">{{item.value}}</label>
+          <label *ngIf="_isString(item.value) && !item.options">{{item.value}}</label>
+          <label *ngIf="_isString(item.value) && item.options">{{item.value | lookup: item.options}}</label>
           <app-upload-image *ngIf="!_isString(item.value)" [url]="" [readonly]="true" [uploadedFiles]="item.value"></app-upload-image>
         </div>
       </div>
@@ -94,14 +95,14 @@
         <div nz-col [nzSpan]="14"></div>
         <div nz-col [nzSpan]="2">
           <button nz-button [nzType]="'primary'" (click)="approve($event)">
-            <span>通过</span>
+            <span>审 核</span>
           </button>
         </div>
-        <div nz-col [nzSpan]="2">
-          <button nz-button (click)="reject($event)">
+        <!-- <div nz-col [nzSpan]="2">
+          <button nz-button (click)="approve($event, 'rejected')">
             <span>驳回</span>
           </button>
-        </div>
+        </div> -->
       </div>
     </nz-header>
   </nz-spin>

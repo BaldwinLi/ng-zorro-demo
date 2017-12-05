@@ -81,8 +81,9 @@ export class LoginComponent implements OnInit {
           }
         },
         error => {
-          if ('Unauthorized' === error.statusText) {
+          if ('invalid_grant' === (error.error && error.error.oAuth2ErrorCode)) {
             this.loginResultText = '用户名或密码错误。';
+            this.loading = false;
           } else {
             // if (this.router.navigate([''])) {
             this.loginResultText = '喵喵服务器暂时不可用';

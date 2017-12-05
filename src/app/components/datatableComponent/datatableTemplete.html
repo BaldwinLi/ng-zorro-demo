@@ -1,4 +1,4 @@
-<nz-table #nzTable *ngIf="isAjaxData" [nzAjaxData]="dataSet" [nzShowSizeChanger]="true" [nzLoading]="loading" [nzTotal]="total"
+<nz-table #nzTable *ngIf="isAjaxData" [nzAjaxData]="dataSet || []" [nzShowSizeChanger]="true" [nzLoading]="loading" [nzTotal]="total"
   [(nzPageIndex)]="current" (nzPageIndexChange)="pageIndexChange($event)" [(nzPageSize)]="pageSize" (nzPageSizeChange)="pageSizeChange($event)">
   <thead nz-thead>
     <tr>
@@ -55,7 +55,7 @@
   </tbody>
 </nz-table>
 
-<nz-table #nzTable *ngIf="!isAjaxData" [nzIsPagination]="isPagination" [nzDataSource]="dataSet" [nzShowSizeChanger]="true"
+<nz-table #nzTable *ngIf="!isAjaxData" [nzIsPagination]="isPagination" [nzDataSource]="dataSet || []" [nzShowSizeChanger]="true"
   [nzLoading]="loading" [nzTotal]="total" [(nzPageIndex)]="current" (nzPageIndexChange)="pageIndexChange($event)" [(nzPageSize)]="pageSize"
   (nzPageSizeChange)="pageSizeChange($event)">
   <thead nz-thead>

@@ -6,7 +6,7 @@ export class DataModelService {
 
     }
 
-    public static ACTIVITY_TYPES: Array<Object> = [
+    public static ACTIVITY_TYPES: Array<{id: string, value: string}> = [
         {
             id: '0',
             value: '全部'
@@ -22,7 +22,7 @@ export class DataModelService {
         }
     ];
 
-    public static APPROVE_STATUS: Array<Object> = [
+    public static APPROVE_STATUS: Array<{id: string, value: string}> = [
         {
             id: '0',
             value: '全部'
@@ -38,7 +38,7 @@ export class DataModelService {
         }
     ];
 
-    public static ACTIVATE_STATUS: Array<Object> = [
+    public static ACTIVATE_STATUS: Array<{id: string, value: string}> = [
         {
             id: '0',
             value: '全部'
@@ -54,7 +54,7 @@ export class DataModelService {
         }
     ];
 
-    public static ACCOUNT_TYPE: Array<Object> = [
+    public static ACCOUNT_TYPE: Array<{id: string, value: string}> = [
         {
             id: 'bank_account',
             value: '商户账户'
@@ -64,6 +64,19 @@ export class DataModelService {
         }, {
             id: 'wechat_activity',
             value: '微信活动'
+        }
+    ];
+
+    public static PAY_STATUS: Array<{id: string, value: string}> = [
+        {
+            id: '0',
+            value: '全部'
+        }, {
+            id: '1',
+            value: '成功'
+        }, {
+            id: '2',
+            value: '失败'
         }
     ];
 

@@ -76,7 +76,7 @@ export class EnterMerchantComponent implements OnInit {
     const scope = this;
     this.columns = [
       {
-        id: 'merchantId',
+        id: 'merchantCode',
         label: '商家编号',
         type: 'text'
       },

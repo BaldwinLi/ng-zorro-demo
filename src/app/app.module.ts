@@ -24,6 +24,7 @@ import { MerchantApprovementComponent } from './pageComponents/merchantApproveme
 import { ActivitiesApprovementListComponent } from './pageComponents/activitiesApprovementComponent/activitiesApproveListComponent/activitiesApprovementList.component';
 import { ActvityDetailComponent } from './pageComponents/activitiesApprovementComponent/activityDetailComponent/activityDetail.component';
 import { AccountApprovementComponent } from './pageComponents/accountApprovementComponent/accountApprovement.component';
+import { StatementAccountComponent } from './pageComponents/statementAccountComponent/statementAccount.component';
 import { ApproveDialogComponent } from './pageComponents/dialogCmopponent/approveDialog.component';
 import { CredentialDialogComponent } from './pageComponents/accountApprovementComponent/credentialDialog.component';
 import { UploadFileComponent } from './components/uploadFileComponent/uploadFile.component';
@@ -60,6 +61,7 @@ const appRoutes: Routes = [
           { path: 'activity_approvement', component: ActivitiesApprovementListComponent },
           { path: 'activity_approvement/activity_detail/:id', component: ActvityDetailComponent },
           // { path: 'menu_platform', component: MenuPlatformComponent },
+          { path: 'statement_account', component: StatementAccountComponent },
           { path: '', redirectTo: '/menu/enter_merchant', pathMatch: 'full' }
         ],
       },
@@ -96,6 +98,7 @@ const appRoutes: Routes = [
     ActvityDetailComponent,
     ApproveDialogComponent,
     AccountApprovementComponent,
+    StatementAccountComponent,
     CredentialDialogComponent,
     UploadImageComponent,
     UploadFileComponent,
@@ -109,7 +112,7 @@ const appRoutes: Routes = [
     BrowserAnimationsModule,
     FileUploadModule,
     RouterModule.forRoot(appRoutes, { useHash: true }),
-    NgZorroAntdModule.forRoot({ extraFontName: 'anticon', extraFontUrl: '../assets/iconfont/iconfont' }),
+    NgZorroAntdModule.forRoot({ extraFontName: 'anticon', extraFontUrl: 'assets/iconfont/iconfont' }),
     ImageUploadModule.forRoot()
   ],
   providers: [

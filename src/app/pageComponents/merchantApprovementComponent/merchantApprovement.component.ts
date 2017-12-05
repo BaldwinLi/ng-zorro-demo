@@ -29,7 +29,7 @@ export class MerchantApprovementComponent implements OnInit {
     columns: Array<any>;
     hisColumns: Array<any> = [
         {
-            id: 'merchantId',
+            id: 'merchantCode',
             label: '商家编号',
             type: 'text'
         },
@@ -131,8 +131,8 @@ export class MerchantApprovementComponent implements OnInit {
               this.loading = true;
               this.entity.approvePendingMerchants({
                   id: row.id,
-                  comment: result.result,
-                  status: result.resultReason
+                  comment: result.resultReason,
+                  status: result.result
               }).subscribe(
                 success => {
                   this.refreshData();
@@ -171,7 +171,7 @@ export class MerchantApprovementComponent implements OnInit {
         this.columns = [
             // '$checkbox',
             {
-                id: 'merchantId',
+                id: 'merchantCode',
                 label: '商家编号',
                 type: 'text'
             },

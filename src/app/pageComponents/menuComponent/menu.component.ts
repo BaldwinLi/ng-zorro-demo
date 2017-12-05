@@ -6,7 +6,6 @@ import { Component } from '@angular/core';
   styleUrls: ['../../../assets/css/custom.css']
 })
 export class MenuComponent {
-//   title = 'app';
   isCollapsed: Boolean = false;
 
   toggleCollapsed(): void {

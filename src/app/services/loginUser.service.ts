@@ -15,24 +15,7 @@ export class LoginUserService {
         private appRequest: AppRequestService,
         private nms: NzMessageService
     ) { }
-    // resend(svc_id: string, tran_uuid: string): Observable<any>{
-    //     return this.appRequest.resendTranlog(svc_id, tran_uuid);
-    // }
-    // email
-    // :
-    // "119@gov.cn"
-    // isActive
-    // :
-    // true
-    // userCategory
-    // :
-    // "sys"
-    // userId
-    // :
-    // 6
-    // username
-    // :
-    // "platform_admin"
+
     public static user: any;
     public static sysUser: any;
     public static dictionary: any;
@@ -55,7 +38,7 @@ export class LoginUserService {
                             console.log('');
                         },
                         _error => {
-                            this.nms.error('数据字典获取失败。');
+                            // this.nms.error('数据字典获取失败。');
                         }
                     );
                     // return 'success';

@@ -1,4 +1,18 @@
 {
+  "/platform_api": {
+    "target": "http://47.92.142.43",
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/platform_api": ""
+    }
+  },
+  "/oauth_api": {
+    "target": "http://47.92.142.43",
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/oauth_api": ""
+    }
+  },
   "/dev_api": {
     "target": "http://47.92.142.43",
     "changeOrigin": true,

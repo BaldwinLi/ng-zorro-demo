@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { isString } from 'lodash';
+import { isString, isObject } from 'lodash';
 import { Lang } from '../../../../assets/i18n/i18n';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NzModalService, NzModalSubject } from 'ng-zorro-antd';
 import { DataModelService } from '../../../pipes/model';
+import { ApproveDialogComponent } from '../../dialogCmopponent/approveDialog.component';
 import { ComponentCommunicateService } from '../../../services/baseServices/componentCommunicate.service';
 import { ActivityApprovementService } from '../../../services/activityApprovement.service';
 
@@ -12,55 +14,86 @@ import { ActivityApprovementService } from '../../../services/activityApprovemen
     styleUrls: ['../../../../assets/css/custom.css']
 })
 export class ActvityDetailComponent implements OnInit {
-    id: String;
+    id: string;
     loading: Boolean = false;
     loadingTip: String = Lang['loading_tip'];
     _isString: Function = isString;
-    details: Array<{ type: string, label: string, value: string | Array<{ url: string, fileName: string }> }>;
+    approveWin: NzModalSubject;
+    details: Array<{ type: string, label: string, options?: string, value: string | Array<{ url: string, fileName: string }> }>;
     others: Array<{ type: string, label: string, value: string | Array<string | { url: string, fileName: string }> }>;
-    columns: Array<{ id: String, label: string }>;
+    columns: Array<{ id: string, label: string, type: string }> = [
+        {
+            id: 'level',
+            label: '奖品设置',
+            type: 'text'
+        }, {
+            id: 'consume',
+            label: '奖品名称',
+            type: 'text'
+        }, {
+            id: 'prizeCount',
+            label: '奖品数量',
+            type: 'text'
+        }, {
+            id: 'probability',
+            label: '中奖概率',
+            type: 'text'
+        }
+    ];
     data: Array<any> = [];
     desDetail: Array<{ type: string, label: string, value: string | Array<string | { url: string, fileName: string }> }>;
     constructor(
         private router: Router,
         private route: ActivatedRoute,
         private dm: DataModelService,
+        private model: NzModalService,
         private componentCommunicator: ComponentCommunicateService,
         private entity: ActivityApprovementService
     ) { }
 
-    goBack($event: any): void {
+    goBack($event?: any): void {
         this.router.navigate(['/menu/activity_approvement']);
     }
 
     approve(event: any): void {
-        this.loading = true;
-        this.entity.approveActivity({}).subscribe(
-            success => {
-                this.loading = false;
-            },
-            error => {
-                this.loading = false;
+        this.approveWin = this.model.open({
+            title: '活动审核',
+            content: ApproveDialogComponent,
+            footer: false,
+            maskClosable: false
+        });
+        this.approveWin.subscribe(result => {
+            if (isObject(result)) {
+                this.loading = true;
+                this.entity.approveActivity({
+                    id: parseInt(this.id),
+                    comment: result.resultReason,
+                    status: result.result
+                }).subscribe(
+                    success => {
+                        this.goBack();
+                        this.loading = false;
+                    },
+                    error => {
+                        this.loading = false;
+                    }
+                    );
             }
-        );
-    }
-
-    reject(event: any): void {
-        this.loading = true;
-        this.entity.approveActivity({}).subscribe(
-            success => {
-                this.loading = false;
-            },
-            error => {
-                this.loading = false;
-            }
-        );
+        });
     }
 
     refreshData(id: String): void {
         this.loading = true;
-        this.entity.getActivities({}).subscribe(
+        this.entity.getActivityDetail({ id }).subscribe(
             success => {
+                success = success && success.filter(e => (e.id === id));
+                const detailObj = success[0];
+                if(detailObj) {
+                    this.details = detailObj.details;
+                    this.data = detailObj.data || [];
+                    this.others = detailObj.others;
+                    this.desDetail = detailObj.desDetail;
+                }
                 this.loading = false;
             },
             error => {
@@ -72,83 +105,5 @@ export class ActvityDetailComponent implements OnInit {
     ngOnInit() {
         this.refreshData(this.id = this.route.params['_value']['id']);
         this.componentCommunicator.$emit('/menu/activity_approvement/activity_detail');
-        this.details = [
-            {
-                type: '',
-                label: '活动类型',
-                value: '大转盘'
-            }, {
-                type: '',
-                label: '门店LOGO',
-                value: [
-                    {
-                        url: '',
-                        fileName: 'img.png'
-                    }
-                ]
-            }, {
-                type: '',
-                label: '微信活动图',
-                value: [
-                    {
-                        url: '',
-                        fileName: 'img.png'
-                    }
-                ]
-            }, {
-                type: '',
-                label: '活动标题',
-                value: '丹阳这家皮肤管理店开业一周年庆啦！各种皮肤管理无门槛免费送！'
-            }, {
-                type: '',
-                label: '活动宣传语',
-                value: '活动时间短，速度来！'
-            }, {
-                type: '',
-                label: '每位客户可点击抽奖次数',
-                value: '1'
-            }, {
-                type: '',
-                label: '分享到朋友圈后可多获得点击数',
-                value: '1'
-            }, {
-                type: '',
-                label: '商家特色描述',
-                value: '就是好'
-            }, {
-                type: '',
-                label: '门店',
-                value: 'Amelie皮肤管理中心'
-            }, {
-                type: '',
-                label: '活动日期',
-                value: '2017/11/10-2017/12/25'
-            }
-        ];
-        this.others = [
-            {
-                type: '',
-                label: '预约信息',
-                value: '需要提前预约'
-            }, {
-                type: '',
-                label: '适合人群',
-                value: '不限适用人员'
-            }, {
-                type: 'tags',
-                label: '规则提醒',
-                value: ['每次消费仅1张', '需当日体验完所有项目', '不可与其他优惠共享']
-            }
-        ];
-        this.desDetail = [
-            {
-                type: '',
-                label: '',
-                value: [{
-                    url: '',
-                    fileName: 'img.png'
-                }]
-            }
-        ];
     }
 }

@@ -2,10 +2,10 @@
   <nz-header nzTheme="light" class="platform-header">
     <label>入驻商家</label>
     <nz-input [nzType]="'search'" [nzPlaceHolder]="'商家名字'" [(ngModel)]="marchantKey" style="width: 200px;" (click)="refreshData($event)" (keypress)="refreshData($event)"></nz-input>
-    <button nz-button [nzType]="'primary'" class="right-element" (click)="addMerchant($event)">
+    <!-- <button nz-button [nzType]="'primary'" class="right-element" (click)="addMerchant($event)">
       <i class="anticon anticon-plus"></i>
       <span>添加商家</span>
-    </button>
+    </button> -->
   </nz-header>
   <nz-content style="padding:0 50px;">
     <app-datatable [columns]="columns" [current]="current" [pageSize]="pageSize" [total]="total" [dataSet]="data" [loading]="loading"

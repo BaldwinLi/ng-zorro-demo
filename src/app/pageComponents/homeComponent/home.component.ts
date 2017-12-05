@@ -25,8 +25,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   loading: Boolean = false;
   loadingTip: String = '注销中，请稍后...';
 
-  breadcrumbItems: Array<Object> = [{
-    name: 'enter_merchant',
+  breadcrumbItems: Array<{ link: string, icon: string, label: string }> = [{
     link: '/menu/enter_merchant',
     icon: 'anticon anticon-bank',
     label: '入驻商家管理'
@@ -36,10 +35,11 @@ export class HomeComponent implements OnInit, OnDestroy {
     enter_merchant: ['/menu/enter_merchant', '入驻商家管理', 'anticon anticon-bank'],
     enter_merchant_info: ['/menu/enter_merchant/enter_merchant_info', '入驻商家详情', 'anticon anticon-idcard', true],
     enter_merchant_account: ['/menu/enter_merchant/enter_merchant_info/enter_merchant_account', '收款账户详情'],
-    merchant_approvement: ['/menu/merchant_approvement', '商家注册审核'],
-    account_approvement: ['/menu/merchant_approvement', '收款账户审核'],
-    activity_approvement: ['/menu/activity_approvement', '活动信息审核'],
-    activity_detail: ['/menu/activity_approvement/activity_detail', '活动详情']
+    merchant_approvement: ['/menu/merchant_approvement', '商家注册审核', 'anticon anticon-edit'],
+    account_approvement: ['/menu/merchant_approvement', '收款账户审核', 'anticon anticon-edit'],
+    activity_approvement: ['/menu/activity_approvement', '活动信息审核', 'anticon anticon-edit'],
+    activity_detail: ['/menu/activity_approvement/activity_detail', '活动详情'],
+    statement_account: ['/menu/statement_account', '商家对账单', 'anticon anticon-exception']
   };
 
   subscription: Subscription;
@@ -62,7 +62,7 @@ export class HomeComponent implements OnInit, OnDestroy {
                     item.indexOf(e) +
                     e.length,
                     item.substr(item.indexOf(e) +
-                    e.length).indexOf('/', 1)) : ''),
+                      e.length).indexOf('/', 1)) : ''),
                   label: this.breadcrumbItemlist[e][1],
                   icon: this.breadcrumbItemlist[e][2]
                 });

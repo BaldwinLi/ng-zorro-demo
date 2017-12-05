@@ -77,7 +77,7 @@ export class AccountApprovementComponent implements OnInit {
 
     accountApprove(row: any): void {
         this.approveWin = this.model.open({
-            title: '商家审核',
+            title: '账户审核',
             content: ApproveDialogComponent,
             componentParams: {
                 params: row
@@ -90,8 +90,8 @@ export class AccountApprovementComponent implements OnInit {
                 this.loading = true;
                 this.entity.approvePendingAccounts({
                     id: row.id,
-                    comment: result.result,
-                    status: result.resultReason
+                    comment: result.resultReason,
+                    status: result.result
                 }).subscribe(
                     success => {
                         this.refreshData();
@@ -145,7 +145,7 @@ export class AccountApprovementComponent implements OnInit {
         this.refreshHistoryData();
         this.columns = [
             {
-                id: 'merchantId',
+                id: 'merchantCode',
                 label: '商家编号',
                 type: 'text'
             }, {

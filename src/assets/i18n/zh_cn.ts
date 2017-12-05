@@ -537,6 +537,6 @@ export default {
   'file_too_large': '图片太大了，无法上传。',
   'upload_image': '图片上传',
   'preview_image_title': '图片预览',
-  'loading_tip': '喵喵管家正在为您加载，请稍后...'
+  'loading_tip': '喵喵正在为您加载，请稍后...'
 };
 
