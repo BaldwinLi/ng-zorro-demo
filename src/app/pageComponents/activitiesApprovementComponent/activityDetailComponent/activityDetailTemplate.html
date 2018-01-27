@@ -21,16 +21,22 @@
           <label>{{item.label}}</label>
         </div>
         <div nz-form-control nz-col [nzSpan]="15">
-          <label *ngIf="_isString(item.value) && !item.options">{{item.value}}</label>
-          <label *ngIf="_isString(item.value) && item.options">{{item.value | lookup: item.options}}</label>
-          <app-upload-image *ngIf="!_isString(item.value)" [url]="" [readonly]="true" [uploadedFiles]="item.value"></app-upload-image>
+          <label *ngIf="!_isObject(item.value) && !item.options">{{item.value}}</label>
+          <label *ngIf="!_isObject(item.value) && item.options">{{item.value | lookup: item.options}}</label>
+          <label *ngIf="item.type==='dateRange'">{{item.value[0]}} 至 {{item.value[1]}}</label>
+          <label *ngIf="item.type==='tags'">
+            <span *ngFor="let tag of item.value">
+              <nz-tag [nzColor]="item.color">{{tag}}</nz-tag>
+            </span>
+          </label>
+          <app-upload-image *ngIf="item.type==='image'" [url]="" [readonly]="true" [uploadedFiles]="item.value"></app-upload-image>
         </div>
       </div>
     </nz-content>
     <nz-header nzTheme="light" class="platform-header">
       <div nz-row [nzType]="'flex'" [nzJustify]="'space-between'">
-        <div nz-col [nzSpan]="4">
-          <label>奖项设置</label>
+        <div nz-col [nzSpan]="6">
+          <label>{{listTitle}}</label>
         </div>
       </div>
     </nz-header>
@@ -51,13 +57,13 @@
           <label>{{item.label}}</label>
         </div>
         <div nz-form-control nz-col [nzSpan]="15">
-          <label *ngIf="_isString(item.value)">{{item.value}}</label>
-          <label *ngIf="item.type==='tags'&&!_isString(item.value) ">
+          <label *ngIf="!_isObject(item.value)">{{item.value}}</label>
+          <label *ngIf="item.type==='tags' && _isObject(item.value) ">
             <span *ngFor="let tag of item.value">
-              <nz-tag [nzColor]="'green'">{{tag}}</nz-tag>
+              <nz-tag [nzColor]="item.color">{{tag}}</nz-tag>
             </span>
           </label>
-          <app-upload-image *ngIf="!_isString(item.value) && item.type!=='tags'" [url]="" [readonly]="true" [uploadedFiles]="item.value"></app-upload-image>
+          <app-upload-image *ngIf="_isObject(item.value) && item.type!=='tags'" [url]="" [readonly]="true" [uploadedFiles]="item.value"></app-upload-image>
         </div>
       </div>
     </nz-content>
@@ -66,29 +72,23 @@
         <div nz-col [nzSpan]="4">
           <label>图文详情</label>
         </div>
-        <div nz-col [nzSpan]="16">
-          <label>黄金皮肤免费做，快点儿来吧</label>
-        </div>
       </div>
     </nz-header>
     <nz-content class="tab-content">
       <div class="nz-row-margin" *ngFor="let item of desDetail" nz-form-item nz-row style="background: #fff;" [nzType]="'flex'"
         [nzJustify]="'space-around'" [nzAlign]="'middle'">
-        <div nz-form-label nz-col [nzSpan]="5">
-          <label>{{item.label}}</label>
-        </div>
-        <div nz-form-control nz-col [nzSpan]="15">
-          <label *ngIf="_isString(item.value)">{{item.value}}</label>
-          <label *ngIf="item.type==='tags'&&!_isString(item.value) ">
-            <span *ngFor="let tag of item.value">
-              <nz-tag [nzColor]="'green'">{{tag}}</nz-tag>
-            </span>
+        <div *ngIf="item.value" nz-form-control nz-col [nzSpan]="15">
+          <label *ngIf="item.type==='text'">
+            <nz-tag [nzColor]="'green'">{{item.value}}</nz-tag>
           </label>
-          <app-upload-image *ngIf="!_isString(item.value) && item.type!=='tags'" [url]="" [readonly]="true" [uploadedFiles]="item.value"></app-upload-image>
+          <label *ngIf="item.type==='rule'">
+            <nz-tag [nzColor]="'purple'">{{item.value}}</nz-tag>
+          </label>
+          <app-upload-image *ngIf="item.type==='image'" [url]="" [readonly]="true" [uploadedFiles]="item.value"></app-upload-image>
         </div>
       </div>
     </nz-content>
-    <nz-header nzTheme="light" class="platform-header">
+    <nz-header *ngIf="enableApprove" nzTheme="light" class="platform-header">
       <div nz-row [nzType]="'flex'" [nzJustify]="'space-between'">
         <div nz-col [nzSpan]="4">
         </div>

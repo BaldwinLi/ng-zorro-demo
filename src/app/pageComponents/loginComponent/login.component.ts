@@ -64,7 +64,7 @@ export class LoginComponent implements OnInit {
                       this.loading = false;
                     },
                     __error => {
-                      this.loginResultText = '喵喵暂时暂时找不到您的系统用户信息';
+                      this.loginResultText = '喵喵暂时找不到您的系统用户信息';
                       this.loading = false;
                     }
                   );
@@ -72,7 +72,7 @@ export class LoginComponent implements OnInit {
                 this.loading = false;
               },
               error => {
-                this.loginResultText = '喵喵暂时暂时找不到您的用户信息';
+                this.loginResultText = '喵喵暂时找不到您的用户信息';
                 this.loading = false;
               }
             );

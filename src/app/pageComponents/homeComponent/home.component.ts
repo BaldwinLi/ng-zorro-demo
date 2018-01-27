@@ -36,10 +36,16 @@ export class HomeComponent implements OnInit, OnDestroy {
     enter_merchant_info: ['/menu/enter_merchant/enter_merchant_info', '入驻商家详情', 'anticon anticon-idcard', true],
     enter_merchant_account: ['/menu/enter_merchant/enter_merchant_info/enter_merchant_account', '收款账户详情'],
     merchant_approvement: ['/menu/merchant_approvement', '商家注册审核', 'anticon anticon-edit'],
+    shop_approvement: ['/menu/shop_approvement', '商家门店审核', 'anticon anticon-edit'],
     account_approvement: ['/menu/merchant_approvement', '收款账户审核', 'anticon anticon-edit'],
     activity_approvement: ['/menu/activity_approvement', '活动信息审核', 'anticon anticon-edit'],
     activity_detail: ['/menu/activity_approvement/activity_detail', '活动详情'],
-    statement_account: ['/menu/statement_account', '商家对账单', 'anticon anticon-exception']
+    statement_accounts: ['/menu/statement_accounts', '商家对账单', 'anticon anticon-exception'],
+    settle_accounts: ['/menu/settle_accounts', '商家日结算记录', 'anticon anticon-exception'],
+    settle_account_detail: ['/menu/settle_accounts/settle_account_detail', '商家日结算记录详情'],
+    manual_payment: ['/menu/manual_payment', '手动付款', 'anticon anticon-pay-circle'],
+    authority_management: ['/menu/authority_management', '权限管理', 'anticon anticon-usergroup-add'],
+    platform_user: ['/menu/platform_user', '平台用户管理', 'anticon anticon-user']
   };
 
   subscription: Subscription;

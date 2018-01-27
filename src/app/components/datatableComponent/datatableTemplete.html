@@ -2,7 +2,7 @@
   [(nzPageIndex)]="current" (nzPageIndexChange)="pageIndexChange($event)" [(nzPageSize)]="pageSize" (nzPageSizeChange)="pageSizeChange($event)">
   <thead nz-thead>
     <tr>
-      <th nz-th *ngFor="let col of columns">
+      <th nz-th *ngFor="let col of columns"[ngStyle]="col?.headerCss">
         <span>{{col.label}}</span>
         <nz-table-sort *ngIf="col.sort" (nzValueChange)="col.sort($event)"></nz-table-sort>
         <nz-dropdown [nzTrigger]="'click'" *ngIf="col.filters">
@@ -23,20 +23,26 @@
     </tr>
   </thead>
   <tbody nz-tbody>
-    <tr nz-tbody-tr *ngFor="let data of dataSet">
-      <td nz-td *ngIf="data==='$checkbox'" [nzCheckbox]="true">
-        <label nz-checkbox [(ngModel)]="data.checked" (ngModelChange)="onCheckItem(data)">
+    <tr nz-tbody-tr *ngFor="let data of dataSet; let i = index;">
+      <td nz-td *ngIf="columns[0]==='$checkbox'" [nzCheckbox]="true">
+        <label nz-checkbox [(ngModel)]="data.checked" [ngStyle]="columns[0]?.css" (ngModelChange)="onCheckItem(data)">
         </label>
       </td>
       <td nz-td *ngFor="let col of columns">
-        <span *ngIf="col.type==='text'">{{data[col.id]}}</span>
-        <span *ngIf="col.type==='lookup'">{{data[col.id]| lookup: col.options}}</span>
-        <span *ngIf="col.type==='action'">
+        <span *ngIf="col.type==='text'" [ngStyle]="col?.css">{{data[col.id]}}</span>
+        <span *ngIf="col.type==='html'" [ngStyle]="col?.css" [innerHTML]="data[col.id]"></span>
+        <span *ngIf="col.type==='date'" [ngStyle]="col?.css">{{data[col.id] | date: col.format}}</span>
+        <span *ngIf="col.type==='lookup'" [ngStyle]="col?.css">{{data[col.id]| lookup: col.options}}</span>
+        <nz-switch *ngIf="col.type==='switch'" [ngModel]="dataSet[i][col.id]"  [ngStyle]="col?.css" (click)="dataSet[i][col.id]=!dataSet[i][col.id];col.callback(dataSet[i], col)">
+          <span checked>{{col.checked}}</span>
+          <span unchecked>{{col.unchecked}}</span>
+        </nz-switch>
+        <span *ngIf="col.type==='action'" [ngStyle]="col?.css">
           <div [style.float]="'left'" *ngFor="let item of col.group; index as i">
-            <a *ngIf="item.type==='link'&&item.callback" (click)="item.callback(data)">{{item.label}}</a>
-            <a *ngIf="item.type==='link'&&item.router" [routerLink]="item.router+data.id">{{item.label}}</a>
-            <span nz-table-divider *ngIf="item.type==='link' && i!==(col.group.length-1)"></span>
-            <nz-dropdown *ngIf="item.type==='dropdown'">
+            <a *ngIf="item.type==='link'&&item.callback" [hidden]="item.hidden && item.hidden(data)" (click)="item.callback(data)">{{item.label}}</a>
+            <a *ngIf="item.type==='link'&&item.router" [hidden]="item.hidden && item.hidden(data)" [routerLink]="item.router+data.id">{{item.label}}</a>
+            <span nz-table-divider *ngIf="item.type==='link' && i!==(col.group.length-1)" [hidden]="item.hidden && item.hidden(data)"></span>
+            <nz-dropdown *ngIf="item.type==='dropdown'" [hidden]="item.hidden && item.hidden(data)">
               <a class="ant-dropdown-link" nz-dropdown>
                 {{item.label}}
                 <i class="anticon anticon-down"></i>
@@ -47,7 +53,7 @@
                 </li>
               </ul>
             </nz-dropdown>
-            <span nz-table-divider *ngIf="item.type==='dropdown'"></span>
+            <span nz-table-divider *ngIf="item.type==='dropdown'" [hidden]="item.hidden && item.hidden(data)"></span>
           </div>
         </span>
       </td>
@@ -60,7 +66,7 @@
   (nzPageSizeChange)="pageSizeChange($event)">
   <thead nz-thead>
     <tr>
-      <th nz-th *ngFor="let col of columns">
+      <th nz-th *ngFor="let col of columns" [ngStyle]="col?.headerCss">
         <span>{{col.label}}</span>
         <nz-table-sort *ngIf="col.sort" (nzValueChange)="col.sort($event)"></nz-table-sort>
         <nz-dropdown [nzTrigger]="'click'" *ngIf="col.filters">
@@ -81,20 +87,26 @@
     </tr>
   </thead>
   <tbody nz-tbody>
-    <tr nz-tbody-tr *ngFor="let data of dataSet">
-      <td nz-td *ngIf="data==='$checkbox'" [nzCheckbox]="true">
-        <label nz-checkbox [(ngModel)]="data.checked" (ngModelChange)="onCheckItem(data)">
+    <tr nz-tbody-tr *ngFor="let data of dataSet; let i = index;">
+      <td nz-td *ngIf="columns[0]==='$checkbox'" [nzCheckbox]="true">
+        <label nz-checkbox [(ngModel)]="data.checked" (ngModelChange)="onCheckItem(data)" [ngStyle]="columns[0]?.css">
         </label>
       </td>
       <td nz-td *ngFor="let col of columns">
-        <span *ngIf="col.type==='text'">{{data[col.id]}}</span>
-        <span *ngIf="col.type==='lookup'">{{data[col.id] | lookup: col.options}}</span>
-        <span *ngIf="col.type==='action'">
+        <span *ngIf="col.type==='text'" [ngStyle]="col?.css">{{data[col.id]}}</span>
+        <span *ngIf="col.type==='html'" [ngStyle]="col?.css" [innerHTML]="data[col.id]"></span>
+        <span *ngIf="col.type==='date'" [ngStyle]="col?.css">{{data[col.id] | date: col.format}}</span>
+        <span *ngIf="col.type==='lookup'" [ngStyle]="col?.css">{{data[col.id] | lookup: col.options}}</span>
+        <nz-switch *ngIf="col.type==='switch'" [ngModel]="dataSet[i][col.id]" [ngStyle]="col?.css" (click)="dataSet[i][col.id]=!dataSet[i][col.id];col.callback(dataSet[i], col)">
+          <span checked>{{col.checked}}</span>
+          <span unchecked>{{col.unchecked}}</span>
+        </nz-switch>
+        <span *ngIf="col.type==='action'"  [ngStyle]="col?.css">
           <div [style.float]="'left'" *ngFor="let item of col.group; index as i">
-            <a *ngIf="item.type==='link'&&item.callback" (click)="item.callback(data)">{{item.label}}</a>
-            <a *ngIf="item.type==='link'&&item.router" [routerLink]="item.router+data.id">{{item.label}}</a>
-            <span nz-table-divider *ngIf="item.type==='link' && i!==(col.group.length-1)"></span>
-            <nz-dropdown *ngIf="item.type==='dropdown'">
+            <a *ngIf="item.type==='link'&&item.callback" [hidden]="item.hidden && item.hidden(data)" (click)="item.callback(data)">{{item.label}}</a>
+            <a *ngIf="item.type==='link'&&item.router" [hidden]="item.hidden && item.hidden(data)" [routerLink]="item.router+data.id">{{item.label}}</a>
+            <span nz-table-divider *ngIf="item.type==='link' && i!==(col.group.length-1)" [hidden]="item.hidden && item.hidden(data)"></span>
+            <nz-dropdown *ngIf="item.type==='dropdown'" [hidden]="item.hidden && item.hidden(data)">
               <a class="ant-dropdown-link" nz-dropdown>
                 {{item.label}}
                 <i class="anticon anticon-down"></i>
@@ -105,7 +117,7 @@
                 </li>
               </ul>
             </nz-dropdown>
-            <span nz-table-divider *ngIf="item.type==='dropdown'"></span>
+            <span nz-table-divider *ngIf="item.type==='dropdown'" [hidden]="item.hidden && item.hidden(data)"></span>
           </div>
         </span>
       </td>

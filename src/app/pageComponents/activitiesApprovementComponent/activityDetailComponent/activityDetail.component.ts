@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { isString, isObject } from 'lodash';
+import { isObject } from 'lodash';
 import { Lang } from '../../../../assets/i18n/i18n';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NzModalService, NzModalSubject } from 'ng-zorro-antd';
 import { DataModelService } from '../../../pipes/model';
-import { ApproveDialogComponent } from '../../dialogCmopponent/approveDialog.component';
+import { ApproveDialogComponent } from '../../dialogComponent/approveDialog.component';
 import { ComponentCommunicateService } from '../../../services/baseServices/componentCommunicate.service';
 import { ActivityApprovementService } from '../../../services/activityApprovement.service';
 
@@ -17,31 +17,18 @@ export class ActvityDetailComponent implements OnInit {
     id: string;
     loading: Boolean = false;
     loadingTip: String = Lang['loading_tip'];
-    _isString: Function = isString;
+    _isObject: Function = isObject;
     approveWin: NzModalSubject;
-    details: Array<{ type: string, label: string, options?: string, value: string | Array<{ url: string, fileName: string }> }>;
-    others: Array<{ type: string, label: string, value: string | Array<string | { url: string, fileName: string }> }>;
-    columns: Array<{ id: string, label: string, type: string }> = [
-        {
-            id: 'level',
-            label: '奖品设置',
-            type: 'text'
-        }, {
-            id: 'consume',
-            label: '奖品名称',
-            type: 'text'
-        }, {
-            id: 'prizeCount',
-            label: '奖品数量',
-            type: 'text'
-        }, {
-            id: 'probability',
-            label: '中奖概率',
-            type: 'text'
-        }
-    ];
+    enableApprove: Boolean = false;
+    listTitle: string;
+    details: Array<{ type: string, label: string, options?: string, color?: string, value: string | Array<{ url: string, fileName: string }> }>;
+    others: Array<{ type: string, color?: string, label: string, value: string | Array<string | { url: string, fileName: string }> }>;
+    columns: Array<{ id: string, label: string, type: string }> = [];
     data: Array<any> = [];
-    desDetail: Array<{ type: string, label: string, value: string | Array<string | { url: string, fileName: string }> }>;
+    desDetail: {
+        text: {type: string, label: string, value: string | Array<string>},
+        image: {type: string, label: string, value: string | Array<string | { url: string, fileName: string }>},
+    };
     constructor(
         private router: Router,
         private route: ActivatedRoute,
@@ -66,7 +53,7 @@ export class ActvityDetailComponent implements OnInit {
             if (isObject(result)) {
                 this.loading = true;
                 this.entity.approveActivity({
-                    id: parseInt(this.id),
+                    id: parseInt(this.id, 0),
                     comment: result.resultReason,
                     status: result.result
                 }).subscribe(
@@ -82,17 +69,20 @@ export class ActvityDetailComponent implements OnInit {
         });
     }
 
-    refreshData(id: String): void {
+    refreshData(id: string): void {
         this.loading = true;
-        this.entity.getActivityDetail({ id }).subscribe(
+        this.entity.getActivityDetail(id).subscribe(
             success => {
-                success = success && success.filter(e => (e.id === id));
+                // success = success && success[0];
                 const detailObj = success[0];
-                if(detailObj) {
-                    this.details = detailObj.details;
+                if (detailObj) {
+                    this.details = detailObj.details.filter(e => !e.hidden);
+                    this.listTitle = detailObj.listTitle;
+                    this.columns = detailObj.columns;
                     this.data = detailObj.data || [];
-                    this.others = detailObj.others;
+                    this.others = detailObj.others.filter(e => e.value.length > 0);
                     this.desDetail = detailObj.desDetail;
+                    this.enableApprove = (detailObj.status === 'under_approval');
                 }
                 this.loading = false;
             },

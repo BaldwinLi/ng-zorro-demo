@@ -2,17 +2,16 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { AppRequestService } from './baseServices/appRequest.service';
 import { NzMessageService } from 'ng-zorro-antd';
+import { UtilService } from './baseServices/util.service';
 // import { HttpService } from './HttpService';
 
 @Injectable()
 export class EnterMerchantService {
     constructor(
         private appRequest: AppRequestService,
-        private nms: NzMessageService
+        private nms: NzMessageService,
+        private util: UtilService
     ) { }
-    // resend(svc_id: string, tran_uuid: string): Observable<any>{
-    //     return this.appRequest.resendTranlog(svc_id, tran_uuid);
-    // }
 
     getMerchants(params?: any): Observable<any> {
         return this.appRequest.queryMerchants(params).map(
@@ -92,9 +91,9 @@ export class EnterMerchantService {
                         }),
                         type: 'img'
                     }, {
-                        id: 'organizationCode',
+                        id: 'businessLicenseNo',
                         label: '营业执照编号',
-                        value: success['organizationCode']
+                        value: success['businessLicenseNo']
                     }, {
                         id: '',
                         label: '营业执照扫描件',
@@ -108,10 +107,26 @@ export class EnterMerchantService {
                         }),
                         type: 'img'
                     }, {
+                        id: 'organizationCode',
+                        label: '组织机构代码',
+                        value: success['organizationCode']
+                    }, {
                         id: '',
                         label: '组织机构代码证扫描件',
                         value: (success['merchantFiles'] || []).filter(e => {
                             return e.businessType === 'organization';
+                        }).map(v => {
+                            return {
+                                url: v.url,
+                                fileName: v.fileName
+                            };
+                        }),
+                        type: 'img'
+                    }, {
+                        id: '',
+                        label: '支付凭证',
+                        value: (success['merchantFiles'] || []).filter(e => {
+                            return e.businessType === 'payment-instrument';
                         }).map(v => {
                             return {
                                 url: v.url,
@@ -169,16 +184,57 @@ export class EnterMerchantService {
             success => {
                 const list = [];
                 success.forEach(e => {
-                    e.accountShops.forEach(el => {
-                        const approvalDetails = e.approvalDetails;
-                        delete e.approvalDetails;
+                    if (e.approvalDetails) {
+                        e.approvalDetails.approve_status = e.approvalDetails.status;
+                        delete e.approvalDetails.status;
+                    }
+                    const approvalDetails = e.approvalDetails;
+                    delete e.approvalDetails;
+                    if (e.accountShops && e.accountShops.length > 0) {
+                        e.accountShops.forEach(el => {
+                            delete e.accountShops;
+                            if (e.isPrimary) {
+                                el.shopName = '商户总账号';
+                            }
+                            list.push({
+                                ...e,
+                                ...el,
+                                ...approvalDetails,
+                            });
+                        });
+                    } else {
                         delete e.accountShops;
+                        if (e.isPrimary) {
+                            e.shopName = '商户总账号';
+                        }
                         list.push({
                             ...e,
-                            ...el,
                             ...approvalDetails,
                         });
-                    });
+                    }
+                });
+                return list;
+            }
+        ).catch(
+            error => {
+                this.nms.error('查询失败');
+                return Observable.create((obsr) => {
+                    obsr.error(error);
+                });
+            }
+            );
+    }
+
+    getMerchantShops(merchantId: string): Observable<any> {
+        return this.appRequest.queryMerchantDetail(`/${merchantId}/shops`).map(
+            success => {
+                const list = success && success.map(v => {
+                    const relationTypeDetails = v.relationTypeDetails;
+                    delete v.relationTypeDetails;
+                    return {
+                        ...v,
+                        ...relationTypeDetails
+                    };
                 });
                 return list;
             }
@@ -193,7 +249,7 @@ export class EnterMerchantService {
     }
 
     getMerchantAccountById(merchantId: string, bankAccountId: string): Observable<any> {
-        return this.appRequest.queryMerchantDetail(`/${merchantId}/bank-account/${bankAccountId}`).map(
+        return this.appRequest.queryMerchantDetail(`/${merchantId}/bank-acccount/${bankAccountId}`).map(
             success => {
                 return [{
                     id: 'accountHolderPhone',
@@ -202,7 +258,9 @@ export class EnterMerchantService {
                 }, {
                     id: 'accountType',
                     label: '银行卡类型',
-                    value: success['accountType']
+                    value: success['accountType'],
+                    type: 'lookup',
+                    options: 'ACCOUNT_SUB_TYPE'
                 }, {
                     id: 'depositBankName',
                     label: '开户银行',
@@ -240,10 +298,82 @@ export class EnterMerchantService {
                 }, {
                     id: 'status',
                     label: '账户审核状态',
-                    value: success.approvalDetails && success.approvalDetails['status']
+                    value: success.approvalDetails && success.approvalDetails['status'],
+                    type: 'lookup',
+                    options: 'APPROVE_STATUS'
                 }];
             }
         ).catch(
+            error => {
+                this.nms.error('查询失败');
+                return Observable.create((obsr) => {
+                    obsr.error(error);
+                });
+            }
+            );
+    }
+
+    getCouponSummary(merchantId: string, status: String, ids: String, queryType: String, startDate: Date, endDate: Date): Observable<any> {
+        return this.appRequest.queryCouponSummary(merchantId, {
+            status,
+            ids,
+            queryType,
+            startDate: startDate && this.util.formatTimestamp(startDate.getTime(), 'yyyy-MM-dd') || '',
+            endDate: endDate && this.util.formatTimestamp(endDate.getTime(), 'yyyy-MM-dd') || ''
+        }).map(
+            success => success
+            ).catch(
+            error => {
+                this.nms.error('查询失败');
+                return Observable.create((obsr) => {
+                    obsr.error(error);
+                });
+            }
+            );
+    }
+
+    getCouponList(merchantId: string, status: String, ids: String, couponQueryType: String, startDate: Date, endDate: Date, pageNum: Number, pageSize: Number): Observable<any> {
+        const scope = this;
+        return this.appRequest.queryCouponList(merchantId, {
+            status,
+            pageNum,
+            pageSize,
+            ids,
+            queryType: couponQueryType || '',
+            startDate: startDate && this.util.formatTimestamp(startDate.getTime(), 'yyyy-MM-dd') || '',
+            endDate: endDate && this.util.formatTimestamp(endDate.getTime(), 'yyyy-MM-dd') || ''
+        }).map(
+            success => {
+                success.list = success.list && success.list.map(v => {
+                    return {
+                        ...v,
+                        definitionId: v.definitionId.toString(),
+                        pricePurchaseType: `${v.purchaseType} / ¥ ${v.price}`,
+                        consumeCdky: `${v.consume} / ${v.cdkey}`,
+                        createAndVerifyDate: v.couponStatus === 0 ?
+                        `<i>${scope.util.formatTimestamp(v.createDate, 'yyyy-MM-dd hh:mm:ss')}</i>
+                        <br><i class="date_blue">${scope.util.formatTimestamp(v.verifyDate, 'yyyy-MM-dd hh:mm:ss')}</i>` :
+                        `${scope.util.formatTimestamp(v.createDate, 'yyyy-MM-dd hh:mm:ss')}`
+                    };
+                });
+                return success;
+            }
+            ).catch(
+            error => {
+                this.nms.error('查询失败');
+                return Observable.create((obsr) => {
+                    obsr.error(error);
+                });
+            }
+            );
+    }
+
+    getCouponCategorylist(merchantId: string, status: String): Observable<any> {
+        return this.appRequest.queryCouponCategorylist(merchantId, {
+            status
+        }).map(
+            success => success.list
+            ).catch(
             error => {
                 this.nms.error('查询失败');
                 return Observable.create((obsr) => {

@@ -18,7 +18,8 @@ import { EnterMerchantService } from '../../../../services/enterMerchant.service
                 <label>{{item.label}}</label>
             </div>
             <div nz-form-control nz-col [nzSpan]="14">
-                <span nz-form-text *ngIf="_isString(item.value)">{{item.value}}</span>
+                <span nz-form-text *ngIf="_isString(item.value) && !item.type">{{item.value}}</span>
+                <span nz-form-text *ngIf="_isString(item.value) && item.type==='lookup'">{{item.value | lookup: item.options}}</span>
                 <span *ngIf="item.type==='tag' && !_isString(item.value)">
                     <nz-tag *ngFor="let tag of item.value" [nzColor]="'#2db7f5'">{{tag.dataName}}</nz-tag>
                 </span>

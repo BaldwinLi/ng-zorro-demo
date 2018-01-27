@@ -1,36 +1,28 @@
 <nz-layout>
   <nz-header nzTheme="light" class="platform-header">
-    <div nz-row [nzType]="'flex'" [nzJustify]="'space-between'">
-      <div nz-col [nzSpan]="4">
-        <label>活动信息审核</label>
-      </div>
-      <div nz-col [nzSpan]="8"></div>
-      <div nz-col [nzSpan]="4">
-        <nz-input [nzType]="'search'" class="right-element" [nzPlaceHolder]="'商家名字／编号'" [(ngModel)]="marchantKey" style="width: 200px;"
-          (click)="refreshData($event)" (keypress)="filterActivities('marchantKey', '', $event)">
-        </nz-input>
-      </div>
-    </div>
-  </nz-header>
-  <nz-content class="tab-content">
-    <nz-spin [nzSize]="'large'" [nzSpinning]="loading" [nzTip]="loadingTip">
-      <div class="nz-row-margin" nz-form-item nz-row>
-        <div nz-form-label nz-col [nzSpan]="3">
+    <!-- <div nz-row [nzType]="'flex'" [nzJustify]="'space-between'"> -->
+      <div class="nz-row-margin" nz-row>
+        <div nz-col [nzSpan]="2">
           <label>活动类型</label>
         </div>
-        <div nz-form-control nz-col [nzSpan]="14">
-          <nz-radio-group [(ngModel)]="condition.type">
+        <div nz-col [nzSpan]="17">
+          <nz-radio-group [(ngModel)]="condition.activityDefId">
             <label nz-radio-button *ngFor="let type of activtyTypes" [nzValue]="type.id" (click)="filterActivities('type', type.id, $event)">
               <span>{{type.value}}</span>
             </label>
           </nz-radio-group>
         </div>
-      </div>
-      <div class="nz-row-margin" nz-form-item nz-row>
-        <div nz-form-label nz-col [nzSpan]="3">
-          <label>活动状态</label>
+        <div nz-col [nzSpan]="4">
+          <nz-input [nzType]="'search'" class="right-element" [nzPlaceHolder]="'商家名字／编号'" [(ngModel)]="marchantKey" style="width: 200px;"
+            (keypress)="filterActivities('marchantKey', '', $event)" (click)="filterActivities('marchantKey', '', $event)">
+          </nz-input>
         </div>
-        <div nz-form-control nz-col [nzSpan]="17">
+      </div>
+      <div class="nz-row-margin" nz-row>
+        <div nz-col [nzSpan]="2">
+          <label>审批状态</label>
+        </div>
+        <div nz-col [nzSpan]="17">
           <nz-radio-group [(ngModel)]="condition.status">
             <label nz-radio-button *ngFor="let status of activtystatus" [nzValue]="status.id" (click)="filterActivities('status', status.id, $event)">
               <span>{{status.value}}</span>
@@ -38,20 +30,24 @@
           </nz-radio-group>
         </div>
       </div>
-      <div class="nz-row-margin card-list-content" *ngFor="let activity of activityList" nz-form-item nz-row style="background: #fff;"
-        [nzType]="'flex'" [nzJustify]="'space-around'" [nzAlign]="'middle'">
+    <!-- </div> -->
+  </nz-header>
+  <nz-content class="tab-content">
+    <nz-spin [nzSize]="'large'" [nzSpinning]="loading" [nzTip]="loadingTip">
+      <div class="mm-row-margin card-list-content" *ngFor="let activity of activityList" nz-row [nzAlign]="'middle'" style="background: #fff;" [nzType]="'flex'"
+        [nzJustify]="'space-around'" [nzAlign]="'middle'">
         <div nz-form-label nz-col [nzSpan]="3">
           <app-upload-image [url]="" [readonly]="true" [uploadedFiles]="activity.image" [disabledPreview]="true"></app-upload-image>
         </div>
-        <div nz-form-control nz-col [nzSpan]="17">
-          <div class="nz-row-margin" *ngFor="let content of activity.content" nz-form-item nz-row>
-            <div *ngIf="!content.value" nz-form-label nz-col [nzSpan]="14">
-              <span>{{content.label}}</span>
+        <div nz-col [nzSpan]="17">
+          <div class="activity-card-text-row" *ngFor="let content of activity.content" nz-row>
+            <div *ngIf="!content.value" nz-col [nzSpan]="24">
+              <label>{{content.label}}</label>
             </div>
-            <div *ngIf="!!content.value" nz-form-label nz-col [nzSpan]="2">
-              <label>{{content.label}}:</label>
+            <div *ngIf="!!content.value" nz-col [nzSpan]="2">
+              <label>{{content.label + ':'}}</label>
             </div>
-            <div *ngIf="!!content.value" nz-form-control nz-col [nzSpan]="14">
+            <div *ngIf="!!content.value" nz-col [nzSpan]="22">
               <span nz-form-text *ngIf="!content.options">{{content.value}}</span>
               <span nz-form-text *ngIf="content.options">{{content.value | lookup: content.options}}</span>
             </div>
@@ -63,6 +59,8 @@
           </button>
         </div>
       </div>
+      <nz-pagination style="float: right;" [(nzPageIndex)]="current" (nzPageIndexChange)="refreshData($event)" [nzTotal]="total"
+        nzShowSizeChanger [(nzPageSize)]="pageSize" (nzPageSizeChange)="refreshData($event)"></nz-pagination>
     </nz-spin>
   </nz-content>
 </nz-layout>

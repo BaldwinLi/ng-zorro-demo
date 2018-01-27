@@ -1,5 +1,5 @@
 <nz-layout class="layout">
-  <nz-tabset [nzTabPosition]="'top'" [nzType]="'card'">
+  <nz-tabset [nzTabPosition]="'top'" [nzSelectedIndex]="tabIndex" [nzType]="'card'" (nzSelectChange)="tabChange($event)">
     <nz-tab>
       <ng-template #nzTabHeading>
         商户基本信息
@@ -9,7 +9,7 @@
           <nz-collapseset>
             <nz-collapse [nzTitle]="'联系信息'" [nzActive]="true">
               <div *ngFor="let item of contact" class="nz-row-margin" nz-form-item nz-row>
-                <div nz-form-label nz-col [nzSpan]="4">
+                <div nz-form-label nz-col [nzSpan]="2">
                   <label>{{item.label}}</label>
                 </div>
                 <div nz-form-control nz-col [nzSpan]="14">
@@ -58,13 +58,128 @@
         收款账户
       </ng-template>
       <nz-content class="tab-content">
-        <app-datatable [isAjaxData]="false" [columns]="columns" [current]="current" [pageSize]="pageSize" [total]="total" [dataSet]="data" [loading]="loading"
-        (outputPage)="refreshData($event)"></app-datatable>
+        <app-datatable [isAjaxData]="false" [columns]="columns" [dataSet]="accountData" [loading]="loading" [isPagination]="false"
+          (outputPage)="refreshAccountData($event)"></app-datatable>
       </nz-content>
-      <nz-content *ngIf="showAccountDetail" class="tab-content">
+      <!-- <nz-content *ngIf="showAccountDetail" class="tab-content">
         <router-outlet></router-outlet>
+      </nz-content> -->
+    </nz-tab>
+    <nz-tab>
+      <ng-template #nzTabHeading>
+        门店列表
+      </ng-template>
+      <nz-content class="tab-content">
+        <app-datatable [isAjaxData]="false" [columns]="columns" [dataSet]="shopData" [loading]="loading" [isPagination]="false" (outputPage)="refreshShopData($event)"></app-datatable>
+      </nz-content>
+    </nz-tab>
+    <nz-tab>
+      <ng-template #nzTabHeading>
+        活动数据与收入
+      </ng-template>
+      <nz-content class="tab-content">
+        <nz-layout class="layout">
+          <nz-spin [nzSize]="'large'" [nzSpinning]="winLoading" [nzTip]="loadingTip">
+            <nz-header nzTheme="light" class="statement-header" style="height: auto;">
+              <div nz-row class="sales-header">
+                <div style="width: 8%;height: 1px;float: left;"></div>
+                <p nz-col [nzSpan]="4">
+                  收入总金额
+                  <span nz-row class="red">{{couponSummary?.totalSum | currency:'CNY':true}}
+                  </span>
+                </p>
+                <p nz-col [nzSpan]="4">
+                  交易笔数
+                  <span nz-row>{{couponSummary?.totalCnt}}
+                    <i>笔</i>
+                  </span>
+                </p>
+                <p nz-col [nzSpan]="4">
+                  参与人数
+                  <span nz-row>{{couponSummary?.personCnt}}
+                    <i>人</i>
+                  </span>
+                </p>
+                <p nz-col [nzSpan]="4">
+                  浏览量
+                  <span nz-row>{{couponSummary?.pv}}
+                    <i>次</i>
+                  </span>
+                </p>
+                <p nz-col [nzSpan]="4">
+                  转发量
+                  <span nz-row>{{couponSummary?.repost}}
+                    <i>次</i>
+                  </span>
+                </p>
+              </div>
+              <div nz-row>
+                <div nz-col [nzSpan]="20">
+                  <div nz-col [nzSpan]="2">
+                    <label>活动类型:</label>
+                  </div>
+                  <div nz-col [nzSpan]="14">
+                    <nz-radio-group [(ngModel)]="activityType">
+                      <label nz-radio-button *ngFor="let type of activityTypes" [nzValue]="type.id" (click)="filterActivities()">
+                        <span>{{type.value}}</span>
+                      </label>
+                    </nz-radio-group>
+                  </div>
+                </div>
+              </div>
+              <div nz-row>
+                <div nz-col [nzSpan]="20">
+                  <div nz-col [nzSpan]="2">
+                    <label>活动:</label>
+                  </div>
+                  <div nz-col [nzSpan]="18">
+                    <nz-radio-group [(ngModel)]="ids">
+                      <label nz-radio-button *ngFor="let categ of categories" [nzValue]="categ.id" (click)="refreshCouponList($event)">
+                        <span>{{categ.activityName}}</span>
+                      </label>
+                    </nz-radio-group>
+                  </div>
+                </div>
+              </div>
+              <div nz-row>
+                <div nz-col [nzSpan]="20">
+                  <div nz-col [nzSpan]="2">
+                    <label>验券状态:</label>
+                  </div>
+                  <div nz-col [nzSpan]="14">
+                    <nz-radio-group [(ngModel)]="couponStatus">
+                      <label nz-radio-button *ngFor="let coupon of couponStatusList" [nzValue]="coupon.id" (click)="refreshCouponList()">
+                        <span>{{coupon.value}}</span>
+                      </label>
+                    </nz-radio-group>
+                  </div>
+                </div>
+              </div>
+              <div nz-row>
+                <div nz-col [nzSpan]="20">
+                    <!-- *ngIf="couponStatus!='0' && couponStatus!='1'" -->
+                  <div nz-col [nzSpan]="2">
+                    <nz-select [nzFilter]="true" [(ngModel)]="couponQueryType" (nzOpenChange)="selectedQueryType($event)">
+                      <nz-option *ngFor="let queryType of queryTypes" [nzLabel]="queryType.value" [nzValue]="queryType.id">
+                      </nz-option>
+                    </nz-select>
+                  </div>
+                  <div nz-col [nzSpan]="14">
+                    <nz-datepicker style="width: 40%;" (ngModelChange)="startDate=$event;_startValueChange()" [ngModel]="startDate"
+                      [nzDisabledDate]="_disabledStartDate" [nzFormat]="'YYYY-MM-DD'" [nzPlaceHolder]="'开始日期'"></nz-datepicker> -
+                    <nz-datepicker style="width: 40%;" (ngModelChange)="endDate=$event;_endValueChange()" [ngModel]="endDate"
+                      [nzDisabledDate]="_disabledEndDate" [nzFormat]="'YYYY-MM-DD'" [nzPlaceHolder]="'结束日期'"></nz-datepicker>
+                  </div>
+                </div>
+              </div>
+            </nz-header>
+            <nz-content class="tab-content">
+              <app-datatable [columns]="columns" [current]="current" [pageSize]="pageSize" [total]="total" [dataSet]="couponData" [loading]="loading"
+                (outputPage)="refreshCouponList($event)"></app-datatable>
+            </nz-content>
+          </nz-spin>
+        </nz-layout>
       </nz-content>
     </nz-tab>
   </nz-tabset>
 </nz-layout>
-

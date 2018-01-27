@@ -11,8 +11,15 @@ export class AccountApprovementService {
     //     return this.appRequest.resendTranlog(svc_id, tran_uuid);
     // }
 
-    getPendingAccounts(): Observable<any> {
-        return this.appRequest.queryMerchantsApproval('?approvalType=bank_account&status=under_approval').map(
+    getPendingAccounts(searchKey: string, pageNum: Number, pageSize: Number): Observable<any> {
+        const params = {
+            searchKey: searchKey || '',
+            approvalType: 'bank_account',
+            status: 'under_approval',
+            pageNum,
+            pageSize
+        };
+        return this.appRequest.queryMerchantsApproval(params).map(
             success => {
                 success.list = success.list.map(v => {
                     const approvalForm = v.approvalForm && JSON.parse(v.approvalForm);
@@ -75,8 +82,15 @@ export class AccountApprovementService {
             );
     }
 
-    getHistoryAccounts(): Observable<any> {
-        return this.appRequest.queryMerchantsApproval('?approvalType=bank_account&status=').map(
+    getHistoryAccounts(searchKey: string, pageNum: Number, pageSize: Number): Observable<any> {
+        const params = {
+            searchKey: searchKey || '',
+            approvalType: 'bank_account',
+            status: 'approved,rejected',
+            pageNum,
+            pageSize
+        };
+        return this.appRequest.queryMerchantsApproval(params).map(
             success => {
                 success.list = success.list.map(v => {
                     const approvalForm = v.approvalForm && JSON.parse(v.approvalForm);

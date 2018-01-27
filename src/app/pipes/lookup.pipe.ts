@@ -11,6 +11,8 @@ export class LookupPipe implements PipeTransform {
         for (const e of DataModelService[lookup_type]) {
             if (e.id === id) {
                 return e.value;
+            } else if (!id && e.id === false) {
+                return e.value;
             }
         }
         return '';

@@ -1,6 +1,8 @@
 import { Component, Input, Output, OnInit, OnChanges } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd';
 import { Lang } from '../../../assets/i18n/i18n';
+import { AppRequestService } from '../../services/baseServices/appRequest.service';
+import { NzMessageService } from 'ng-zorro-antd';
 
 export class FileHolder {
     public pending: Boolean = false;
@@ -18,8 +20,10 @@ export class UploadImageComponent implements OnInit, OnChanges {
     files: FileHolder[] = [];
     previewTitle: String = Lang['preview_image_title'];
     previewUrl: String = '';
+    loading: Boolean = false;
     @Input() url: String = '';
     @Input() headers: Array<Object>;
+    @Input() style: any;
     @Input() maxFileCount: Number = 10;
     @Input() extensions: Array<String>;
     @Input() buttonCaption: String = Lang['upload_image'];
@@ -38,7 +42,11 @@ export class UploadImageComponent implements OnInit, OnChanges {
 
     startLoading: Boolean = false;
 
-    constructor(private modalService: NzModalService) {
+    constructor(
+        private modalService: NzModalService,
+        private appReq: AppRequestService,
+        private nms: NzMessageService
+    ) {
         this.fileCounter = 0;
     }
 
@@ -63,25 +71,47 @@ export class UploadImageComponent implements OnInit, OnChanges {
     @Input() onUploadStateChanged(state: boolean): void { }
 
     processUploadedFiles() {
-        for (let i = 0; i < this.uploadedFiles.length; i++) {
-            const data: any = this.uploadedFiles[i];
+        const scope = this;
+        scope.uploadedFiles.forEach(e => {
+            const data: any = e;
 
             let fileBlob: Blob,
                 file: File,
                 fileUrl: string;
 
             if (data instanceof Object) {
-                fileUrl = data.url || './assets/image/default.png';
-                fileBlob = (data.blob) ? data.blob : new Blob([data]);
-                file = new File([fileBlob], data.fileName);
+                if (typeof data.ossKey !== 'undefined') {
+                    scope.loading = true;
+                    scope.appReq.getOssKey(data.ossKey).subscribe(
+                        success => {
+                            scope.loading = false;
+                            fileUrl = (success.ossKey && success.url) || './assets/image/default.png';
+                            fileBlob = (success.blob) ? success.blob : new Blob([success]);
+                            file = new File([fileBlob], data.fileName);
+                            scope.files.push(new FileHolder(fileUrl, file));
+                        },
+                        error => {
+                            scope.loading = false;
+                            fileUrl = './assets/image/default.png';
+                            fileBlob = (data.blob) ? data.blob : new Blob([data]);
+                            file = new File([fileBlob], data.fileName);
+                            scope.files.push(new FileHolder(fileUrl, file));
+                            scope.nms.error('ossKey查询失败');
+                        }
+                    );
+                } else {
+                    fileUrl = data.url || './assets/image/default.png';
+                    fileBlob = (data.blob) ? data.blob : new Blob([data]);
+                    file = new File([fileBlob], data.fileName);
+                    scope.files.push(new FileHolder(fileUrl, file));
+                }
             } else {
                 fileUrl = data;
                 fileBlob = new Blob([fileUrl]);
                 file = new File([fileBlob], fileUrl);
+                scope.files.push(new FileHolder(fileUrl, file));
             }
-
-            this.files.push(new FileHolder(fileUrl, file));
-        }
+        });
     }
 
     showPreviewModel(titleTpl, contentTpl, url: String = './assets/image/default.png'): void {
@@ -102,9 +132,11 @@ export class UploadImageComponent implements OnInit, OnChanges {
     }
 
     ngOnChanges(changes: any) {
+        this.files = [];
         if (this.uploadedFiles && this.uploadedFiles.length > 0) {
-            this.files = [];
             this.processUploadedFiles();
+        } else {
+            this.files.push(new FileHolder('./assets/image/default.png', new File([new Blob([null])], 'default.png')));
         }
     }
 

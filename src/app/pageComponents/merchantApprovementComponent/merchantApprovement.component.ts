@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { isObject } from 'lodash';
+import { Router } from '@angular/router';
 import { ComponentCommunicateService } from '../../services/baseServices/componentCommunicate.service';
 import { NzModalService, NzModalSubject } from 'ng-zorro-antd';
 import { MerchantApprovementService } from '../../services/merchantApprovement.service';
-import { ApproveDialogComponent } from '../dialogCmopponent/approveDialog.component';
+import { ApproveDialogComponent } from '../dialogComponent/approveDialog.component';
 
 @Component({
     selector: 'app-merchant-approvement',
@@ -21,8 +22,8 @@ export class MerchantApprovementComponent implements OnInit {
     hisData: Array<any> = [];
     loading: Boolean = false;
     hisLoading: Boolean = false;
-    marchantKey: String = '';
-    hisMarchantKey: String = '';
+    marchantKey: string;
+    hisMarchantKey: string;
     resultReason: String = '';
     approveWin: NzModalSubject;
     checkedMerchants: Array<Object> = [];
@@ -54,11 +55,11 @@ export class MerchantApprovementComponent implements OnInit {
             type: 'lookup',
             options: 'APPROVE_STATUS'
         },
-        {
-            id: 'applySource',
-            label: '状态理由',
-            type: 'text'
-        },
+        // {
+        //     id: 'applySource',
+        //     label: '状态理由',
+        //     type: 'text'
+        // },
         {
             id: 'updateBy',
             label: '最后审核人',
@@ -67,13 +68,15 @@ export class MerchantApprovementComponent implements OnInit {
         {
             id: 'updateTime',
             label: '最后审核时间',
-            type: 'text'
+            type: 'date',
+            format: 'yyyy-MM-dd'
         }
     ];
 
     constructor(
         private componentCommunicator: ComponentCommunicateService,
         private model: NzModalService,
+        private router: Router,
         private entity: MerchantApprovementService
     ) {
     }
@@ -84,10 +87,13 @@ export class MerchantApprovementComponent implements OnInit {
             return;
         }
         this.loading = true;
-        this.entity.getPendingMerchants().subscribe(
+        this.entity.getPendingMerchants(
+            this.marchantKey,
+            event && event.pageIndex || this.current,
+            event && event.pageSize || this.pageSize
+        ).subscribe(
             success => {
                 this.data = success.list;
-                this.current = success.current;
                 this.total = success.total;
                 this.loading = false;
             },
@@ -103,10 +109,13 @@ export class MerchantApprovementComponent implements OnInit {
             return;
         }
         this.hisLoading = true;
-        this.entity.getHistoryMerchants().subscribe(
+        this.entity.getHistoryMerchants(
+            this.hisMarchantKey,
+            event && event.pageIndex || this.hisCurrent,
+            event && event.pageSize || this.hisPageSize
+        ).subscribe(
             success => {
                 this.hisData = success.list;
-                this.hisCurrent = success.current;
                 this.hisTotal = success.total;
                 this.hisLoading = false;
             },
@@ -194,6 +203,13 @@ export class MerchantApprovementComponent implements OnInit {
                 label: '操作',
                 type: 'action',
                 group: [
+                    {
+                        type: 'link',
+                        label: '查看',
+                        callback(row) {
+                            scope.router.navigate([`menu/enter_merchant/enter_merchant_info/${row.merchantId}`]);
+                        }
+                    },
                     {
                         type: 'link',
                         label: '审核',

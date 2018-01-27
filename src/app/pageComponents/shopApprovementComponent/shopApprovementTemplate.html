@@ -1,0 +1,54 @@
+<nz-layout class="layout">
+  <nz-tabset [nzTabPosition]="'top'" [nzType]="'card'">
+    <nz-tab>
+      <ng-template #nzTabHeading>
+        待审核
+      </ng-template>
+      <nz-header nzTheme="light" class="platform-header">
+        <nz-input [nzType]="'search'" [nzPlaceHolder]="'商家名字／编号'" [(ngModel)]="marchantKey" style="width: 200px;" (click)="refreshData($event)"
+          (keypress)="refreshData($event)"></nz-input>
+        <!-- <button nz-button [nzType]="'primary'" class="right-element" (click)="merchantApprove(title, content, footer)">
+                <i class="anticon anticon-check-square-o"></i>
+                <span>审核</span>
+              </button> -->
+      </nz-header>
+      <nz-content style="padding:0 50px;">
+        <app-datatable [columns]="columns" [current]="current" [pageSize]="pageSize" [total]="total" [dataSet]="data" [loading]="loading"
+          (outputPage)="refreshData($event)"></app-datatable>
+        <!-- (checkedItems)="onCheckedMerchants($event)" -->
+      </nz-content>
+    </nz-tab>
+    <nz-tab>
+      <ng-template #nzTabHeading>
+        历史审核
+      </ng-template>
+      <nz-header nzTheme="light" class="platform-header">
+        <nz-input [nzType]="'search'" [nzPlaceHolder]="'商家名字／编号'" [(ngModel)]="hisMarchantKey" style="width: 200px;" (click)="refreshHistoryData($event)"
+          (keypress)="refreshHistoryData($event)"></nz-input>
+      </nz-header>
+      <nz-content style="padding:0 50px;">
+        <app-datatable [columns]="hisColumns" [current]="hisCurrent" [pageSize]="hisPageSize" [total]="hisTotal" [dataSet]="hisData"
+          [loading]="hisLoading" (outputPage)="refreshHistoryData($event)"></app-datatable>
+      </nz-content>
+    </nz-tab>
+  </nz-tabset>
+</nz-layout>
+
+<!-- <ng-template #title>
+        <span>审核</span>
+      </ng-template>
+      <ng-template #content>
+        <div>
+          <nz-input [(ngModel)]="resultReason" [nzType]="'textarea'" [nzRows]="'4'" [nzPlaceHolder]="'请输入审核意见及原因'"></nz-input>
+        </div>
+      </ng-template>
+      <ng-template #footer>
+        <div>
+          <button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="handleApprove(true)" [nzLoading]="loading">
+            通过
+          </button>
+          <button nz-button [nzSize]="'large'" (click)="handleApprove(false)" [nzLoading]="loading">
+            驳回
+          </button>
+        </div>
+      </ng-template> -->

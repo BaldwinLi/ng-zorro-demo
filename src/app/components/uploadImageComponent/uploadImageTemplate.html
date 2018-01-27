@@ -1,14 +1,17 @@
 <image-upload *ngIf="!readonly" [url]="url" [class]="[customClass]" [style]="customStyle" [headers]="headers" [max]="maxFileCount"
   [preview]="preview" [extensions]="extensions" [beforeUpload]="onBeforeUpload" [buttonCaption]="buttonCaption" [dropBoxMessage]="dropBoxMessage"
   [maxFileSize]="maxFileSize" [clearButtonCaption]="clearButtonCaption" [uploadedFiles]="uploadedFiles" (removed)="onRemoved($event)"
-  (uploadFinished)="onUploadFinished($event)" (uploadStateChanged)="onUploadStateChanged($event)" (isPending)="loadPengding($event)"></image-upload>
+  (uploadFinished)="onUploadFinished($event)" (uploadStateChanged)="onUploadStateChanged($event)"></image-upload>
 <div *ngIf="readonly" class="img-ul-container img-ul-hr-inline-group" [ngStyle]="style?.previewPanel">
-  <div class="img-ul-image" *ngFor="let file of files" [ngStyle]="{'background-image': 'url('+ file.src +')', cursor: disabledPreview?'default':'pointer'}" (click)="showPreviewModel(title, content, file.src)">
-    <div *ngIf="file.pending" class="img-ul-loading-overlay">
-      <div class="img-ul-spinning-circle"></div>
+  <nz-spin [nzSize]="'small'" [nzSpinning]="loading">
+    <div class="img-ul-image" *ngFor="let file of files" [ngStyle]="{'background-image': 'url('+ file.src +')', 'background-size': '100% 100%', cursor: disabledPreview?'default':'pointer'}"
+      (click)="showPreviewModel(title, content, file.src)">
+      <div *ngIf="file.pending" class="img-ul-loading-overlay">
+        <div class="img-ul-spinning-circle"></div>
+      </div>
+      <!-- <span class="img-ul-close"></span> -->
     </div>
-    <span class="img-ul-close"></span>
-  </div>
+  </nz-spin>
 </div>
 <ng-template #title>
   <span>{{previewTitle}}</span>

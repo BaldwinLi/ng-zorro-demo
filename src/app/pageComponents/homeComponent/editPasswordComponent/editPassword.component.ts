@@ -12,13 +12,14 @@ import { LoginUserService } from '../../../services/loginUser.service';
 @Component({
     selector: 'app-edit-password',
     templateUrl: './editPasswordTemplate.html',
+    styleUrls: ['../../../../assets/css/custom.css']
 })
 export class EditPasswordComponent implements OnInit {
     passwordForm: FormGroup;
     loading: Boolean = false;
     loadingTip: String = '密码修改中，请稍后...';
     isValidField: Function;
-    _submitForm() {
+    _submitForm(type?: string) {
         if (!this.util.isInvalidForm(this.passwordForm)) {
             this.loading = true;
             this.luSvc.editPassword(this.passwordForm.value).subscribe(

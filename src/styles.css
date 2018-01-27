@@ -1,6 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 @import "./assets/iconfont/iconfont.css";
 @import "./assets/css/custom.css";
+@import "./assets/css/loading.css";
+/* @import "~/angular2-image-upload/src/image-upload/image-upload.component.css"; */
 
 label > .anticon {
     vertical-align: baseline !important;

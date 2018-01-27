@@ -1,0 +1,6 @@
+<nz-layout class="layout">
+  <nz-content style="padding:0 50px;">
+    <app-datatable [columns]="columns" [current]="current" [pageSize]="pageSize" [total]="total" [dataSet]="data" [loading]="loading"
+      (outputPage)="refreshData($event)"></app-datatable>
+  </nz-content>
+</nz-layout>

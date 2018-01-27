@@ -1,0 +1,64 @@
+<form nz-form [formGroup]="platformUserForm" (ngSubmit)="_submitForm()">
+  <div nz-form-item nz-row>
+    <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+      <label for="userRole" nz-form-item-required>
+        <i class="anticon anticon-flag"></i>
+      </label>
+    </div>
+    <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="platformUserForm.controls.userRole">
+      <nz-select [nzSize]="'large'" [nzShowSearch]="true" [nzPlaceHolder]="'用户角色'" formControlName="userRole">
+        <nz-option *ngFor="let option of userRoleOptions" [nzLabel]="option.value" [nzValue]="option.id">
+        </nz-option>
+      </nz-select>
+      <div nz-form-explain *ngIf="isValidField(platformUserForm, 'userRole', 'required')">请选择用户角色</div>
+    </div>
+  </div>
+  <div nz-form-item nz-row>
+    <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+      <label for="userName" nz-form-item-required>
+        <i class="anticon anticon-user"></i>
+      </label>
+    </div>
+    <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="platformUserForm.controls.userName">
+      <nz-input [nzSize]="'large'" formControlName="userName" [nzId]="'userName'" [nzPlaceHolder]="'用户名'"></nz-input>
+      <div nz-form-explain *ngIf="isValidField(platformUserForm, 'userName', 'required')">请输入用户名</div>
+    </div>
+  </div>
+  <div nz-form-item nz-row>
+    <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+      <label for="nickName" nz-form-item-required>
+        <i class="anticon anticon-skin"></i>
+      </label>
+    </div>
+    <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="platformUserForm.controls.nickName">
+      <nz-input [nzSize]="'large'" formControlName="nickName" [nzId]="'nickName'" [nzPlaceHolder]="'用户昵称'"></nz-input>
+      <div nz-form-explain *ngIf="isValidField(platformUserForm, 'nickName', 'required')">请输入用户昵称</div>
+    </div>
+  </div>
+  <div nz-form-item nz-row>
+    <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+      <label for="password" nz-form-item-required>
+        <i class="anticon anticon-lock"></i>
+      </label>
+    </div>
+    <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="platformUserForm.controls.password">
+      <nz-input [nzSize]="'large'" formControlName="password" [nzType]="'password'" [nzId]="'password'" [nzPlaceHolder]="'密码'"></nz-input>
+      <div nz-form-explain *ngIf="isValidField(platformUserForm, 'password', 'required')">请输入密码</div>
+    </div>
+  </div>
+  <div nz-form-item nz-row>
+    <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+      <label for="confirmPassword" nz-form-item-required>
+        <i class="anticon anticon-lock"></i>
+      </label>
+    </div>
+    <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="platformUserForm.controls.confirmPassword">
+      <nz-input [nzSize]="'large'" formControlName="confirmPassword" [nzType]="'password'" [nzId]="'confirmPassword'" [nzPlaceHolder]="'密码确认'"></nz-input>
+      <div nz-form-explain *ngIf="isValidField(platformUserForm, 'confirmPassword', 'required')">请输入密码确认</div>
+      <div nz-form-explain *ngIf="isValidField(platformUserForm, 'confirmPassword', 'confirm')">两次输入的密码不一致!</div>
+    </div>
+  </div>
+  <div class="customize-footer">
+    <button nz-button [nzSize]="'large'" [nzType]="'primary'">确定</button>
+  </div>
+</form>

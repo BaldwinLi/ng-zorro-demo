@@ -25,6 +25,12 @@
               <span>商家注册审核</span>
             </span>
           </li>
+          <li nz-menu-item routerLink="/menu/shop_approvement" routerLinkActive="ant-menu-item-selected">
+            <span title>
+              <i class="anticon anticon-edit"></i>
+              <span>商家门店审核</span>
+            </span>
+          </li>
           <li nz-menu-item routerLink="/menu/account_approvement" routerLinkActive="ant-menu-item-selected">
             <span title>
               <i class="anticon anticon-edit"></i>
@@ -45,19 +51,19 @@
           <span>商家结算管理</span>
         </span>
         <ul>
-          <li nz-menu-item routerLink="/menu/statement_account" routerLinkActive="ant-menu-item-selected">
+          <li nz-menu-item routerLink="/menu/statement_accounts" routerLinkActive="ant-menu-item-selected">
             <span title>
               <i class="anticon anticon-exception"></i>
               <span>商家对账单</span>
             </span>
           </li>
-          <li nz-menu-item routerLink="xxx" routerLinkActive="ant-menu-item-selected">
+          <li nz-menu-item routerLink="/menu/settle_accounts" routerLinkActive="ant-menu-item-selected">
             <span title>
               <i class="anticon anticon-exception"></i>
               <span>商家日结算记录</span>
             </span>
           </li>
-          <li nz-menu-item routerLink="xxx" routerLinkActive="ant-menu-item-selected">
+          <li nz-menu-item routerLink="/menu/manual_payment" routerLinkActive="ant-menu-item-selected">
             <span title>
               <i class="anticon anticon-pay-circle"></i>
               <span>手动付款</span>
@@ -65,22 +71,22 @@
           </li>
         </ul>
       </li>
-      <li nz-menu-item>
-        <span title>
-          <i class="anticon anticon-book"></i>
-          <span>订单管理</span>
-        </span>
-      </li>
-      <li nz-menu-item>
+      <!-- <li nz-menu-item>
         <span title>
           <i class="anticon anticon-pay-circle-o"></i>
           <span>支付管理</span>
         </span>
-      </li>
-      <li nz-menu-item>
+      </li> -->
+      <li nz-menu-item routerLink="/menu/authority_management" routerLinkActive="ant-menu-item-selected">
         <span title>
           <i class="anticon anticon-usergroup-add"></i>
           <span>权限管理</span>
+        </span>
+      </li>
+      <li nz-menu-item routerLink="/menu/platform_user" routerLinkActive="ant-menu-item-selected">
+        <span title>
+          <i class="anticon anticon-user"></i>
+          <span>平台用户管理</span>
         </span>
       </li>
     </ul>

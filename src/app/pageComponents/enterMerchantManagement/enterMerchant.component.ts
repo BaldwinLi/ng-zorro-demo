@@ -36,7 +36,8 @@ export class EnterMerchantComponent implements OnInit {
     this.loading = true;
     this.entity.getMerchants({
       searchKey: this.marchantKey,
-      pageNum: this.current
+      pageNum: event && event.pageIndex || this.current,
+      pageSize: event && event.pageSize || this.pageSize
     }).subscribe(
       success => {
         this.data = success.list;

@@ -120,7 +120,7 @@ export class HttpService {
   private getUrlParams(params: any): HttpParams {
     let urlParams = new HttpParams();
     for (const e in params) {
-      if (e) {
+      if (e && params[e]) {
         urlParams = urlParams.set(e, params[e]);
       }
     }

@@ -15,7 +15,7 @@ import { UtilService } from '../../../services/baseServices/util.service';
 export class AddMerchantComponent implements OnInit {
     merchantForm: FormGroup;
     isValidField: Function;
-    _submitForm() {
+    _submitForm(): void {
         if (!this.util.isInvalidForm(this.merchantForm)) {
             this.subject.next(this.merchantForm.value);
             this.subject.destroy('onCancel');

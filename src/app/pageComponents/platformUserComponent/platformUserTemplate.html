@@ -1,0 +1,23 @@
+<nz-layout class="layout">
+  <nz-header nzTheme="light" class="platform-header">
+    <div class="nz-row-margin" nz-row>
+      <div nz-col [nzSpan]="1">
+        <label>用户角色: </label>
+      </div>
+      <div nz-col [nzSpan]="10">
+        <nz-select style="width: 200px;" [nzPlaceHolder]="'请选择用户角色进行检索'" [nzFilter]="true" [(ngModel)]="userRole" (nzOpenChange)="refreshData($event, 'nzOpenChange')">
+          <nz-option *ngFor="let option of userRoleOptions" [nzLabel]="option.value" [nzValue]="option.id">
+          </nz-option>
+        </nz-select>
+      </div>
+      <button nz-button [nzType]="'primary'" class="right-element" (click)="addPlatformUser($event)">
+        <i class="anticon anticon-user-add"></i>
+        <span>添加平台用户</span>
+      </button>
+    </div>
+  </nz-header>
+  <nz-content style="padding:0 50px;">
+    <app-datatable [columns]="columns" [current]="current" [pageSize]="pageSize" [total]="total" [dataSet]="data" [loading]="loading"
+      (outputPage)="refreshData($event)"></app-datatable>
+  </nz-content>
+</nz-layout>

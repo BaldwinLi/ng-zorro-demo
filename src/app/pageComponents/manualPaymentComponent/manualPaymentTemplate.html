@@ -1,0 +1,118 @@
+<nz-layout>
+  <nz-header nzTheme="light" class="platform-header">
+    <label>手动付款</label>
+  </nz-header>
+  <nz-content style="padding:50px 50px;">
+    <nz-spin [nzSize]="'large'" [nzSpinning]="loading" [nzTip]="loadingTip">
+      <form nz-form [formGroup]="paymentForm" (ngSubmit)="_submitForm(payTitle, payContent, payfooter)">
+        <div nz-form-item nz-row>
+          <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+            <label for="merchantId" nz-form-item-required>
+              商户
+            </label>
+          </div>
+          <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="paymentForm.controls.merchantId">
+            <nz-select nzAllowClear [nzPlaceHolder]="'请输入商户信息进行搜索'" [nzFilter]="false" formControlName="merchantId" (nzSearchChange)="searchMerchant($event)"
+              [nzNotFoundContent]="'无法找到'" [nzShowSearch]="showSearch" (click)="searchMerchant()" (nzOpenChange)="selectMerchant($event)">
+              <nz-option *ngFor="let option of merchantOptions" [nzLabel]="option['fullName']" [nzValue]="option['merchantId']" [nzDisabled]="option['status']!=='activated'">
+              </nz-option>
+            </nz-select>
+            <div nz-form-explain *ngIf="isValidField(paymentForm, 'merchantId', 'required')">商户名称不能为空</div>
+          </div>
+          <div [hidden]="!merchantOptionsLoading" style="position: absolute; right: 14.3rem; width: 4rem; line-height: 1.5; margin: 8px;">
+            <i class="anticon anticon-loading anticon-spin"></i>
+          </div>
+        </div>
+        <div nz-form-item nz-row>
+          <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+            <label for="id" nz-form-item-required>
+              收款账户
+            </label>
+          </div>
+          <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="paymentForm.controls.id">
+              <nz-select nzAllowClear [nzPlaceHolder]="'请输入商户信息进行查询'" [nzFilter]="false" formControlName="id" (nzSearchChange)="searchAccount($event)"
+              [nzNotFoundContent]="'无法找到'" [nzShowSearch]="showSearch" (click)="searchAccount()" (nzOpenChange)="selectAccount($event)">
+              <nz-option *ngFor="let option of accountOptions" [nzLabel]="option['accountNo'] + ' ' + option['accountHolder']" [nzValue]="option['id']" [nzDisabled]="option['status']!=='available'">
+              </nz-option>
+            </nz-select>
+            <div nz-form-explain *ngIf="isValidField(paymentForm, 'id', 'required')">收款账户不能为空</div>
+          </div>
+          <div [hidden]="!accountOptionsLoading" style="position: absolute; right: 14.3rem; width: 4rem; line-height: 1.5; margin: 8px;">
+              <i class="anticon anticon-loading anticon-spin"></i>
+            </div>
+        </div>
+        <div nz-form-item nz-row>
+          <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+            <label for="transactionCategory" nz-form-item-required>
+              交易类目
+            </label>
+          </div>
+          <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="paymentForm.controls.transactionCategory">
+            <nz-select nzAllowClear [nzPlaceHolder]="'请选择交易类目'" [nzFilter]="true" formControlName="transactionCategory" nzShowSearch="false">
+              <nz-option *ngFor="let option of categoryOptions" [nzLabel]="option.value" [nzValue]="option.id">
+              </nz-option>
+            </nz-select>
+            <div nz-form-explain *ngIf="isValidField(paymentForm, 'transactionCategory', 'required')">交易类目不能为空</div>
+          </div>
+        </div>
+
+        <div nz-form-item nz-row>
+          <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+            <label for="paymentAmount" nz-form-item-required>
+              支付金额
+            </label>
+          </div>
+          <div nz-form-control nz-col [nzSm]="13" [nzXs]="23" nzHasFeedback [nzValidateStatus]="paymentForm.controls.paymentAmount">
+            <nz-input-number formControlName="paymentAmount" style="width:100%" [nzMin]="0" [nzStep]="100" [nzPlaceHolder]="'请输入支付金额'">
+              <!-- style="width:93%; float: left;" -->
+            </nz-input-number>
+            <div nz-form-explain *ngIf="isValidField(paymentForm, 'paymentAmount', 'required')">支付金额不能为空</div>
+          </div>
+          <div class="ant-input-group-addon" style="position: absolute; right: 16.5%; width: 4.5%; line-height: 1.5; margin: 2px;">¥人民币</div>
+        </div>
+
+        <div nz-form-item nz-row>
+          <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+            <label for="remark">
+              备注
+            </label>
+          </div>
+          <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" [nzValidateStatus]="paymentForm.controls.remark">
+            <nz-input [nzType]="'textarea'" [nzRows]="'4'" formControlName="remark" [nzId]="'transactionCategory'" [nzPlaceHolder]="'请备注您的支付信息'"></nz-input>
+          </div>
+        </div>
+        <div nz-form-item nz-row>
+          <div nz-form-control nz-col [nzSm]="20" [nzXs]="48" style="text-align: right;">
+            <button nz-button [nzType]="'primary'" [nzSize]="'large'">
+              <i class="anticon anticon-pay-circle-o"></i>
+              付 款
+            </button>
+          </div>
+        </div>
+      </form>
+    </nz-spin>
+  </nz-content>
+</nz-layout>
+
+<ng-template #payTitle>
+  <span>手动支付明细</span>
+</ng-template>
+<ng-template #payContent>
+  <div *ngFor="let item of paymentDetail" class="nz-row-margin" nz-form-item nz-row>
+    <div nz-form-label nz-col [nzSpan]="4">
+      <label>{{item.label}}</label>
+    </div>
+    <div nz-form-control nz-col [nzSpan]="14">
+      <span nz-form-text *ngIf="item.value && !item.type">{{item.value}}</span>
+      <span nz-form-text *ngIf="item.value && item.type==='CNY'">{{item.value | currency:item.type:true}}</span>
+    </div>
+  </div>
+</ng-template>
+<ng-template #payfooter>
+  <div>
+    <button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="confirmToPay($event)" [nzLoading]="loading">
+      <i class="anticon anticon-pay-circle-o"></i>
+      确认支付
+    </button>
+  </div>
+</ng-template>

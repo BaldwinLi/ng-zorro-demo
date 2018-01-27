@@ -11,18 +11,21 @@ import { ActivityApprovementService } from '../../../services/activityApprovemen
     styleUrls: ['../../../../assets/css/custom.css']
 })
 export class ActivitiesApprovementListComponent implements OnInit {
-
+    current: Number = 1;
+    pageSize: Number = 5;
+    total: Number = 0;
+    pageSizeSelector: Array<number> = [5, 10, 15, 20, 25, 30];
     loading: Boolean = false;
     loadingTip: String = Lang['loading_tip'];
-    activtystatus: Array<{id: string, value: string}> = DataModelService.APPROVE_STATUS;
-    activtyTypes: Array<{id: string, value: string}> = DataModelService.ACTIVITY_TYPES;
-    condition: { type: string, status: string } = {
-        type: '0',
-        status: '0'
+    activtystatus: Array<{ id: string, value: string }> = DataModelService.APPROVE_STATUS;
+    activtyTypes: Array<{ id: string, value: string }> = DataModelService.ACTIVITY_TYPES;
+    condition: { activityDefId: string, status: string } = {
+        activityDefId: '',
+        status: ''
     };
     activityList: Array<{ id, code, name, status, type, image, content }>;
     activityListCach: Array<{ id, code, name, status, type, image, content }>;
-    marchantKey: String = '';
+    marchantKey: string;
     constructor(
         private router: Router,
         private componentCommunicator: ComponentCommunicateService,
@@ -33,40 +36,34 @@ export class ActivitiesApprovementListComponent implements OnInit {
         this.router.navigate(['/menu/activity_approvement/activity_detail', id]);
     }
 
-    filterActivities(key: string, value: string, event, isScope): void {
+    filterActivities(key: string, value: string, event, isScope?: boolean): void {
         if (!isScope && (event && ((event.type === 'click' && event.srcElement.nodeName !== 'I') ||
             (event.type === 'keypress' && event.charCode !== 13))) && key === 'marchantKey'
         ) {
             return;
         }
-        if (key === 'marchantKey') {
-            this.activityList = this.activityListCach.filter(e => {
-                return e.code.indexOf(this.marchantKey) > -1 || e.name.indexOf(this.marchantKey) > -1;
-            });
-        } else {
-            this.condition[key] = value || this.condition[key];
-            this.activityList = this.activityListCach.filter(e => {
-                return (this.condition[key === 'type' ? 'status' : key] === '0' ||
-                 e[key === 'type' ? 'status' : key] === this.condition[key === 'type' ? 'status' : key]);
-            }).filter(e => {
-                return (this.condition[key] === '0' || e[key] === this.condition[key]);
-            });
-        }
-
+        this.refreshData();
     }
 
     refreshData(event?: any): void {
         this.loading = true;
-        this.entity.getActivities({}).subscribe(
+        this.entity.getActivities(
+            this.marchantKey,
+            this.condition.activityDefId,
+            this.condition.status,
+            this.current,
+            this.pageSize
+        ).subscribe(
             success => {
-                this.activityList = this.activityListCach = success;
-                this.filterActivities('', '', null, true);
+                this.activityList = this.activityListCach = success.list;
+                this.total = success.total;
+                // this.filterActivities('', '', null, true);
                 this.loading = false;
             },
             error => {
                 this.loading = false;
             }
-        );
+            );
     }
 
     ngOnInit() {

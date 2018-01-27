@@ -18,20 +18,17 @@ import { UtilService } from '../../services/baseServices/util.service';
                 <div nz-form-explain *ngIf="isValidField(approvalForm, 'resultReason', 'required')">请输入审核意见及原因</div>
             </div>
         </div>
-        <div style="margin: 1rem; text-align: center;">
-            <div nz-form-item nz-row style="margin-bottom:8px;">
-                <div nz-form-control nz-col [nzSpan]="14" [nzOffset]="6">
-                    <button style="margin: 1rem;" nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="handleApprove('approved')" [nzLoading]="loading">
-                        通过
-                    </button>
-                    <button style="margin: 1rem;"  nz-button [nzSize]="'large'" (click)="handleApprove('rejected')" [nzLoading]="loading">
-                        驳回
-                    </button>
-                </div>
-            </div>
+        <div class="customize-footer">
+            <button style="margin: 1rem;" nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="handleApprove('approved')" [nzLoading]="loading">
+                <i class="anticon anticon-check-circle-o"></i> 通过
+            </button>
+            <button style="margin: 1rem;"  nz-button [nzSize]="'large'" (click)="handleApprove('rejected')" [nzLoading]="loading">
+                <i class="anticon anticon-close-circle-o"></i> 驳回
+            </button>
         </div>
     </form>
     `,
+    styleUrls: ['../../../assets/css/custom.css']
 })
 export class ApproveDialogComponent implements OnInit {
     loading: Boolean = false;

@@ -11,8 +11,15 @@ export class MerchantApprovementService {
     //     return this.appRequest.resendTranlog(svc_id, tran_uuid);
     // }
 
-    getPendingMerchants(): Observable<any> {
-        return this.appRequest.queryMerchantsApproval('?approvalType=merchant_register&status=under_approval').map(
+    getPendingMerchants(searchKey: string, pageNum: Number, pageSize: Number): Observable<any> {
+        const params = {
+            searchKey: searchKey || '',
+            approvalType: 'merchant_register',
+            status: 'under_approval',
+            pageNum,
+            pageSize
+        };
+        return this.appRequest.queryMerchantsApproval(params).map(
             success => {
                 return {
                     current: success.pageNum,
@@ -37,8 +44,15 @@ export class MerchantApprovementService {
             );
     }
 
-    getHistoryMerchants(): Observable<any> {
-        return this.appRequest.queryMerchantsApproval('?approvalType=merchant_register&status=').map(
+    getHistoryMerchants(searchKey: string, pageNum: Number, pageSize: Number): Observable<any> {
+        const params = {
+            searchKey: searchKey || '',
+            approvalType: 'merchant_register',
+            status: 'approved,rejected',
+            pageNum,
+            pageSize
+        };
+        return this.appRequest.queryMerchantsApproval(params).map(
             success => {
                 return {
                     current: success.pageNum,

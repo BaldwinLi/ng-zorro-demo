@@ -6,9 +6,9 @@
     </nz-content>
   </nz-layout>
   <nz-layout>
-    <span class="login-logo">
-      <i class="anticon anticon-pay-circle"> </i> 喵喵掌柜后台管理
-    </span>
+    <div class="login-logo">
+      <span class="login-logo-text">喵喵掌柜后台管理</span>
+    </div>
     <nz-sider class="left-menu login-sider" [nzWidth]="400">
       <form nz-form [formGroup]="loginForm" class="login-form" (ngSubmit)="doLogin($event)">
         <div nz-form-item>

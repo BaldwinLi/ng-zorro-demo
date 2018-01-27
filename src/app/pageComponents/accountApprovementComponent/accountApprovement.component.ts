@@ -4,7 +4,7 @@ import { ComponentCommunicateService } from '../../services/baseServices/compone
 import { NzModalService, NzModalSubject } from 'ng-zorro-antd';
 import { AccountApprovementService } from '../../services/accountApprovement.service';
 import { CredentialDialogComponent } from './credentialDialog.component';
-import { ApproveDialogComponent } from '../dialogCmopponent/approveDialog.component';
+import { ApproveDialogComponent } from '../dialogComponent/approveDialog.component';
 
 @Component({
     selector: 'app-account-approvement',
@@ -22,8 +22,8 @@ export class AccountApprovementComponent implements OnInit {
     hisData: Array<any> = [];
     loading: Boolean = false;
     hisLoading: Boolean = false;
-    marchantKey: String = '';
-    hisMarchantKey: String = '';
+    marchantKey: string;
+    hisMarchantKey: string;
     resultReason: String = '';
     approveWin: NzModalSubject;
     checkedMerchants: Array<Object> = [];
@@ -43,10 +43,13 @@ export class AccountApprovementComponent implements OnInit {
             return;
         }
         this.loading = true;
-        this.entity.getPendingAccounts().subscribe(
+        this.entity.getPendingAccounts(
+            this.marchantKey,
+            event && event.pageIndex || this.current,
+            event && event.pageSize || this.pageSize
+        ).subscribe(
             success => {
                 this.data = success.list;
-                this.current = success.current;
                 this.total = success.total;
                 this.loading = false;
             },
@@ -62,10 +65,13 @@ export class AccountApprovementComponent implements OnInit {
             return;
         }
         this.hisLoading = true;
-        this.entity.getHistoryAccounts().subscribe(
+        this.entity.getHistoryAccounts(
+            this.hisMarchantKey,
+            event && event.pageIndex || this.hisCurrent,
+            event && event.pageSize || this.hisPageSize
+        ).subscribe(
             success => {
                 this.hisData = success.list;
-                this.hisCurrent = success.current;
                 this.hisTotal = success.total;
                 this.hisLoading = false;
             },
@@ -122,12 +128,13 @@ export class AccountApprovementComponent implements OnInit {
     //     this.checkedMerchants = merchants;
     // }
 
-    previewCredential(imageUrl: String = './assets/image/default.png'): void {
+    previewCredential(imageUrl: String = './assets/image/default.png', ossKey?: string): void {
         this.model.open({
             title: '开户凭证/银行',
             content: CredentialDialogComponent,
             componentParams: {
-                imageUrl
+                imageUrl,
+                ossKey
             },
             maskClosable: false,
             footer: false,
@@ -149,7 +156,7 @@ export class AccountApprovementComponent implements OnInit {
                 label: '商家编号',
                 type: 'text'
             }, {
-                id: 'fullName',
+                id: 'merchantName',
                 label: '商家名称',
                 type: 'text'
             }, {
@@ -182,7 +189,7 @@ export class AccountApprovementComponent implements OnInit {
                         type: 'link',
                         label: '查看',
                         callback(row) {
-                            scope.previewCredential(row.url);
+                            scope.previewCredential(row.url, row.ossKey);
                         }
                     },
                     {
@@ -204,7 +211,7 @@ export class AccountApprovementComponent implements OnInit {
                         type: 'link',
                         label: '查看',
                         callback(row) {
-                            scope.previewCredential(row.url);
+                            scope.previewCredential(row.url, row.ossKey);
                         }
                     }
                 ]
@@ -216,7 +223,8 @@ export class AccountApprovementComponent implements OnInit {
             }, {
                 id: 'updateTime',
                 label: '最后审核时间',
-                type: 'text'
+                type: 'date',
+                format: 'yyyy-MM-dd'
             }
         ]);
     }
